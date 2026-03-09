@@ -158,13 +158,17 @@ discovery.view.define('turbofan-graph-viewer', {
                                                     value: ${phasePath}[$].data.[key = $nodeId].value[0]
                                                 })
                                                 .[value];
-                                            $tooltipLines: $customData.map(=> name + ': ' + value).join('&#10;');
-                                            $opEffectsText: op_effects ? 'op_effects: ' + op_effects : '';
-                                            $tooltipRaw: $opEffectsText + ($opEffectsText and $tooltipLines ? '&#10;' : '') + $tooltipLines;
-                                            $tooltipContent: $tooltipRaw.replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                                                
+                                            $filteredCustomData: $customData.[name != "Properties"];
+                                            $tooltipLines: $filteredCustomData.map(=> name + ': ' + value).join('&#10;');
+                                            $tooltipContent: $tooltipLines.replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                                            
+                                            $propsVal: $customData.[name = "Properties"].value;
+                                            $propsStr: properties ? '[' + properties + ']' : ($propsVal ? $propsVal : '');
+                                            $propsHtml: $propsStr ? ' <span class="tf-node-properties" style="color: #999;">' + $propsStr.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</span>' : '';
                                             
                                             $titleHtml: title.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                                            '<div class="tf-node tf-node-' + id + ' ' + $finalClass + '"><span class="tf-node-id" data-node-id="' + id + '">#' + id + '</span> <span class="tf-node-title" title="' + $tooltipContent + '">' + $titleHtml + '</span> ' + ($inputsHTML ? '(' + $inputsHTML + ')' : '()') + '</div>'
+                                            '<div class="tf-node tf-node-' + id + ' ' + $finalClass + '"><span class="tf-node-id" data-node-id="' + id + '">#' + id + '</span> <span class="tf-node-title"' + ($tooltipContent ? ' title="' + $tooltipContent + '"' : '') + '>' + $titleHtml + '</span>' + $propsHtml + ' ' + ($inputsHTML ? '(' + $inputsHTML + ')' : '()') + '</div>'
                                         `
                                     }
                                 }
