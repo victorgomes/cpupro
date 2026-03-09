@@ -34,7 +34,8 @@ discovery.view.define('turbofan-graph-viewer', {
                                                 'frame-state': '#9c27b0',
                                                 context: '#e91e63'
                                             };
-                                            $edges: #.tfPhase.data.edges.[target = id];
+                                            $nodeId: id;
+                                            $edges: #.tfPhase.data.edges.[target = $nodeId];
                                             $inputsHTML: $edges.map(=> 
                                                 '<span style="color: ' + ($customColors[type] or 'inherit') + ';" title="' + type + '">#' + source + '</span>'
                                             ).join(', ');
