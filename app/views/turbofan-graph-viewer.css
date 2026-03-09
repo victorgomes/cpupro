@@ -75,3 +75,39 @@
 .tf-node-changed {
     background-color: rgba(255, 152, 0, 0.2);
 }
+
+.tf-block {
+    margin-bottom: 2px;
+    background-color: #242424;
+    padding-bottom: 4px;
+    border-radius: 4px;
+    overflow: hidden;
+    font-family: var(--discovery-monospace-font-family, monospace);
+    font-size: 13px;
+}
+
+.tf-block-title {
+    margin: 0 0 4px 0;
+    padding: 4px 8px;
+    background-color: #2a2a2a;
+    color: #B5B259;
+    border-left: 2px solid #5a5a5a;
+    font-weight: normal;
+}
+
+.tf-block .tf-node {
+    padding-left: 8px;
+}
+
+.tf-block .tf-node-id {
+    color: #8c8c8c;
+}
+
+.tf-block .tf-node-title {
+    color: #d4d4d4;
+}
+
+.tf-block .tf-node-properties {
+    color: #797979;
+}
+

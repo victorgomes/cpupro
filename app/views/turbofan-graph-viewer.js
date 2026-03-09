@@ -116,12 +116,13 @@ discovery.view.define('turbofan-graph-viewer', {
                     when: 'type = "turboshaft_graph"',
                     content: {
                         view: 'list',
+                        className: 'source tf-graph',
                         data: 'data.blocks',
                         item: {
                             view: 'block',
                             className: 'tf-block',
                             content: [
-                                { view: 'h5', className: 'tf-block-title', content: 'text:`Block ${id}`' },
+                                { view: 'h5', className: 'tf-block-title', content: 'text:`B${id}`' },
                                 {
                                     view: 'list',
                                     data: `$blockId: id; ${phasePath}.data.nodes.[block_id = $blockId]`,
@@ -189,7 +190,7 @@ discovery.view.define('turbofan-graph-viewer', {
                         view: 'list',
                         data: 'data.blocks',
                         item: [
-                            { view: 'h5', content: 'text:`Block ${id}`' },
+                            { view: 'h5', className: 'tf-block-title', content: 'text:`B${id}`' },
                             {
                                 view: 'list',
                                 data: 'instructions',
