@@ -117,29 +117,59 @@ discovery.view.define('turbofan-graph-viewer', {
                     content: {
                         view: 'list',
                         data: 'data.blocks',
-                        item: [
-                            { view: 'h5', content: 'text:`Block ${id}`' },
-                            {
-                                view: 'list',
-                                data: `$blockId: id; ${phasePath}.data.nodes.[block_id = $blockId]`,
-                                item: [
-                                    { view: 'text', data: '`${id}: ${title} ${op_effects || ""}`' },
-                                    {
-                                        view: 'list',
-                                        data: `$nodeId: id;
-                                            ${phasePath}.keys()
+                        item: {
+                            view: 'block',
+                            className: 'tf-block',
+                            content: [
+                                { view: 'h5', className: 'tf-block-title', content: 'text:`Block ${id}`' },
+                                {
+                                    view: 'list',
+                                    data: `$blockId: id; ${phasePath}.data.nodes.[block_id = $blockId]`,
+                                    item: {
+                                        view: 'html',
+                                        data: `
+                                            $customColors: {
+                                                value: '#2196f3',
+                                                effect: '#ff9800',
+                                                control: '#4caf50',
+                                                'frame-state': '#9c27b0',
+                                                context: '#e91e63'
+                                            };
+                                            $nodeId: id;
+                                            $edges: ${phasePath}.data.edges.[target = $nodeId];
+                                            $otherPhase: ${otherPhasePath};
+                                            $isDiffMode: $otherPhase and $otherPhase.name != "---";
+                                            $otherNode: $isDiffMode ? $otherPhase.data.nodes.[id = $nodeId] : null;
+                                            
+                                            $isMissingInOther: $isDiffMode and not $otherNode;
+                                            $diffClass: $isMissingInOther ? (${isBase ? "'tf-node-added'" : "'tf-node-removed'"}) : '';
+                                            
+                                            $changedOp: $isDiffMode and $otherNode and ($otherNode.title != title or $otherNode.op_effects != op_effects);
+                                            $finalClass: $diffClass or ($changedOp ? 'tf-node-changed' : '');
+                                            
+                                            $inputsHTML: $edges ? $edges.map(=> (
+                                                '<span class="tf-node-input" data-node-id="' + source + '" style="color: ' + ($customColors[type] or 'inherit') + ';" title="' + type + '">#' + source + '</span>'
+                                            )).join(', ') : '';
+                                            
+                                            $customData: ${phasePath}.keys()
                                                 .[${phasePath}[$].type = "turboshaft_custom_data"]
                                                 .({
                                                     name: $,
                                                     value: ${phasePath}[$].data.[key = $nodeId].value[0]
                                                 })
-                                                .[value]`,
-                                        whenData: true,
-                                        item: 'text:`${name}: ${value}`'
+                                                .[value];
+                                            $tooltipLines: $customData.map(=> name + ': ' + value).join('&#10;');
+                                            $opEffectsText: op_effects ? 'op_effects: ' + op_effects : '';
+                                            $tooltipRaw: $opEffectsText + ($opEffectsText and $tooltipLines ? '&#10;' : '') + $tooltipLines;
+                                            $tooltipContent: $tooltipRaw.replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                                            
+                                            $titleHtml: title.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                                            '<div class="tf-node tf-node-' + id + ' ' + $finalClass + '"><span class="tf-node-id" data-node-id="' + id + '">#' + id + '</span> <span class="tf-node-title" title="' + $tooltipContent + '">' + $titleHtml + '</span> ' + ($inputsHTML ? '(' + $inputsHTML + ')' : '()') + '</div>'
+                                        `
                                     }
-                                ]
-                            }
-                        ]
+                                }
+                            ]
+                        }
                     }
                 },
                 {
