@@ -206,19 +206,19 @@ discovery.view.define('turbofan-graph-viewer', {
                 content: [
                     {
                         view: 'block',
+                        className: 'tf-graph-pane tf-graph-main-pane',
+                        content: [
+                            { view: 'h4', className: 'tf-pane-title', content: 'text:#.tfPhase.name' },
+                            createGraphPane('#.tfPhase', '#.tfDiffPhase', false)
+                        ]
+                    },
+                    {
+                        view: 'block',
                         className: 'tf-graph-pane tf-graph-diff-pane',
                         when: '#.tfDiffPhase.name != "---"',
                         content: [
                             { view: 'h4', className: 'tf-pane-title', content: 'text:#.tfDiffPhase.name' },
                             createGraphPane('#.tfDiffPhase', '#.tfPhase', true)
-                        ]
-                    },
-                    {
-                        view: 'block',
-                        className: 'tf-graph-pane tf-graph-main-pane',
-                        content: [
-                            { view: 'h4', className: 'tf-pane-title', content: 'text:#.tfPhase.name' },
-                            createGraphPane('#.tfPhase', '#.tfDiffPhase', false)
                         ]
                     }
                 ]
