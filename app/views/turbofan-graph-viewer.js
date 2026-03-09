@@ -23,7 +23,7 @@ discovery.view.define('turbofan-graph-viewer', {
                                 when: 'type = "graph"',
                                 content: {
                                     view: 'list',
-                                    data: 'data.nodes.sort(id asc)',
+                                    data: 'data.nodes',
                                     item: {
                                         view: 'html',
                                         data: `
@@ -34,7 +34,7 @@ discovery.view.define('turbofan-graph-viewer', {
                                                 'frame-state': '#9c27b0',
                                                 context: '#e91e63'
                                             };
-                                            $edges: #.tfPhase.data.edges.[target = id].sort(index asc);
+                                            $edges: #.tfPhase.data.edges.[target = id];
                                             $inputsHTML: $edges.map(=> 
                                                 '<span style="color: ' + ($customColors[type] or 'inherit') + ';" title="' + type + '">#' + source + '</span>'
                                             ).join(', ');
