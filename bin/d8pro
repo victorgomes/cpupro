@@ -19,7 +19,19 @@ if (!fs.existsSync(d8Path)) {
   process.exit(1);
 }
 
-// 1. Run d8 with --prof
+// 1. Clean up old Turbofan traces to avoid stale graphs
+const currentDirFiles = fs.readdirSync(process.cwd());
+for (const file of currentDirFiles) {
+  if (file === 'turbo.cfg' || /^turbo-.*\.json$/.test(file)) {
+    try {
+      fs.unlinkSync(path.join(process.cwd(), file));
+    } catch (e) {
+      console.warn(`Could not remove old trace file ${file}:`, e);
+    }
+  }
+}
+
+// 2. Run d8 with --prof
 const rawArgs = process.argv.slice(2);
 const runTickProcessor = rawArgs.includes('--preprocess');
 const args = rawArgs.filter(arg => arg !== '--preprocess');
@@ -71,11 +83,16 @@ if (runTickProcessor) {
   cpuproTarget = jsonPath;
 }
 
-// 3. Run cpupro on the generated trace
+// 4. Run cpupro on the generated trace
 const cpuproPath = path.join(__dirname, 'cpupro');
-console.log(`Analyzing with cpupro: ${cpuproPath} ${cpuproTarget}`);
-const cpuproResult =
-    spawnSync('node', [ cpuproPath, cpuproTarget ], {stdio : 'inherit'});
+const cpuproArgs = [ cpuproPath, cpuproTarget ];
+
+if (fs.existsSync(path.resolve('turbo.cfg'))) {
+  cpuproArgs.push('--turbofan', 'turbo.cfg');
+}
+
+console.log(`Analyzing with cpupro: node ${cpuproArgs.join(' ')}`);
+const cpuproResult = spawnSync('node', cpuproArgs, {stdio : 'inherit'});
 
 if (cpuproResult.error || cpuproResult.status !== 0) {
   console.error('cpupro execution failed.');
