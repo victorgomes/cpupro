@@ -43,7 +43,6 @@ discovery.view.define('turbofan-graph-viewer', {
             content: {
                 view: 'block',
                 content: [
-                    { view: 'h4', data: '#.tfPhase.name' },
                     {
                         view: 'switch',
                         data: '#.tfPhase',
@@ -55,7 +54,46 @@ discovery.view.define('turbofan-graph-viewer', {
                                     className: 'source tf-graph',
                                     content: {
                                         view: 'list',
-                                        data: 'data.nodes.sort(id ascN)',
+                                        data: function(phase) {
+                                            if (!phase || !phase.data || !phase.data.nodes) return [];
+                                            const nodes = phase.data.nodes;
+                                            const edges = phase.data.edges || [];
+                                            const edgesByTarget = new Map();
+                                            for (const edge of edges) {
+                                                if (!edgesByTarget.has(edge.target)) edgesByTarget.set(edge.target, []);
+                                                edgesByTarget.get(edge.target).push(edge);
+                                            }
+                                            
+                                            const visited = new Set();
+                                            const tempMark = new Set();
+                                            const sorted = [];
+                                            const nodeById = new Map();
+                                            for (const node of nodes) {
+                                                nodeById.set(node.id, node);
+                                            }
+                                            
+                                            function visit(nodeId) {
+                                                if (visited.has(nodeId)) return;
+                                                if (tempMark.has(nodeId)) return;
+                                                tempMark.add(nodeId);
+                                                const nodeEdges = edgesByTarget.get(nodeId) || [];
+                                                nodeEdges.sort((a, b) => a.index - b.index);
+                                                for (const edge of nodeEdges) {
+                                                    visit(edge.source);
+                                                }
+                                                tempMark.delete(nodeId);
+                                                visited.add(nodeId);
+                                                if (nodeById.has(nodeId)) {
+                                                    sorted.push(nodeById.get(nodeId));
+                                                }
+                                            }
+                                            
+                                            const sortedNodes = nodes.slice().sort((a, b) => a.id - b.id);
+                                            for (const node of sortedNodes) {
+                                                visit(node.id);
+                                            }
+                                            return sorted;
+                                        },
                                         item: {
                                             view: 'html',
                                             data: `
