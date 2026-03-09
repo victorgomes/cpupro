@@ -24,9 +24,6 @@
     ],
     "exports": {
         ".": "./lib/index.js",
-        "./file": "./lib/require-file-report.js",
-        "./file/report": "./lib/require-file-report.js",
-        "./file/data": "./lib/require-file-data.js",
         "./build/*.html": "./build/*.html",
         "./package.json": "./package.json"
     },
@@ -44,8 +41,7 @@
     "dependencies": {
         "@discoveryjs/json-ext": "^0.6.3",
         "clap": "^3.1.1",
-        "open": "^8.4.0",
-        "v8-profiler-next": "~1.5.1"
+        "open": "^8.4.0"
     },
     "devDependencies": {
         "@discoveryjs/cli": "^2.14.2",
