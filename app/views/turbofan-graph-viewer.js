@@ -22,19 +22,26 @@ discovery.view.define('turbofan-graph-viewer', {
                             {
                                 when: 'type = "graph"',
                                 content: {
-                                    view: 'tree',
+                                    view: 'list',
                                     data: 'data.nodes.sort(id asc)',
-                                    expanded: 3,
-                                    item: [
-                                        { view: 'text', data: '`[${id}] ${title}`' },
-                                        {
-                                            view: 'list',
-                                            data: '` Properties: ${properties}`',
-                                            whenData: true,
-                                            item: 'text'
-                                        }
-                                    ],
-                                    children: '$node: $; #.tfPhase.data.edges.[source = $node.id].({ ...$node, id: target, title: #.tfPhase.data.nodes.[id = target].title[0] })'
+                                    item: {
+                                        view: 'html',
+                                        data: `
+                                            $customColors: {
+                                                value: '#2196f3',
+                                                effect: '#ff9800',
+                                                control: '#4caf50',
+                                                'frame-state': '#9c27b0',
+                                                context: '#e91e63'
+                                            };
+                                            $edges: #.tfPhase.data.edges.[target = id].sort(index asc);
+                                            $inputsHTML: $edges.map(=> 
+                                                '<span style="color: ' + ($customColors[type] or 'inherit') + ';" title="' + type + '">#' + source + '</span>'
+                                            ).join(', ');
+                                            $titleHtml: title.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                                            '<div style="font-family: monospace;">#' + id + ':' + $titleHtml + '(' + $inputsHTML + ')</div>'
+                                        `
+                                    }
                                 }
                             },
                             {
