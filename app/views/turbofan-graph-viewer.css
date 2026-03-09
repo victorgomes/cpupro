@@ -111,3 +111,29 @@
     color: #797979;
 }
 
+.tf-block-ref {
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    color: #64b5f6;
+}
+
+.tf-block-ref:hover {
+    color: #90caf9;
+    text-decoration-style: solid;
+}
+
+.tf-block-highlight {
+    background-color: #333333;
+    box-shadow: 0 0 0 1px #64b5f6;
+}
+
+@keyframes tf-block-flash {
+    0% { background-color: #444444; }
+    100% { background-color: #242424; }
+}
+
+.tf-block-flash {
+    animation: tf-block-flash 1s ease-out;
+}
+

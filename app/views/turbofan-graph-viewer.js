@@ -12,6 +12,10 @@ discovery.view.define('turbofan-graph-viewer', {
                     const parentNode = use.closest('.tf-node');
                     if (parentNode) parentNode.classList.add('tf-node-highlight');
                 }
+            } else if (e.target.classList.contains('tf-block-ref')) {
+                const targetBlockId = e.target.dataset.target;
+                const blockEl = el.querySelector(`.tf-block-${targetBlockId}`);
+                if (blockEl) blockEl.classList.add('tf-block-highlight');
             }
         });
         el.addEventListener('mouseout', (e) => {
@@ -25,6 +29,22 @@ discovery.view.define('turbofan-graph-viewer', {
                 for (const use of uses) {
                     const parentNode = use.closest('.tf-node');
                     if (parentNode) parentNode.classList.remove('tf-node-highlight');
+                }
+            } else if (e.target.classList.contains('tf-block-ref')) {
+                const targetBlockId = e.target.dataset.target;
+                const blockEl = el.querySelector(`.tf-block-${targetBlockId}`);
+                if (blockEl) blockEl.classList.remove('tf-block-highlight');
+            }
+        });
+
+        el.addEventListener('click', (e) => {
+            if (e.target.classList.contains('tf-block-ref')) {
+                const targetBlockId = e.target.dataset.target;
+                const blockEl = el.querySelector(`.tf-block-${targetBlockId}`);
+                if (blockEl) {
+                    blockEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    blockEl.classList.add('tf-block-flash');
+                    setTimeout(() => blockEl.classList.remove('tf-block-flash'), 1000);
                 }
             }
         });
@@ -120,7 +140,7 @@ discovery.view.define('turbofan-graph-viewer', {
                         data: 'data.blocks',
                         item: {
                             view: 'block',
-                            className: 'tf-block',
+                            className: function(data) { return 'tf-block tf-block-' + data.id; },
                             content: [
                                 { view: 'h5', className: 'tf-block-title', content: 'text:`B${id}`' },
                                 {
@@ -166,7 +186,9 @@ discovery.view.define('turbofan-graph-viewer', {
                                             
                                             $propsVal: $customData.[name = "Properties"].value | join('');
                                             $propsStr: properties ? '[' + properties + ']' : ($propsVal ? $propsVal : '');
-                                            $propsHtml: $propsStr ? ' <span class="tf-node-properties" style="color: #999;">' + $propsStr.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</span>' : '';
+                                            $propsStrEscaped: $propsStr.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                                            $propsStrWithRefs: $propsStrEscaped.replace(/\\bB(\\d+)\\b/g, '<span class="tf-block-ref" data-target="$1">$&</span>');
+                                            $propsHtml: $propsStrWithRefs ? ' <span class="tf-node-properties" style="color: #999;">' + $propsStrWithRefs + '</span>' : '';
                                             
                                             $titleHtml: title.replace(/</g, '&lt;').replace(/>/g, '&gt;');
                                             '<div class="tf-node tf-node-' + id + ' ' + $finalClass + '"><span class="tf-node-id" data-node-id="' + id + '">#' + id + '</span> <span class="tf-node-title"' + ($tooltipContent ? ' title="' + $tooltipContent + '"' : '') + '>' + $titleHtml + '</span>' + $propsHtml + ' ' + ($inputsHTML ? '(' + $inputsHTML + ')' : '()') + '</div>'
