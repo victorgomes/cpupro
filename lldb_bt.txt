@@ -1,0 +1,15 @@
+(lldb) process attach --pid 92646
+Process 92646 stopped
+* thread #1, queue = 'com.apple.main-thread', stop reason = signal SIGSTOP
+    frame #0: 0x00007ff81a03f360 libsystem_platform.dylib`_sigtramp
+libsystem_platform.dylib`_sigtramp:
+->  0x7ff81a03f360 <+0>: push   rbp
+    0x7ff81a03f361 <+1>: mov    rbp, rsp
+    0x7ff81a03f364 <+4>: mov    rax, rdi
+    0x7ff81a03f367 <+7>: inc    dword ptr [rip + 0x40a6c9fb] ; __in_sigtramp
+Executable binary set to "/Users/victorgomes/v8/v8/out/x64.release/d8".
+Architecture set to: x86_64-apple-macosx-.
+(lldb) bt
+* thread #1, queue = 'com.apple.main-thread', stop reason = signal SIGSTOP
+  * frame #0: 0x00007ff81a03f360 libsystem_platform.dylib`_sigtramp
+(lldb) quit

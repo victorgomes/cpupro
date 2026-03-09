@@ -1,0 +1,665 @@
+(lldb) process attach --pid 92646
+Process 92646 stopped
+* thread #1, queue = 'com.apple.main-thread', stop reason = signal SIGSTOP
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+libsystem_kernel.dylib`__psynch_cvwait:
+->  0x7ff819ff46fa <+10>: jae    0x7ff819ff4704            ; <+20>
+    0x7ff819ff46fc <+12>: mov    rdi, rax
+    0x7ff819ff46ff <+15>: jmp    0x7ff819ff22a8            ; cerror_nocancel
+    0x7ff819ff4704 <+20>: ret
+Executable binary set to "/Users/victorgomes/v8/v8/out/x64.release/d8".
+Architecture set to: x86_64-apple-macosx-.
+(lldb) thread backtrace all
+* thread #1, queue = 'com.apple.main-thread', stop reason = signal SIGSTOP
+  * frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d0cb d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x000000011474b240, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x000001040001c4e0, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040001c4f0, mutex=0x000001040001c4e0, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x0000000104fe260b d8`v8::internal::IsolateSafepoint::EnterLocalSafepointScope() [inlined] v8::internal::IsolateSafepoint::Barrier::WaitUntilRunningThreadsInSafepoint(this=0x000001040001c4e0, running_local_heaps=0x0000000310d13400) at safepoint.cc:248:17 [opt]
+    frame #9: 0x0000000104fe25d1 d8`v8::internal::IsolateSafepoint::EnterLocalSafepointScope(this=0x000001040001c4e0) at safepoint.cc:51:12 [opt]
+    frame #10: 0x0000000104fe3ac5 d8`v8::internal::SafepointScope::SafepointScope(v8::internal::Isolate*, v8::internal::GlobalSafepointForSharedSpaceIsolateTag) [inlined] v8::internal::IsolateSafepointScope::IsolateSafepointScope(this=0x0000000310d134f0, heap=0x0000010400e13538) at safepoint.cc:344:15 [opt]
+    frame #11: 0x0000000104fe3ab6 d8`v8::internal::SafepointScope::SafepointScope(v8::internal::Isolate*, v8::internal::GlobalSafepointForSharedSpaceIsolateTag) [inlined] v8::internal::IsolateSafepointScope::IsolateSafepointScope(this=0x0000000310d134f0, heap=0x0000010400e13538) at safepoint.cc:343:37 [opt]
+    frame #12: 0x0000000104fe3ab6 d8`v8::internal::SafepointScope::SafepointScope(v8::internal::Isolate*, v8::internal::GlobalSafepointForSharedSpaceIsolateTag) [inlined] v8::internal::IsolateSafepointScope* std::__Cr::construct_at<v8::internal::IsolateSafepointScope, v8::internal::Heap*, v8::internal::IsolateSafepointScope*>(__location=0x0000000310d134f0, __args=<unavailable>) at construct_at.h:37:49 [opt]
+    frame #13: 0x0000000104fe3ab1 d8`v8::internal::SafepointScope::SafepointScope(v8::internal::Isolate*, v8::internal::GlobalSafepointForSharedSpaceIsolateTag) [inlined] v8::internal::IsolateSafepointScope* std::__Cr::__construct_at<v8::internal::IsolateSafepointScope, v8::internal::Heap*, v8::internal::IsolateSafepointScope*>(__location=0x0000000310d134f0, __args=<unavailable>) at construct_at.h:45:10 [opt]
+    frame #14: 0x0000000104fe3ab1 d8`v8::internal::SafepointScope::SafepointScope(v8::internal::Isolate*, v8::internal::GlobalSafepointForSharedSpaceIsolateTag) [inlined] void std::__Cr::__optional_storage_base<v8::internal::IsolateSafepointScope, false>::__construct<v8::internal::Heap*>(this=0x0000000310d134f0, __args=<unavailable>) at optional:457:5 [opt]
+    frame #15: 0x0000000104fe3ab1 d8`v8::internal::SafepointScope::SafepointScope(v8::internal::Isolate*, v8::internal::GlobalSafepointForSharedSpaceIsolateTag) [inlined] v8::internal::IsolateSafepointScope& std::__Cr::optional<v8::internal::IsolateSafepointScope>::emplace<v8::internal::Heap*, 0>(this= Has Value=false , __args=<unavailable>) at optional:1019:11 [opt]
+    frame #16: 0x0000000104fe3ab1 d8`v8::internal::SafepointScope::SafepointScope(v8::internal::Isolate*, v8::internal::GlobalSafepointForSharedSpaceIsolateTag) [inlined] v8::internal::SafepointScope::SafepointScope(this=0x0000000310d134f0, initiator=0x0000010400e04000, (null)=<unavailable>) at safepoint.cc:497:24 [opt]
+    frame #17: 0x0000000104fe3a60 d8`v8::internal::SafepointScope::SafepointScope(this=0x0000000310d134f0, initiator=0x0000010400e04000, (null)=<unavailable>) at safepoint.cc:493:73 [opt]
+    frame #18: 0x0000000104f3399a d8`v8::internal::Heap::PerformGarbageCollection(v8::internal::GarbageCollector, v8::internal::GarbageCollectionReason, char const*) [inlined] v8::internal::SafepointScope* std::__Cr::construct_at<v8::internal::SafepointScope, v8::internal::Isolate*, v8::internal::GlobalSafepointForSharedSpaceIsolateTag const&, v8::internal::SafepointScope*>(__location=0x0000000310d134f0, __args=<unavailable>, __args=<unavailable>) at construct_at.h:37:49 [opt]
+    frame #19: 0x0000000104f33995 d8`v8::internal::Heap::PerformGarbageCollection(v8::internal::GarbageCollector, v8::internal::GarbageCollectionReason, char const*) [inlined] v8::internal::SafepointScope* std::__Cr::__construct_at<v8::internal::SafepointScope, v8::internal::Isolate*, v8::internal::GlobalSafepointForSharedSpaceIsolateTag const&, v8::internal::SafepointScope*>(__location=0x0000000310d134f0, __args=<unavailable>, __args=<unavailable>) at construct_at.h:45:10 [opt]
+    frame #20: 0x0000000104f33995 d8`v8::internal::Heap::PerformGarbageCollection(v8::internal::GarbageCollector, v8::internal::GarbageCollectionReason, char const*) [inlined] void std::__Cr::__optional_storage_base<v8::internal::SafepointScope, false>::__construct<v8::internal::Isolate*, v8::internal::GlobalSafepointForSharedSpaceIsolateTag const&>(this=0x0000000310d134f0, __args=<unavailable>, __args=<unavailable>) at optional:457:5 [opt]
+    frame #21: 0x0000000104f33995 d8`v8::internal::Heap::PerformGarbageCollection(v8::internal::GarbageCollector, v8::internal::GarbageCollectionReason, char const*) [inlined] v8::internal::SafepointScope& std::__Cr::optional<v8::internal::SafepointScope>::emplace<v8::internal::Isolate*, v8::internal::GlobalSafepointForSharedSpaceIsolateTag const&, 0>(this= Has Value=false , __args=<unavailable>, __args=<unavailable>) at optional:1019:11 [opt]
+    frame #22: 0x0000000104f33995 d8`v8::internal::Heap::PerformGarbageCollection(this=0x0000010400e13538, collector=SCAVENGER, gc_reason=kAllocationFailure, collector_reason=0x0000000000000000) at heap.cc:2374:21 [opt]
+    frame #23: 0x0000000104f46c03 d8`v8::internal::Heap::CollectGarbage(v8::internal::AllocationSpace, v8::internal::GarbageCollectionReason, v8::GCCallbackFlags, v8::internal::PerformHeapLimitCheck, v8::internal::PerformIneffectiveMarkCompactCheck)::$_1::operator()(this=0x0000000310d13850) const at heap.cc:1698:7 [opt]
+    frame #24: 0x0000000104f4678f d8`void heap::base::Stack::SetMarkerAndCallbackImpl<v8::internal::Heap::CollectGarbage(v8::internal::AllocationSpace, v8::internal::GarbageCollectionReason, v8::GCCallbackFlags, v8::internal::PerformHeapLimitCheck, v8::internal::PerformIneffectiveMarkCompactCheck)::$_1>(stack=0x0000010400f14708, argument=<unavailable>, stack_end=<unavailable>) at stack.h:180:5 [opt]
+    frame #25: 0x0000000105a95a38 d8`PushAllRegistersAndIterateStack + 27
+    frame #26: 0x0000000104f2fa14 d8`v8::internal::Heap::CollectGarbage(v8::internal::AllocationSpace, v8::internal::GarbageCollectionReason, v8::GCCallbackFlags, v8::internal::PerformHeapLimitCheck, v8::internal::PerformIneffectiveMarkCompactCheck) [inlined] void heap::base::Stack::SetMarkerIfNeededAndCallback<v8::internal::Heap::CollectGarbage(v8::internal::AllocationSpace, v8::internal::GarbageCollectionReason, v8::GCCallbackFlags, v8::internal::PerformHeapLimitCheck, v8::internal::PerformIneffectiveMarkCompactCheck)::$_1>(this=<unavailable>, callback=(unnamed class) @ 0x0000000310d13850) at stack.h:76:7 [opt]
+    frame #27: 0x0000000104f2fa04 d8`v8::internal::Heap::CollectGarbage(this=0x0000010400e13538, space=<unavailable>, gc_reason=kAllocationFailure, gc_callback_flags=kNoGCCallbackFlags, perform_heap_limit_check=kNo, check_ineffective_mark_compact=kYes) at heap.cc:1666:11 [opt]
+    frame #28: 0x0000000104f0c479 d8`v8::internal::HeapAllocator::CollectGarbageAndRetryAllocation(this=0x0000010400f140b8, allocate=v8::internal::HeapAllocator::CustomAllocationFunction @ 0x0000000795b48750, allocation=kYoung, gc_reason=kAllocationFailure) at heap-allocator.cc:550:5 [opt]
+    frame #29: 0x0000000104f0c272 d8`v8::internal::HeapAllocator::RetryCustomAllocate(this=<unavailable>, allocate=<unavailable>, allocation=<unavailable>, gc_reason=<unavailable>) at heap-allocator.cc:490:7 [opt]
+    frame #30: 0x0000000104f0bc0c d8`v8::internal::HeapAllocator::AllocateRawSlowPath(v8::internal::HeapAllocator::AllocationRetryMode, int, v8::internal::AllocationType, v8::internal::AllocationOrigin, v8::internal::AllocationAlignment, v8::internal::AllocationHint) [inlined] v8::internal::HeapAllocator::RetryCustomAllocateOrFail(this=0x0000010400f140b8, allocate=<unavailable>, allocation=kYoung, gc_reason=kAllocationFailure) at heap-allocator.cc:513:7 [opt]
+    frame #31: 0x0000000104f0bbef d8`v8::internal::HeapAllocator::AllocateRawSlowPath(this=0x0000010400f140b8, retry_mode=kRetryOrFail, size=12, allocation=kYoung, origin=kGeneratedCode, alignment=<unavailable>, hint=(may_grow_ = false)) at heap-allocator.cc:218:5 [opt]
+    frame #32: 0x0000000104ee8b73 d8`v8::internal::Factory::NewFillerObject(int, v8::internal::AllocationAlignment, v8::internal::AllocationType, v8::internal::AllocationOrigin) [inlined] v8::internal::Tagged<v8::internal::HeapObject> v8::internal::HeapAllocator::AllocateRawWith<(v8::internal::HeapAllocator::AllocationRetryMode)1>(this=0x0000010400f140b8, size=<unavailable>, allocation=<unavailable>, origin=<unavailable>, alignment=kTaggedAligned, hint=(may_grow_ = false)) at heap-allocator-inl.h:248:10 [opt]
+    frame #33: 0x0000000104ee7ed5 d8`v8::internal::Factory::NewFillerObject(this=0x0000010400e04000, size=12, alignment=kTaggedAligned, allocation=kYoung, origin=kGeneratedCode) at factory.cc:371:20 [opt]
+    frame #34: 0x0000000105432c30 d8`v8::internal::Runtime_AllocateInYoungGeneration(int, unsigned long*, v8::internal::Isolate*) [inlined] v8::internal::__RT_impl_Runtime_AllocateInYoungGeneration(args=<unavailable>, isolate=0x0000010400e04000) at runtime-internal.cc:490:31 [opt]
+    frame #35: 0x0000000105432bfb d8`v8::internal::Runtime_AllocateInYoungGeneration(args_length=<unavailable>, args_object=<unavailable>, isolate=0x0000010400e04000) at runtime-internal.cc:476:1 [opt]
+    frame #36: 0x000000010648a5f6 d8`Builtins_CEntry_Return1_ArgvOnStack_NoBuiltinExit + 54
+    frame #37: 0x000000010644ead3 d8`Builtins_Add_Baseline + 1747
+    frame #38: 0x000000016640e62b
+    frame #39: 0x000000016640f2b2
+    frame #40: 0x0000000166411bdd
+    frame #41: 0x00000001063d91bc d8`Builtins_InterpreterEntryTrampoline + 316
+    frame #42: 0x00000001063d91bc d8`Builtins_InterpreterEntryTrampoline + 316
+    frame #43: 0x00000001063d91bc d8`Builtins_InterpreterEntryTrampoline + 316
+    frame #44: 0x00000001063d91bc d8`Builtins_InterpreterEntryTrampoline + 316
+    frame #45: 0x00000001063d91bc d8`Builtins_InterpreterEntryTrampoline + 316
+    frame #46: 0x00000001063d5f5c d8`Builtins_JSEntryTrampoline + 92
+    frame #47: 0x00000001063d5cab d8`Builtins_JSEntry + 171
+    frame #48: 0x0000000104e3c8c5 d8`v8::internal::(anonymous namespace)::Invoke(v8::internal::Isolate*, v8::internal::(anonymous namespace)::InvokeParams const&) [inlined] v8::internal::GeneratedCode<unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, long, unsigned long**>::Call(this=<unavailable>, args=<unavailable>, args=<unavailable>, args=<unavailable>, args=<unavailable>, args=<unavailable>, args=<unavailable>) at simulator.h:216:12 [opt]
+    frame #49: 0x0000000104e3c8c2 d8`v8::internal::(anonymous namespace)::Invoke(isolate=0x0000010400e04000, params=0x0000000310d14190) at execution.cc:474:22 [opt]
+    frame #50: 0x0000000104e3d1dd d8`v8::internal::Execution::CallScript(isolate=<unavailable>, script_function=<unavailable>, receiver=<unavailable>, host_defined_options=DirectHandle<v8::internal::Object> @ 0x0000000310d141d8) at execution.cc:574:10 [opt]
+    frame #51: 0x0000000104c724d8 d8`v8::Script::Run(this=0x0000010400f60690, context=Local<v8::Context> @ scalar, host_defined_options=<unavailable>) at api.cc:2033:7 [opt]
+    frame #52: 0x0000000104c72285 d8`v8::Script::Run(this=<unavailable>, context=<unavailable>) at api.cc:1997:10 [opt] [artificial]
+    frame #53: 0x0000000104be9a96 d8`v8::Shell::RealmEval(info=0x0000000310d143d8) at d8.cc:2668:16 [opt]
+    frame #54: 0x00000001063db064 d8`Builtins_CallApiCallbackGeneric + 164
+    frame #55: 0x00000001063d91bc d8`Builtins_InterpreterEntryTrampoline + 316
+    frame #56: 0x00000001063d91bc d8`Builtins_InterpreterEntryTrampoline + 316
+    frame #57: 0x00000001063d91bc d8`Builtins_InterpreterEntryTrampoline + 316
+    frame #58: 0x00000001063d91bc d8`Builtins_InterpreterEntryTrampoline + 316
+    frame #59: 0x000000010641d86e d8`Builtins_AsyncFunctionAwaitResolveClosure + 46
+    frame #60: 0x000000010650eeea d8`Builtins_PromiseFulfillReactionJob + 42
+    frame #61: 0x000000010640b893 d8`Builtins_RunMicrotasks + 659
+    frame #62: 0x00000001063d5eab d8`Builtins_JSRunMicrotasksEntry + 171
+    frame #63: 0x0000000104e3c777 d8`v8::internal::(anonymous namespace)::Invoke(v8::internal::Isolate*, v8::internal::(anonymous namespace)::InvokeParams const&) [inlined] v8::internal::GeneratedCode<unsigned long, unsigned long, v8::internal::MicrotaskQueue*>::Call(this=<unavailable>, args=<unavailable>, args=<unavailable>) at simulator.h:216:12 [opt]
+    frame #64: 0x0000000104e3c774 d8`v8::internal::(anonymous namespace)::Invoke(isolate=0x0000010400e04000, params=0x0000000310d14cc8) at execution.cc:492:41 [opt]
+    frame #65: 0x0000000104e3d491 d8`v8::internal::(anonymous namespace)::InvokeWithTryCatch(isolate=0x0000010400e04000, params=0x0000000310d14cc8) at execution.cc:534:18 [opt]
+    frame #66: 0x0000000104e3d5e9 d8`v8::internal::Execution::TryRunMicrotasks(isolate=<unavailable>, microtask_queue=<unavailable>) at execution.cc:638:10 [opt]
+    frame #67: 0x0000000104e70664 d8`v8::internal::MicrotaskQueue::RunMicrotasks(this=0x00000104000381b0, isolate=0x0000010400e04000) at microtask-queue.cc:185:22 [opt]
+    frame #68: 0x0000000104e70452 d8`v8::internal::MicrotaskQueue::PerformCheckpointInternal(this=0x00000104000381b0, v8_isolate=0x0000010400e04000) at microtask-queue.cc:129:3 [opt]
+    frame #69: 0x0000000104e60548 d8`v8::internal::Isolate::FireCallCompletedCallbackInternal(v8::internal::MicrotaskQueue*) [inlined] v8::internal::MicrotaskQueue::PerformCheckpoint(this=<unavailable>, isolate=0x0000010400e04000) at microtask-queue.h:48:5 [opt]
+    frame #70: 0x0000000104e6052b d8`v8::internal::Isolate::FireCallCompletedCallbackInternal(this=0x0000010400e04000, microtask_queue=<unavailable>) at isolate.cc:6808:44 [opt]
+    frame #71: 0x0000000104c89f6e d8`v8::CallDepthScope<true>::~CallDepthScope() [inlined] v8::internal::Isolate::FireCallCompletedCallback(this=<unavailable>, microtask_queue=<unavailable>) at isolate.h:1795:5 [opt]
+    frame #72: 0x0000000104c89f69 d8`v8::CallDepthScope<true>::~CallDepthScope(this=0x0000000310d14ec0) at api-inl.h:183:17 [opt]
+    frame #73: 0x0000000104c7382d d8`v8::Promise::Resolver::Resolve(v8::Local<v8::Context>, v8::Local<v8::Value>) [inlined] v8::CallDepthScope<true>::~CallDepthScope(this=<unavailable>) at api-inl.h:168:21 [opt]
+    frame #74: 0x0000000104c73828 d8`v8::Promise::Resolver::Resolve(v8::Local<v8::Context>, v8::Local<v8::Value>) [inlined] v8::EnterV8InternalScope<v8::internal::HandleScope, true>::~EnterV8InternalScope(this=0x0000000310d14ea8) at api-inl.h:259:20 [opt]
+    frame #75: 0x0000000104c7380c d8`v8::Promise::Resolver::Resolve(v8::Local<v8::Context>, v8::Local<v8::Value>) [inlined] v8::EnterV8Scope<v8::internal::HandleScope>::~EnterV8Scope(this=0x0000000310d14ea8) at api-inl.h:312:20 [opt]
+    frame #76: 0x0000000104c7380c d8`v8::Promise::Resolver::Resolve(v8::Local<v8::Context>, v8::Local<v8::Value>) [inlined] v8::EnterV8Scope<v8::internal::HandleScope>::~EnterV8Scope(this=0x0000000310d14ea8) at api-inl.h:312:20 [opt]
+    frame #77: 0x0000000104c7380c d8`v8::Promise::Resolver::Resolve(this=0x0000010400f605d0, context=Local<v8::Context> @ scalar, value=Local<v8::Value> @ r14) at api.cc:8620:1 [opt]
+    frame #78: 0x0000000104c00a9c d8`v8::(anonymous namespace)::D8WasmAsyncResolvePromiseTask::Run(this=0x0000010400018e80) at d8.cc:916:39 [opt]
+    frame #79: 0x00000001065f1cd5 d8`v8::platform::DefaultPlatform::PumpMessageLoop(this=0x0000010400038000, isolate=0x0000010400e04000, wait_for_work=<unavailable>) at default-platform.cc:173:9 [opt]
+    frame #80: 0x00000001065f1c05 d8`v8::platform::PumpMessageLoop(platform=<unavailable>, isolate=<unavailable>, behavior=<unavailable>) at default-platform.cc:81:51 [opt] [artificial]
+    frame #81: 0x0000000104bfcecc d8`v8::(anonymous namespace)::ProcessMessages(isolate=0x0000010400e04000, behavior=0x0000000310d15090) at d8.cc:6716:9 [opt]
+    frame #82: 0x0000000104bf8a24 d8`v8::Shell::FinishExecuting(v8::Isolate*, v8::Global<v8::Context> const&) [inlined] v8::Shell::CompleteMessageLoop(isolate=0x0000010400e04000) at d8.cc:6775:10 [opt]
+    frame #83: 0x0000000104bf8a01 d8`v8::Shell::FinishExecuting(isolate=<unavailable>, context=0x0000000310d15130) at d8.cc:6779:8 [opt]
+    frame #84: 0x0000000104bfcccc d8`v8::Shell::RunMainIsolate(isolate=0x0000010400e04000, keep_context_alive=<unavailable>) at d8.cc:6683:8 [opt]
+    frame #85: 0x0000000104bfc909 d8`v8::Shell::RunMain(isolate=0x0000010400e04000, last_run=true) at d8.cc:6588:18 [opt]
+    frame #86: 0x0000000104bfe1ed d8`v8::Shell::Main(argc=<unavailable>, argv=<unavailable>) at d8.cc:7502:18 [opt]
+    frame #87: 0x0000000208033781 dyld`start + 3457
+  thread #2, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x0000000114746740, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048028, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004c038, mutex=0x0000010400048028, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004c000) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004c000) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #3, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x0000000114746f40, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048028, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004c538, mutex=0x0000010400048028, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004c500) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004c500) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #4, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x0000000114746040, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048028, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004c4e8, mutex=0x0000010400048028, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004c4b0) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004c4b0) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #5, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x0000000114745140, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048028, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004c498, mutex=0x0000010400048028, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004c460) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004c460) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #6, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x0000000114745d40, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048028, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004c448, mutex=0x0000010400048028, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004c410) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004c410) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #7, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x0000000114746a40, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048028, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004c3a8, mutex=0x0000010400048028, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004c370) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004c370) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #8, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x0000000114745840, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048028, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004c358, mutex=0x0000010400048028, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004c320) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004c320) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #9, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x000000011474ad40, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048028, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004c308, mutex=0x0000010400048028, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004c2d0) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004c2d0) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #10, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x0000000114747140, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048028, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004c2b8, mutex=0x0000010400048028, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004c280) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004c280) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #11, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x0000000114746540, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048028, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004c3f8, mutex=0x0000010400048028, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004c3c0) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004c3c0) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #12, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x0000000114745640, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048028, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004c268, mutex=0x0000010400048028, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004c230) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004c230) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #13, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x000000011474b040, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048028, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004c218, mutex=0x0000010400048028, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004c1e0) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004c1e0) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #14, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x000000011474ab40, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048028, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004c1c8, mutex=0x0000010400048028, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004c190) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004c190) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #15, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x0000000114745340, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048828, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004c178, mutex=0x0000010400048828, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004c140) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004c140) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #16, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x0000000114745b40, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048828, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004c128, mutex=0x0000010400048828, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004c0f0) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004c0f0) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #17, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x0000000114746240, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048828, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004c0d8, mutex=0x0000010400048828, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004c0a0) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004c0a0) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #18, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x0000000114746c40, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048828, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004c088, mutex=0x0000010400048828, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004c050) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004c050) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #19, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x0000000114747440, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048828, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004ca38, mutex=0x0000010400048828, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004ca00) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004ca00) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #20, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x0000000114747640, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048828, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004c998, mutex=0x0000010400048828, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004c960) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004c960) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #21, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x0000000114747940, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048828, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004c948, mutex=0x0000010400048828, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004c910) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004c910) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #22, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x0000000114747b40, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048828, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004c8f8, mutex=0x0000010400048828, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004c8c0) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004c8c0) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #23, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x0000000114747e40, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048828, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004c8a8, mutex=0x0000010400048828, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004c870) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004c870) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #24, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x0000000114748340, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x000001040001c4e0, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040001c4e8, mutex=0x000001040001c4e0, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x0000000104fe2f3b d8`v8::internal::IsolateSafepoint::WaitInUnpark() [inlined] v8::internal::IsolateSafepoint::Barrier::WaitInUnpark(this=0x000001040001c4e0) at safepoint.cc:284:16 [opt]
+    frame #9: 0x0000000104fe2efd d8`v8::internal::IsolateSafepoint::WaitInUnpark(this=0x000001040001c4e0) at safepoint.cc:218:50 [opt]
+    frame #10: 0x0000000104f516de d8`v8::internal::LocalHeap::SleepInUnpark(this=0x00000003124596f8) at local-heap.cc:336:23 [opt]
+    frame #11: 0x0000000104f51508 d8`v8::internal::LocalHeap::UnparkSlowPath(this=0x00000003124596f8) at local-heap.cc:0:1 [opt]
+    frame #12: 0x00000001055d75ae d8`v8::internal::maglev::(anonymous namespace)::PrintGraph(v8::internal::maglev::Graph*, bool, char const*, bool) [inlined] v8::internal::LocalHeap::Unpark(this=0x00000003124596f8) at local-heap.h:376:7 [opt]
+    frame #13: 0x00000001055d75a6 d8`v8::internal::maglev::(anonymous namespace)::PrintGraph(v8::internal::maglev::Graph*, bool, char const*, bool) [inlined] v8::internal::UnparkedScope::UnparkedScope(this=<unavailable>, local_heap=0x00000003124596f8) at parked-scope.h:50:18 [opt]
+    frame #14: 0x00000001055d75a6 d8`v8::internal::maglev::(anonymous namespace)::PrintGraph(v8::internal::maglev::Graph*, bool, char const*, bool) [inlined] v8::internal::UnparkedScope::UnparkedScope(this=<unavailable>, local_heap=0x00000003124596f8) at parked-scope.h:49:75 [opt]
+    frame #15: 0x00000001055d75a6 d8`v8::internal::maglev::(anonymous namespace)::PrintGraph(v8::internal::maglev::Graph*, bool, char const*, bool) [inlined] v8::internal::UnparkedScope* std::__Cr::construct_at<v8::internal::UnparkedScope, v8::internal::LocalHeap*&, v8::internal::UnparkedScope*>(__location=<unavailable>, __args=<unavailable>) at construct_at.h:37:49 [opt]
+    frame #16: 0x00000001055d75a6 d8`v8::internal::maglev::(anonymous namespace)::PrintGraph(v8::internal::maglev::Graph*, bool, char const*, bool) [inlined] v8::internal::UnparkedScope* std::__Cr::__construct_at<v8::internal::UnparkedScope, v8::internal::LocalHeap*&, v8::internal::UnparkedScope*>(__location=<unavailable>, __args=<unavailable>) at construct_at.h:45:10 [opt]
+    frame #17: 0x00000001055d75a6 d8`v8::internal::maglev::(anonymous namespace)::PrintGraph(v8::internal::maglev::Graph*, bool, char const*, bool) [inlined] void std::__Cr::__optional_storage_base<v8::internal::UnparkedScope, false>::__construct<v8::internal::LocalHeap*&>(this=<unavailable>, __args=<unavailable>) at optional:457:5 [opt]
+    frame #18: 0x00000001055d75a6 d8`v8::internal::maglev::(anonymous namespace)::PrintGraph(v8::internal::maglev::Graph*, bool, char const*, bool) [inlined] v8::internal::UnparkedScope& std::__Cr::optional<v8::internal::UnparkedScope>::emplace<v8::internal::LocalHeap*&, 0>(this=<unavailable>, __args=<unavailable>) at optional:1019:11 [opt]
+    frame #19: 0x00000001055d75a6 d8`v8::internal::maglev::(anonymous namespace)::PrintGraph(v8::internal::maglev::Graph*, bool, char const*, bool) [inlined] v8::internal::UnparkedScopeIfOnBackground::UnparkedScopeIfOnBackground(this=<unavailable>, local_heap=0x00000003124596f8) at parked-scope.h:66:47 [opt]
+    frame #20: 0x00000001055d75a6 d8`v8::internal::maglev::(anonymous namespace)::PrintGraph(v8::internal::maglev::Graph*, bool, char const*, bool) [inlined] v8::internal::UnparkedScopeIfOnBackground::UnparkedScopeIfOnBackground(this=<unavailable>, local_heap=0x00000003124596f8) at parked-scope.h:65:63 [opt]
+    frame #21: 0x00000001055d75a6 d8`v8::internal::maglev::(anonymous namespace)::PrintGraph(graph=0x00000104010b8408, condition=false, message="After graph building", has_regalloc_data=false) at maglev-compiler.cc:54:33 [opt]
+    frame #22: 0x00000001055d5fe7 d8`v8::internal::maglev::MaglevCompiler::Compile(local_isolate=0x00000003124596f0, compilation_info=0x000001040015c1e0) at maglev-compiler.cc:113:7 [opt]
+    frame #23: 0x000000010568abc4 d8`v8::internal::maglev::MaglevCompilationJob::ExecuteJobImpl(this=0x0000010400e50460, stats=<unavailable>, local_isolate=0x00000003124596f0) at maglev-concurrent-dispatcher.cc:132:8 [opt]
+    frame #24: 0x0000000104d26b3b d8`v8::internal::OptimizedCompilationJob::ExecuteJob(this=0x0000010400e50460, stats=0x0000000000000000, local_isolate=0x00000003124596f0) at compiler.cc:453:22 [opt]
+    frame #25: 0x000000010568c776 d8`v8::internal::maglev::MaglevConcurrentDispatcher::JobTask::Run(this=0x0000010400015e40, delegate=0x0000000312459ed0) at maglev-concurrent-dispatcher.cc:287:18 [opt]
+    frame #26: 0x00000001065ed5bb d8`v8::platform::DefaultJobWorker::Run(this=0x000001040000dbe0) at default-job.h:147:18 [opt]
+    frame #27: 0x00000001065f3474 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004c9b0) at default-worker-threads-task-runner.cc:95:25 [opt]
+    frame #28: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004c9b0) at platform-posix.cc:1307:11 [opt]
+    frame #29: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #30: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #25, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x0000000114748040, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x000001040001c4e0, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040001c4e8, mutex=0x000001040001c4e0, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x0000000104fe2f3b d8`v8::internal::IsolateSafepoint::WaitInUnpark() [inlined] v8::internal::IsolateSafepoint::Barrier::WaitInUnpark(this=0x000001040001c4e0) at safepoint.cc:284:16 [opt]
+    frame #9: 0x0000000104fe2efd d8`v8::internal::IsolateSafepoint::WaitInUnpark(this=0x000001040001c4e0) at safepoint.cc:218:50 [opt]
+    frame #10: 0x0000000104f516de d8`v8::internal::LocalHeap::SleepInUnpark(this=0x000000031255c6f8) at local-heap.cc:336:23 [opt]
+    frame #11: 0x0000000104f51508 d8`v8::internal::LocalHeap::UnparkSlowPath(this=0x000000031255c6f8) at local-heap.cc:0:1 [opt]
+    frame #12: 0x00000001055d75ae d8`v8::internal::maglev::(anonymous namespace)::PrintGraph(v8::internal::maglev::Graph*, bool, char const*, bool) [inlined] v8::internal::LocalHeap::Unpark(this=0x000000031255c6f8) at local-heap.h:376:7 [opt]
+    frame #13: 0x00000001055d75a6 d8`v8::internal::maglev::(anonymous namespace)::PrintGraph(v8::internal::maglev::Graph*, bool, char const*, bool) [inlined] v8::internal::UnparkedScope::UnparkedScope(this=<unavailable>, local_heap=0x000000031255c6f8) at parked-scope.h:50:18 [opt]
+    frame #14: 0x00000001055d75a6 d8`v8::internal::maglev::(anonymous namespace)::PrintGraph(v8::internal::maglev::Graph*, bool, char const*, bool) [inlined] v8::internal::UnparkedScope::UnparkedScope(this=<unavailable>, local_heap=0x000000031255c6f8) at parked-scope.h:49:75 [opt]
+    frame #15: 0x00000001055d75a6 d8`v8::internal::maglev::(anonymous namespace)::PrintGraph(v8::internal::maglev::Graph*, bool, char const*, bool) [inlined] v8::internal::UnparkedScope* std::__Cr::construct_at<v8::internal::UnparkedScope, v8::internal::LocalHeap*&, v8::internal::UnparkedScope*>(__location=<unavailable>, __args=<unavailable>) at construct_at.h:37:49 [opt]
+    frame #16: 0x00000001055d75a6 d8`v8::internal::maglev::(anonymous namespace)::PrintGraph(v8::internal::maglev::Graph*, bool, char const*, bool) [inlined] v8::internal::UnparkedScope* std::__Cr::__construct_at<v8::internal::UnparkedScope, v8::internal::LocalHeap*&, v8::internal::UnparkedScope*>(__location=<unavailable>, __args=<unavailable>) at construct_at.h:45:10 [opt]
+    frame #17: 0x00000001055d75a6 d8`v8::internal::maglev::(anonymous namespace)::PrintGraph(v8::internal::maglev::Graph*, bool, char const*, bool) [inlined] void std::__Cr::__optional_storage_base<v8::internal::UnparkedScope, false>::__construct<v8::internal::LocalHeap*&>(this=<unavailable>, __args=<unavailable>) at optional:457:5 [opt]
+    frame #18: 0x00000001055d75a6 d8`v8::internal::maglev::(anonymous namespace)::PrintGraph(v8::internal::maglev::Graph*, bool, char const*, bool) [inlined] v8::internal::UnparkedScope& std::__Cr::optional<v8::internal::UnparkedScope>::emplace<v8::internal::LocalHeap*&, 0>(this=<unavailable>, __args=<unavailable>) at optional:1019:11 [opt]
+    frame #19: 0x00000001055d75a6 d8`v8::internal::maglev::(anonymous namespace)::PrintGraph(v8::internal::maglev::Graph*, bool, char const*, bool) [inlined] v8::internal::UnparkedScopeIfOnBackground::UnparkedScopeIfOnBackground(this=<unavailable>, local_heap=0x000000031255c6f8) at parked-scope.h:66:47 [opt]
+    frame #20: 0x00000001055d75a6 d8`v8::internal::maglev::(anonymous namespace)::PrintGraph(v8::internal::maglev::Graph*, bool, char const*, bool) [inlined] v8::internal::UnparkedScopeIfOnBackground::UnparkedScopeIfOnBackground(this=<unavailable>, local_heap=0x000000031255c6f8) at parked-scope.h:65:63 [opt]
+    frame #21: 0x00000001055d75a6 d8`v8::internal::maglev::(anonymous namespace)::PrintGraph(graph=0x0000010400fa4c08, condition=false, message="After graph building", has_regalloc_data=false) at maglev-compiler.cc:54:33 [opt]
+    frame #22: 0x00000001055d5fe7 d8`v8::internal::maglev::MaglevCompiler::Compile(local_isolate=0x000000031255c6f0, compilation_info=0x000001040015c0f0) at maglev-compiler.cc:113:7 [opt]
+    frame #23: 0x000000010568abc4 d8`v8::internal::maglev::MaglevCompilationJob::ExecuteJobImpl(this=0x0000010400e51540, stats=<unavailable>, local_isolate=0x000000031255c6f0) at maglev-concurrent-dispatcher.cc:132:8 [opt]
+    frame #24: 0x0000000104d26b3b d8`v8::internal::OptimizedCompilationJob::ExecuteJob(this=0x0000010400e51540, stats=0x0000000000000000, local_isolate=0x000000031255c6f0) at compiler.cc:453:22 [opt]
+    frame #25: 0x000000010568c776 d8`v8::internal::maglev::MaglevConcurrentDispatcher::JobTask::Run(this=0x0000010400015e40, delegate=0x000000031255ced0) at maglev-concurrent-dispatcher.cc:287:18 [opt]
+    frame #26: 0x00000001065ed5bb d8`v8::platform::DefaultJobWorker::Run(this=0x000001040000db50) at default-job.h:147:18 [opt]
+    frame #27: 0x00000001065f3474 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004c820) at default-worker-threads-task-runner.cc:95:25 [opt]
+    frame #28: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004c820) at platform-posix.cc:1307:11 [opt]
+    frame #29: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #30: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #26, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x0000000114748540, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048828, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004c808, mutex=0x0000010400048828, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004c7d0) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004c7d0) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #27, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x0000000114748840, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048828, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004c7b8, mutex=0x0000010400048828, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004c780) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004c780) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #28, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x0000000114748a40, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048728, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004c768, mutex=0x0000010400048728, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004c730) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004c730) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #29, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x0000000114749e40, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048728, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004c718, mutex=0x0000010400048728, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004c6e0) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004c6e0) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #30, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x0000000114748d40, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048728, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004c6c8, mutex=0x0000010400048728, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004c690) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004c690) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #31, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x0000000114749940, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048728, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004c678, mutex=0x0000010400048728, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004c640) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004c640) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #32, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x0000000114749440, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048728, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004c628, mutex=0x0000010400048728, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004c5f0) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004c5f0) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #33, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x0000000114749240, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048728, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004c588, mutex=0x0000010400048728, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004c550) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004c550) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #34, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x0000000114748f40, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048728, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004d438, mutex=0x0000010400048728, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004d400) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004d400) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #35, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x0000000114749740, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048728, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004d3e8, mutex=0x0000010400048728, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004d3b0) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004d3b0) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #36, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x0000000114749c40, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048728, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004d398, mutex=0x0000010400048728, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004d360) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004d360) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #37, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x000000011474a340, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048728, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004c5d8, mutex=0x0000010400048728, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004c5a0) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004c5a0) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #38, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x000000011474a140, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048728, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004d348, mutex=0x0000010400048728, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004d310) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004d310) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #39, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x000000011474a640, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048728, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004d2f8, mutex=0x0000010400048728, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004d2c0) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004d2c0) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #40, name = 'V8 DefaultWorke'
+    frame #0: 0x00007ff819ff46fa libsystem_kernel.dylib`__psynch_cvwait + 10
+    frame #1: 0x00007ff81a0352f6 libsystem_pthread.dylib`_pthread_cond_wait + 988
+    frame #2: 0x0000000105a8d03b d8`absl::synchronization_internal::PthreadWaiter::Wait(this=0x000000011474a840, t=(rep_ = 18446744073709551615)) at pthread_waiter.cc:117:23 [opt]
+    frame #3: 0x0000000105a8cf0b d8`AbslInternalPerThreadSemWait(t=(rep_ = 18446744073709551615)) at per_thread_sem.cc:93:69 [opt]
+    frame #4: 0x0000000105a8f4b4 d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::synchronization_internal::PerThreadSem::Wait(t=(rep_ = 18446744073709551615)) at per_thread_sem.h:116:33 [opt]
+    frame #5: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout) [inlined] absl::Mutex::DecrementSynchSem(mu=0x0000010400048728, w=<unavailable>, t=(rep_ = 18446744073709551615)) at mutex.cc:598:14 [opt]
+    frame #6: 0x0000000105a8f4ac d8`absl::CondVar::WaitCommon(this=0x000001040004d2a8, mutex=0x0000010400048728, t=(rep_ = 18446744073709551615)) at mutex.cc:2641:10 [opt]
+    frame #7: 0x00000001065e566c d8`v8::base::ConditionVariable::Wait(v8::base::Mutex*) [inlined] absl::CondVar::Wait(this=<unavailable>, mu=<unavailable>) at mutex.h:1019:5 [opt] [artificial]
+    frame #8: 0x00000001065f3550 d8`v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run(this=0x000001040004d270) at default-worker-threads-task-runner.cc:102:24 [opt]
+    frame #9: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004d270) at platform-posix.cc:1307:11 [opt]
+    frame #10: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #11: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #41, name = 'v8:Profiler'
+    frame #0: 0x00007ff819ff1aca libsystem_kernel.dylib`semaphore_wait_trap + 10
+    frame #1: 0x00007ff819e7bc8f libdispatch.dylib`_dispatch_sema4_wait + 16
+    frame #2: 0x00007ff819e7c0c6 libdispatch.dylib`_dispatch_semaphore_wait_slow + 98
+    frame #3: 0x00000001050f198c d8`v8::internal::Profiler::Run() [inlined] v8::internal::Profiler::Remove(this=0x0000010400ea4000, sample=0x000000031358c720) at log.cc:1087:23 [opt]
+    frame #4: 0x00000001050f1984 d8`v8::internal::Profiler::Run(this=0x0000010400ea4000) at log.cc:1229:16 [opt]
+    frame #5: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x0000010400ea4000) at platform-posix.cc:1307:11 [opt]
+    frame #6: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #7: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+  thread #42, name = 'SamplingThread'
+    frame #0: 0x00007ff819ff45ca libsystem_kernel.dylib`__semwait_signal + 10
+    frame #1: 0x00007ff819ed3291 libsystem_c.dylib`nanosleep + 199
+    frame #2: 0x00007ff819ed31c4 libsystem_c.dylib`usleep + 53
+    frame #3: 0x00000001065ea70c d8`v8::base::OS::Sleep(interval=(delta_ = 1000)) at platform-posix.cc:791:3 [opt]
+    frame #4: 0x00000001050f9bde d8`v8::internal::SamplingThread::Run(this=0x000001040004d1d0) at log.cc:1042:7 [opt]
+    frame #5: 0x00000001065eb473 d8`v8::base::ThreadEntry(arg=0x000001040004d1d0) at platform-posix.cc:1307:11 [opt]
+    frame #6: 0x00007ff81a034e4d libsystem_pthread.dylib`_pthread_start + 115
+    frame #7: 0x00007ff81a030857 libsystem_pthread.dylib`thread_start + 15
+(lldb) quit

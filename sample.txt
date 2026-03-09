@@ -1,0 +1,891 @@
+Analysis of sampling d8 (pid 96255) every 1 millisecond
+Process:         d8 [96255]
+Path:            /Users/USER/*/d8
+Load Address:    0x100255000
+Identifier:      d8
+Version:         ???
+Code Type:       X86-64 (translated)
+Platform:        macOS
+Parent Process:  zsh [96254]
+Target Type:     live task
+
+Date/Time:       2026-03-09 15:31:34.582 +0100
+Launch Time:     2026-03-09 15:30:34.124 +0100
+OS Version:      macOS 26.3 (25D125)
+Report Version:  7
+Analysis Tool:   /usr/bin/sample
+
+Physical footprint:         23.1M
+Physical footprint (peak):  23.1M
+Idle exit:                  untracked
+----
+
+Call graph:
+    874 Thread_13126738   DispatchQueue_1: com.apple.main-thread  (serial)
+    + 874 start  (in dyld) + 3457  [0x203a3d781]
+    +   874 v8::Shell::Main(int, char**)  (in d8) + 3741  [0x1002881ed]
+    +     874 v8::Shell::RunMain(v8::Isolate*, bool)  (in d8) + 297  [0x100286909]
+    +       874 v8::Shell::RunMainIsolate(v8::Isolate*, bool)  (in d8) + 444  [0x100286ccc]
+    +         874 v8::Shell::FinishExecuting(v8::Isolate*, v8::Global<v8::Context> const&)  (in d8) + 68  [0x100282a24]
+    +           874 v8::(anonymous namespace)::ProcessMessages(v8::Isolate*, std::__Cr::function<v8::platform::MessageLoopBehavior ()> const&)  (in d8) + 140  [0x100286ecc]
+    +             874 v8::platform::DefaultPlatform::PumpMessageLoop(v8::Isolate*, v8::platform::MessageLoopBehavior)  (in d8) + 197  [0x101c7bc95]
+    +               874 v8::(anonymous namespace)::D8WasmAsyncResolvePromiseTask::Run()  (in d8) + 412  [0x10028aa9c]
+    +                 874 v8::Promise::Resolver::Resolve(v8::Local<v8::Context>, v8::Local<v8::Value>)  (in d8) + 141  [0x1002fd82d]
+    +                   874 v8::CallDepthScope<true>::~CallDepthScope()  (in d8) + 222  [0x100313f6e]
+    +                     874 v8::internal::Isolate::FireCallCompletedCallbackInternal(v8::internal::MicrotaskQueue*)  (in d8) + 72  [0x1004ea548]
+    +                       874 v8::internal::MicrotaskQueue::PerformCheckpointInternal(v8::Isolate*)  (in d8) + 66  [0x1004fa452]
+    +                         874 v8::internal::MicrotaskQueue::RunMicrotasks(v8::internal::Isolate*)  (in d8) + 484  [0x1004fa664]
+    +                           874 v8::internal::Execution::TryRunMicrotasks(v8::internal::Isolate*, v8::internal::MicrotaskQueue*)  (in d8) + 73  [0x1004c75e9]
+    +                             874 v8::internal::(anonymous namespace)::InvokeWithTryCatch(v8::internal::Isolate*, v8::internal::(anonymous namespace)::InvokeParams const&)  (in d8) + 81  [0x1004c7491]
+    +                               874 v8::internal::(anonymous namespace)::Invoke(v8::internal::Isolate*, v8::internal::(anonymous namespace)::InvokeParams const&)  (in d8) + 2199  [0x1004c6777]
+    +                                 874 Builtins_JSRunMicrotasksEntry  (in d8) + 171  [0x101a5fe6b]
+    +                                   874 Builtins_RunMicrotasks  (in d8) + 659  [0x101a95853]
+    +                                     874 Builtins_PromiseFulfillReactionJob  (in d8) + 42  [0x101b98eaa]
+    +                                       874 Builtins_AsyncFunctionAwaitResolveClosure  (in d8) + 46  [0x101aa782e]
+    +                                         874 Builtins_InterpreterEntryTrampoline  (in d8) + 316  [0x101a6317c]
+    +                                           874 Builtins_InterpreterEntryTrampoline  (in d8) + 316  [0x101a6317c]
+    +                                             874 Builtins_InterpreterEntryTrampoline  (in d8) + 316  [0x101a6317c]
+    +                                               874 Builtins_InterpreterEntryTrampoline  (in d8) + 316  [0x101a6317c]
+    +                                                 874 Builtins_CallApiCallbackGeneric  (in d8) + 164  [0x101a65024]
+    +                                                   874 v8::Shell::RealmEval(v8::FunctionCallbackInfo<v8::Value> const&)  (in d8) + 534  [0x100273a96]
+    +                                                     874 v8::Script::Run(v8::Local<v8::Context>, v8::Local<v8::Data>)  (in d8) + 584  [0x1002fc4d8]
+    +                                                       874 v8::internal::Execution::CallScript(v8::internal::Isolate*, v8::internal::DirectHandle<v8::internal::JSFunction>, v8::internal::DirectHandle<v8::internal::Object>, v8::internal::DirectHandle<v8::internal::Object>)  (in d8) + 173  [0x1004c71dd]
+    +                                                         874 v8::internal::(anonymous namespace)::Invoke(v8::internal::Isolate*, v8::internal::(anonymous namespace)::InvokeParams const&)  (in d8) + 2533  [0x1004c68c5]
+    +                                                           874 Builtins_JSEntry  (in d8) + 171  [0x101a5fc6b]
+    +                                                             874 Builtins_JSEntryTrampoline  (in d8) + 92  [0x101a5ff1c]
+    +                                                               874 Builtins_InterpreterEntryTrampoline  (in d8) + 316  [0x101a6317c]
+    +                                                                 874 Builtins_InterpreterEntryTrampoline  (in d8) + 316  [0x101a6317c]
+    +                                                                   874 Builtins_InterpreterEntryTrampoline  (in d8) + 316  [0x101a6317c]
+    +                                                                     874 Builtins_InterpreterEntryTrampoline  (in d8) + 316  [0x101a6317c]
+    +                                                                       874 Builtins_InterpreterEntryTrampoline  (in d8) + 316  [0x101a6317c]
+    +                                                                         874 ???  (in <unknown binary>)  [0x161a91bdd]
+    +                                                                           874 ???  (in <unknown binary>)  [0x161a8f2b2]
+    +                                                                             874 ???  (in <unknown binary>)  [0x161a8e62b]
+    +                                                                               874 Builtins_Add_Baseline  (in d8) + 1747  [0x101ad8a93]
+    +                                                                                 874 Builtins_CEntry_Return1_ArgvOnStack_NoBuiltinExit  (in d8) + 54  [0x101b145b6]
+    +                                                                                   874 v8::internal::Runtime_AllocateInYoungGeneration(int, unsigned long*, v8::internal::Isolate*)  (in d8) + 80  [0x100abcc70]
+    +                                                                                     874 v8::internal::Factory::NewFillerObject(int, v8::internal::AllocationAlignment, v8::internal::AllocationType, v8::internal::AllocationOrigin)  (in d8) + 3251  [0x100572b73]
+    +                                                                                       874 v8::internal::HeapAllocator::AllocateRawSlowPath(v8::internal::HeapAllocator::AllocationRetryMode, int, v8::internal::AllocationType, v8::internal::AllocationOrigin, v8::internal::AllocationAlignment, v8::internal::AllocationHint)  (in d8) + 92  [0x100595c0c]
+    +                                                                                         874 v8::internal::HeapAllocator::RetryCustomAllocate(v8::base::FunctionRef<bool ()>, v8::internal::AllocationType, v8::internal::GarbageCollectionReason)  (in d8) + 34  [0x100596272]
+    +                                                                                           874 v8::internal::HeapAllocator::CollectGarbageAndRetryAllocation(v8::base::FunctionRef<bool ()>, v8::internal::AllocationType, v8::internal::GarbageCollectionReason)  (in d8) + 329  [0x100596479]
+    +                                                                                             874 v8::internal::Heap::CollectGarbage(v8::internal::AllocationSpace, v8::internal::GarbageCollectionReason, v8::GCCallbackFlags, v8::internal::PerformHeapLimitCheck, v8::internal::PerformIneffectiveMarkCompactCheck)  (in d8) + 484  [0x1005b9a14]
+    +                                                                                               874 PushAllRegistersAndIterateStack  (in d8) + 27  [0x10111f9f8]
+    +                                                                                                 874 heap::base::Stack::SetMarkerAndCallbackImpl<v8::internal::Heap::CollectGarbage(v8::internal::AllocationSpace, v8::internal::GarbageCollectionReason, v8::GCCallbackFlags, v8::internal::PerformHeapLimitCheck, v8::internal::PerformIneffectiveMarkCompactCheck)::$_1>(heap::base::Stack*, void*, void const*)  (in d8) + 31  [0x1005d078f]
+    +                                                                                                   874 v8::internal::Heap::CollectGarbage(v8::internal::AllocationSpace, v8::internal::GarbageCollectionReason, v8::GCCallbackFlags, v8::internal::PerformHeapLimitCheck, v8::internal::PerformIneffectiveMarkCompactCheck)::$_1::operator()() const  (in d8) + 1123  [0x1005d0c03]
+    +                                                                                                     874 v8::internal::Heap::PerformGarbageCollection(v8::internal::GarbageCollector, v8::internal::GarbageCollectionReason, char const*)  (in d8) + 122  [0x1005bd99a]
+    +                                                                                                       874 v8::internal::SafepointScope::SafepointScope(v8::internal::Isolate*, v8::internal::GlobalSafepointForSharedSpaceIsolateTag)  (in d8) + 117  [0x10066dac5]
+    +                                                                                                         874 v8::internal::IsolateSafepoint::EnterLocalSafepointScope()  (in d8) + 891  [0x10066c60b]
+    +                                                                                                           874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +                                                                                                             874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +                                                                                                               874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +                                                                                                                 874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                                                                                                                   874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                                                                                                                     874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126742: com.apple.rosetta.exceptionserver
+    + 874 ???  (in <unknown binary>)  [0x7ff7ffc0ded0]
+    874 Thread_13126747: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+    +         874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +           874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +             874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +               874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                 874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                   874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126748: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+    +         874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +           874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +             874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +               874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                 874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                   874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126749: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+    +         874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +           874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +             874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +               874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                 874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                   874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126750: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+    +         874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +           874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +             874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +               874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                 874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                   874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126751: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+    +         874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +           874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +             874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +               874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                 874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                   874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126752: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+    +         874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +           874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +             874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +               874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                 874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                   874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126753: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+    +         874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +           874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +             874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +               874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                 874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                   874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126754: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+    +         874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +           874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +             874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +               874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                 874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                   874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126755: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+    +         874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +           874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +             874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +               874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                 874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                   874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126756: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+    +         874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +           874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +             874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +               874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                 874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                   874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126757: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+    +         874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +           874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +             874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +               874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                 874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                   874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126758: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+    +         874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +           874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +             874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +               874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                 874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                   874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126759: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+    +         874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +           874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +             874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +               874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                 874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                   874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126760: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+    +         874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +           874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +             874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +               874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                 874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                   874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126761: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+    +         874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +           874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +             874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +               874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                 874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                   874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126762: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+    +         874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +           874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +             874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +               874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                 874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                   874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126763: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+    +         874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +           874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +             874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +               874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                 874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                   874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126764: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+    +         874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +           874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +             874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +               874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                 874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                   874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126765: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+    +         874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +           874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +             874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +               874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                 874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                   874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126766: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+    +         874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +           874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +             874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +               874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                 874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                   874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126767: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+    +         874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +           874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +             874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +               874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                 874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                   874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126768: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+    +         874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +           874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +             874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +               874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                 874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                   874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126769: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+    +         874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +           874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +             874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +               874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                 874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                   874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126770: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 164  [0x101c7d434]
+    +         874 v8::platform::DefaultJobWorker::Run()  (in d8) + 219  [0x101c7757b]
+    +           874 v8::internal::maglev::MaglevConcurrentDispatcher::JobTask::Run(v8::JobDelegate*)  (in d8) + 1302  [0x100d16796]
+    +             874 v8::internal::OptimizedCompilationJob::ExecuteJob(v8::internal::RuntimeCallStats*, v8::internal::LocalIsolate*)  (in d8) + 59  [0x1003b0b3b]
+    +               874 v8::internal::maglev::MaglevCompilationJob::ExecuteJobImpl(v8::internal::RuntimeCallStats*, v8::internal::LocalIsolate*)  (in d8) + 84  [0x100d14be4]
+    +                 874 v8::internal::maglev::MaglevCompiler::Compile(v8::internal::LocalIsolate*, v8::internal::maglev::MaglevCompilationInfo*)  (in d8) + 530  [0x100c60032]
+    +                   874 v8::internal::maglev::(anonymous namespace)::PrintGraph(v8::internal::maglev::Graph*, bool, char const*, bool)  (in d8) + 206  [0x100c615ce]
+    +                     874 v8::internal::LocalHeap::UnparkSlowPath()  (in d8) + 40  [0x1005db508]
+    +                       874 v8::internal::LocalHeap::SleepInUnpark()  (in d8) + 398  [0x1005db6de]
+    +                         874 v8::internal::IsolateSafepoint::WaitInUnpark()  (in d8) + 75  [0x10066cf3b]
+    +                           874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +                             874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +                               874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +                                 874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                                   874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                                     874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126771: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+    +         874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +           874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +             874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +               874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                 874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                   874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126772: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 164  [0x101c7d434]
+    +         874 v8::platform::DefaultJobWorker::Run()  (in d8) + 219  [0x101c7757b]
+    +           874 v8::internal::maglev::MaglevConcurrentDispatcher::JobTask::Run(v8::JobDelegate*)  (in d8) + 1302  [0x100d16796]
+    +             874 v8::internal::OptimizedCompilationJob::ExecuteJob(v8::internal::RuntimeCallStats*, v8::internal::LocalIsolate*)  (in d8) + 59  [0x1003b0b3b]
+    +               874 v8::internal::maglev::MaglevCompilationJob::ExecuteJobImpl(v8::internal::RuntimeCallStats*, v8::internal::LocalIsolate*)  (in d8) + 84  [0x100d14be4]
+    +                 874 v8::internal::maglev::MaglevCompiler::Compile(v8::internal::LocalIsolate*, v8::internal::maglev::MaglevCompilationInfo*)  (in d8) + 530  [0x100c60032]
+    +                   874 v8::internal::maglev::(anonymous namespace)::PrintGraph(v8::internal::maglev::Graph*, bool, char const*, bool)  (in d8) + 206  [0x100c615ce]
+    +                     874 v8::internal::LocalHeap::UnparkSlowPath()  (in d8) + 40  [0x1005db508]
+    +                       874 v8::internal::LocalHeap::SleepInUnpark()  (in d8) + 398  [0x1005db6de]
+    +                         874 v8::internal::IsolateSafepoint::WaitInUnpark()  (in d8) + 75  [0x10066cf3b]
+    +                           874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +                             874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +                               874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +                                 874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                                   874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                                     874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126773: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+    +         874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +           874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +             874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +               874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                 874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                   874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126774: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+    +         874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +           874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +             874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +               874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                 874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                   874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126775: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+    +         874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +           874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +             874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +               874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                 874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                   874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126776: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+    +         874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +           874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +             874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +               874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                 874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                   874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126777: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+    +         874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +           874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +             874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +               874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                 874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                   874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126778: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+    +         874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +           874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +             874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +               874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                 874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                   874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126779: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+    +         874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +           874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +             874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +               874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                 874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                   874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126780: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+    +         874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +           874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +             874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +               874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                 874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                   874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126781: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+    +         874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +           874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +             874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +               874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                 874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                   874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126782: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+    +         874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +           874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +             874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +               874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                 874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                   874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126783: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+    +         874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +           874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +             874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +               874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                 874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                   874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126784: V8 DefaultWorke
+    + 874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+    +   874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+    +     874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+    +       874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+    +         874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+    +           874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+    +             874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+    +               874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+    +                 874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+    +                   874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+    874 Thread_13126785: V8 DefaultWorke
+      874 thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+        874 _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+          874 v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+            874 v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+              874 absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+                874 AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+                  874 absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+                    874 _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+                      874 ???  (in <unknown binary>)  [0x7ff8a6354f48]
+                        874 ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+
+Total number in stack (recursive counted multiple, when >=5):
+        40       ???  (in <unknown binary>)  [0x7ff8a5deeb80]
+        40       ???  (in <unknown binary>)  [0x7ff8a6354f48]
+        40       AbslInternalPerThreadSemWait  (in d8) + 75  [0x101116ecb]
+        40       _pthread_cond_wait  (in libsystem_pthread.dylib) + 988  [0x7ff81a0352f6]
+        40       absl::CondVar::WaitCommon(absl::Mutex*, absl::synchronization_internal::KernelTimeout)  (in d8) + 212  [0x101119474]
+        40       absl::synchronization_internal::PthreadWaiter::Wait(absl::synchronization_internal::KernelTimeout)  (in d8) + 123  [0x101116ffb]
+        39       _pthread_start  (in libsystem_pthread.dylib) + 115  [0x7ff81a034e4d]
+        39       thread_start  (in libsystem_pthread.dylib) + 15  [0x7ff81a030857]
+        39       v8::base::ThreadEntry(void*)  (in d8) + 131  [0x101c75433]
+        37       v8::platform::DefaultWorkerThreadsTaskRunner::WorkerThread::Run()  (in d8) + 384  [0x101c7d510]
+        9       Builtins_InterpreterEntryTrampoline  (in d8) + 316  [0x101a6317c]
+
+Sort by top of stack, same collapsed (when >= 5):
+        ???  (in <unknown binary>)  [0x7ff8a5deeb80]        34960
+        ???  (in <unknown binary>)  [0x7ff7ffc0ded0]        874
+
+Binary Images:
+       0x100255000 -        0x10210c47f +d8 (???) <4C4C443B-5555-3144-A132-7C435E9FF378> /Users/*/d8
+       0x203a37000 -        0x203ad4627  dyld (1.0.0 - 1340) <79EFE8B6-A212-3E98-B801-C9F2BF18EA68> /usr/lib/dyld
+    0x7ff819be2000 -     0x7ff819c26f13  libobjc.A.dylib (951.1) <CD5FB77F-F9D8-35C7-9B9A-427DA2A59B20> /usr/lib/libobjc.A.dylib
+    0x7ff819c27000 -     0x7ff819c566e7  libdyld.dylib (1340) <ECD3E6F2-BD78-3E5F-AA29-9AFDFC7A64FA> /usr/lib/system/libdyld.dylib
+    0x7ff819cf5000 -     0x7ff819cf86d8  libsystem_blocks.dylib (96) <730E0988-5B9B-3ECE-9D6D-4D03E69CC34F> /usr/lib/system/libsystem_blocks.dylib
+    0x7ff819cf9000 -     0x7ff819d4bdc9  libxpc.dylib (3089.80.10) <DD6E5ACD-6816-3107-8147-65E8942CA9D9> /usr/lib/system/libxpc.dylib
+    0x7ff819d4c000 -     0x7ff819d6b721  libsystem_trace.dylib (1815.80.2) <FE3AE49E-D6BC-3A51-9E80-0B05145EB96A> /usr/lib/system/libsystem_trace.dylib
+    0x7ff819d6c000 -     0x7ff819e2b18f  libcorecrypto.dylib (1922.80.7) <87D5957A-3103-3A07-9502-1D7D140FB360> /usr/lib/system/libcorecrypto.dylib
+    0x7ff819e2c000 -     0x7ff819e78a87  libsystem_malloc.dylib (792.80.2) <E09282A7-D9F8-35FC-98DF-EAEC7F38BADF> /usr/lib/system/libsystem_malloc.dylib
+    0x7ff819e79000 -     0x7ff819ec0921  libdispatch.dylib (1542.0.4) <22D4457F-C2AB-36DA-A743-E92BEF816167> /usr/lib/system/libdispatch.dylib
+    0x7ff819ec1000 -     0x7ff819ec3d9b  libsystem_featureflags.dylib (101) <0A6D837D-25F6-301A-A1C0-09AF4E42DF31> /usr/lib/system/libsystem_featureflags.dylib
+    0x7ff819ec4000 -     0x7ff819f4d8f7  libsystem_c.dylib (1725.40.4) <B349E7C1-A14B-3991-B786-DBBA5EE9D443> /usr/lib/system/libsystem_c.dylib
+    0x7ff819f4e000 -     0x7ff819fd848f  libc++.1.dylib (2000.67) <FAD5093A-E81D-3A83-AABC-C23B2FA28EBE> /usr/lib/libc++.1.dylib
+    0x7ff819fd9000 -     0x7ff819ff02ef  libc++abi.dylib (2000.67) <A3FB3519-9B90-3DAC-B36E-7C041021F2CA> /usr/lib/libc++abi.dylib
+    0x7ff819ff1000 -     0x7ff81a02e917  libsystem_kernel.dylib (12377.81.4) <62E8EF56-067E-397A-BE4F-6CC00881A2EE> /usr/lib/system/libsystem_kernel.dylib
+    0x7ff81a02f000 -     0x7ff81a03b027  libsystem_pthread.dylib (539.80.3) <F9C81FC7-1ABF-3B5E-A6B3-3113DAD29577> /usr/lib/system/libsystem_pthread.dylib
+    0x7ff81a03c000 -     0x7ff81a045c4f  libsystem_platform.dylib (359.80.2) <FC0C42B2-0B55-370B-8FC7-17BAC96BB458> /usr/lib/system/libsystem_platform.dylib
+    0x7ff81a046000 -     0x7ff81a074507  libsystem_info.dylib (600) <B1659C57-D035-31E7-B3C1-86EB44594324> /usr/lib/system/libsystem_info.dylib
+    0x7ff81a075000 -     0x7ff81a52f262  com.apple.CoreFoundation (6.9 - 4302) <0DEC7BE2-3FD1-3AC1-9F83-7D1333F68EC3> /System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation
+    0x7ff81a530000 -     0x7ff81a8535d9  com.apple.LaunchServices (1141.1 - 1141.1) <4DE58DCA-F324-3F8F-8084-9D8463F14F52> /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/LaunchServices
+    0x7ff81a854000 -     0x7ff81aa4629a  com.apple.gpusw.MetalTools (1.0 - 1) <5B3FCCB1-9EA1-3D47-AAC7-0853F647B33B> /System/Library/PrivateFrameworks/MetalTools.framework/Versions/A/MetalTools
+    0x7ff81aa47000 -     0x7ff81ac1a32f  libBLAS.dylib (1545.81.3) <A6BB6DF3-C9A9-39E7-8A29-0593FADF93F1> /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib
+    0x7ff81ac1b000 -     0x7ff81ad26e5a  com.apple.Lexicon-framework (1.0 - 195.1.5) <38DAB08E-4C70-31AB-B4B3-50BBD5011FB3> /System/Library/PrivateFrameworks/Lexicon.framework/Versions/A/Lexicon
+    0x7ff81ad27000 -     0x7ff81aefd98f  libSparse.dylib (184.80.2) <26EE2009-60F7-3443-9D5B-B602DC428451> /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libSparse.dylib
+    0x7ff81aefe000 -     0x7ff81af83eef  com.apple.SystemConfiguration (1.21 - 1.21) <BC1D98ED-2426-3EE5-B369-301729D4D36E> /System/Library/Frameworks/SystemConfiguration.framework/Versions/A/SystemConfiguration
+    0x7ff81af84000 -     0x7ff81afba527  libCRFSuite.dylib (55) <E867C474-365E-3C82-9730-957546B2D782> /usr/lib/libCRFSuite.dylib
+    0x7ff81b273000 -     0x7ff81c265d62  com.apple.Foundation (6.9 - 4302) <4BBEED96-8D14-383B-9098-91D3CE08CB96> /System/Library/Frameworks/Foundation.framework/Versions/C/Foundation
+    0x7ff81c41b000 -     0x7ff81c548d16  com.apple.CoreDisplay (291.3 - 291.3) <5FC0AFCD-6943-32A0-BD68-F78CB82653C2> /System/Library/Frameworks/CoreDisplay.framework/Versions/A/CoreDisplay
+    0x7ff81c549000 -     0x7ff81c91e5db  com.apple.audio.AudioToolboxCore (1.0 - 1556.418.1) <EAD32A29-BA9D-3F51-A3B1-6A4CA150602F> /System/Library/PrivateFrameworks/AudioToolboxCore.framework/Versions/A/AudioToolboxCore
+    0x7ff81c91f000 -     0x7ff81cb61dc2  com.apple.CoreText (877.3.0.1 - 877.3.0.1) <AB03BDF9-62D3-36A8-8202-63120DB6B2F6> /System/Library/Frameworks/CoreText.framework/Versions/A/CoreText
+    0x7ff81cb62000 -     0x7ff81d30e673  com.apple.audio.CoreAudio (5.0 - 5.0) <C5262E89-0104-3C61-8ED4-7F6DE7649E27> /System/Library/Frameworks/CoreAudio.framework/Versions/A/CoreAudio
+    0x7ff81d30f000 -     0x7ff81d70dc04  com.apple.security (7.0 - 61901.80.25) <856B57AC-9479-3848-8465-1BEA03465D67> /System/Library/Frameworks/Security.framework/Versions/A/Security
+    0x7ff81d70e000 -     0x7ff81d9b8ff7  libicucore.A.dylib (76142.3.1.1) <51DDE2BA-D16F-3630-8C8E-DCD1C5B07188> /usr/lib/libicucore.A.dylib
+    0x7ff81d9b9000 -     0x7ff81d9c371f  libsystem_darwin.dylib (1725.40.4) <1FCF93CF-18D5-3ED7-A242-800424314DE5> /usr/lib/system/libsystem_darwin.dylib
+    0x7ff81d9c4000 -     0x7ff81dcb2a31  com.apple.CoreServices.CarbonCore (1333 - 1333) <DC789A88-34D3-3B4F-8B5E-167684FDC1D1> /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/CarbonCore.framework/Versions/A/CarbonCore
+    0x7ff81dcb3000 -     0x7ff81dcf4abf  com.apple.CoreServicesInternal (505 - 505) <83276A2C-AE16-36EC-9BE1-16833C2FDD6D> /System/Library/PrivateFrameworks/CoreServicesInternal.framework/Versions/A/CoreServicesInternal
+    0x7ff81dcf5000 -     0x7ff81dd3397f  com.apple.CSStore (1141.1 - 1141.1) <F3DE671C-4D90-3772-AE80-B27E1B448163> /System/Library/PrivateFrameworks/CoreServicesStore.framework/Versions/A/CoreServicesStore
+    0x7ff81dd34000 -     0x7ff81de0018e  com.apple.framework.IOKit (2.0.2 - 100222.80.4) <D27B5D35-4696-3F62-8AC5-A0939ADD21B5> /System/Library/Frameworks/IOKit.framework/Versions/A/IOKit
+    0x7ff81de01000 -     0x7ff81de120e3  libsystem_notify.dylib (344.0.1) <4EDC2EAC-DDE4-3C20-A680-CDCC708AF0C5> /usr/lib/system/libsystem_notify.dylib
+    0x7ff81f84d000 -     0x7ff81f862bfb  com.apple.UniformTypeIdentifiers (709 - 709) <BF305935-35A0-31E7-B115-9B5B24A955E9> /System/Library/Frameworks/UniformTypeIdentifiers.framework/Versions/A/UniformTypeIdentifiers
+    0x7ff81fd7a000 -     0x7ff81fe57853  libboringssl.dylib (532.80.2) <737CE277-1DF2-3966-9B5C-B0B6476C06C8> /usr/lib/libboringssl.dylib
+    0x7ff81fe58000 -     0x7ff8201ed0ab  com.apple.CFNetwork (1.0 - 3860.400.51) <5F736078-48B0-38A7-B92F-8A6BE6B9D271> /System/Library/Frameworks/CFNetwork.framework/Versions/A/CFNetwork
+    0x7ff8201ee000 -     0x7ff820207417  libsystem_networkextension.dylib (2205.81.1) <91CD4E64-0CAA-326C-8B74-D0D5022CA385> /usr/lib/system/libsystem_networkextension.dylib
+    0x7ff820208000 -     0x7ff820208edb  libenergytrace.dylib (23) <B2C850CA-330B-36CB-BF89-CC2059614676> /usr/lib/libenergytrace.dylib
+    0x7ff820209000 -     0x7ff820283632  libMobileGestalt.dylib (1462.80.9) <3DB5CA7C-F22B-333D-BC27-B159639A45EE> /usr/lib/libMobileGestalt.dylib
+    0x7ff820284000 -     0x7ff82029b113  libsystem_asl.dylib (406) <03C77DA1-F89E-32B1-A7E3-2914FF63A4BC> /usr/lib/system/libsystem_asl.dylib
+    0x7ff82029c000 -     0x7ff8202bda33  com.apple.TCC (1.0 - 1) <75FF2CC9-3020-357B-A9E6-A5365CDE93BD> /System/Library/PrivateFrameworks/TCC.framework/Versions/A/TCC
+    0x7ff8202be000 -     0x7ff820808d15  com.apple.SkyLight (1.600.0 - 920.9.17) <C4A0EBE2-9423-327E-8969-0D1873B3C7D8> /System/Library/PrivateFrameworks/SkyLight.framework/Versions/A/SkyLight
+    0x7ff820809000 -     0x7ff821128753  com.apple.CoreGraphics (2.0 - 1965.3.5) <2C3AE99D-7405-3D93-B177-1F37F03B9FD6> /System/Library/Frameworks/CoreGraphics.framework/Versions/A/CoreGraphics
+    0x7ff821129000 -     0x7ff8212d3147  com.apple.ColorSync (4.13.0 - 3813.3.3) <FE166A4F-8272-36AB-8961-B19BC91DC13F> /System/Library/Frameworks/ColorSync.framework/Versions/A/ColorSync
+    0x7ff821749000 -     0x7ff821bd25c9  com.apple.CoreData (120 - 1525) <AD0E9200-B8B1-3DFF-95E2-42AA392D053E> /System/Library/Frameworks/CoreData.framework/Versions/A/CoreData
+    0x7ff821bd3000 -     0x7ff821beed82  com.apple.ProtocolBuffer (1 - 310.23.11.13.1) <5ECBB03A-5B06-371B-8601-64FD9190987F> /System/Library/PrivateFrameworks/ProtocolBuffer.framework/Versions/A/ProtocolBuffer
+    0x7ff821bef000 -     0x7ff821dd5f2f  libsqlite3.dylib (381) <30687BA8-2600-34C0-B040-7D15337EB797> /usr/lib/libsqlite3.dylib
+    0x7ff821e78000 -     0x7ff821f698dc  com.apple.BaseBoard (732.1.1 - 732.1.1) <6C5AF472-4865-3CCF-9C0A-93EED6FD8B8D> /System/Library/PrivateFrameworks/BaseBoard.framework/Versions/A/BaseBoard
+    0x7ff821f6a000 -     0x7ff821fd197d  com.apple.RunningBoardServices (1.0 - 1008.80.2) <7C0AB286-1B80-3AA4-884D-6640762EF51B> /System/Library/PrivateFrameworks/RunningBoardServices.framework/Versions/A/RunningBoardServices
+    0x7ff821fd2000 -     0x7ff822042b97  com.apple.AE (944 - 944) <A67F0A54-6AD7-3B30-B3B5-AD02AFDFD364> /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/AE.framework/Versions/A/AE
+    0x7ff822043000 -     0x7ff822053c4b  libdns_services.dylib (2881.80.4.0.1) <8B18C694-93BD-3642-A0FB-221DD66E6D0B> /usr/lib/libdns_services.dylib
+    0x7ff822054000 -     0x7ff82205bc77  libsystem_symptoms.dylib (2158.80.11) <2A9DA3C8-0271-32D9-B089-362009E92275> /usr/lib/system/libsystem_symptoms.dylib
+    0x7ff82205c000 -     0x7ff8235c1787  com.apple.Network (1.0 - 5569.81.5) <16B4D164-22C4-32ED-8C3D-72FB4AB4213D> /System/Library/Frameworks/Network.framework/Versions/A/Network
+    0x7ff8235c2000 -     0x7ff8235ef8b4  com.apple.analyticsd (1.0 - 1) <7ED2F317-D2B0-367C-872A-9572FBA68B6F> /System/Library/PrivateFrameworks/CoreAnalytics.framework/Versions/A/CoreAnalytics
+    0x7ff8235f0000 -     0x7ff8235f16b3  libDiagnosticMessagesClient.dylib (113) <3878C608-75A6-3D8E-9115-B0D56BFC86B3> /usr/lib/libDiagnosticMessagesClient.dylib
+    0x7ff8235f2000 -     0x7ff8236535d6  com.apple.spotlight.metadata.utilities (1.0 - 2400.22.400) <A2F63AEA-9487-3456-A4AB-5B7C92664C0A> /System/Library/PrivateFrameworks/MetadataUtilities.framework/Versions/A/MetadataUtilities
+    0x7ff823654000 -     0x7ff8236dd122  com.apple.Metadata (26.3 - 2400.22.400) <B99AAF6C-D693-3BF7-B22C-2C6F61725AA9> /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Metadata
+    0x7ff8236de000 -     0x7ff8236e5dc7  com.apple.DiskArbitration (2.7 - 2.7) <AA69B4C0-106E-33B0-97C5-65E9EB06FB54> /System/Library/Frameworks/DiskArbitration.framework/Versions/A/DiskArbitration
+    0x7ff8236e6000 -     0x7ff824292a87  com.apple.vImage (8.1 - 632) <D451B002-F083-3AF5-B58A-158363475AB2> /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vImage.framework/Versions/A/vImage
+    0x7ff824293000 -     0x7ff8246830e9  com.apple.QuartzCore (1194.10.15 - 1194.10.15) <758E394D-DAD2-3604-AFD7-7D2575E5A3DC> /System/Library/Frameworks/QuartzCore.framework/Versions/A/QuartzCore
+    0x7ff824684000 -     0x7ff8246d02db  libFontRegistry.dylib (408.2.0.1) <C8F173D6-65A4-3A54-89D6-03E3535D08C0> /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/ATS.framework/Versions/A/Resources/libFontRegistry.dylib
+    0x7ff8249a3000 -     0x7ff8249aeef8  com.apple.OpenDirectory (26.3 - 646) <0B4BA62D-B61F-3B84-95D2-B545C9DD3B2D> /System/Library/Frameworks/OpenDirectory.framework/Versions/A/OpenDirectory
+    0x7ff8249af000 -     0x7ff8249ca7d7  com.apple.CFOpenDirectory (26.3 - 646) <CAE12210-CBAA-33F9-9FBA-03DA597E4C87> /System/Library/Frameworks/OpenDirectory.framework/Versions/A/Frameworks/CFOpenDirectory.framework/Versions/A/CFOpenDirectory
+    0x7ff8249cb000 -     0x7ff8249d84ff  com.apple.CoreServices.FSEvents (1407.80.2 - 1407.80.2) <3B24FE53-6CA9-3BD4-9EEC-76BDFE2F7681> /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/FSEvents
+    0x7ff8249d9000 -     0x7ff8249ffdcb  com.apple.coreservices.SharedFileList (225 - 225) <21B19BEE-F388-3649-A918-1513E4BF725A> /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/SharedFileList.framework/Versions/A/SharedFileList
+    0x7ff824a00000 -     0x7ff824a02c87  libapp_launch_measurement.dylib (17) <A0D3697B-11B8-3559-B9DC-D323B2241520> /usr/lib/libapp_launch_measurement.dylib
+    0x7ff824a03000 -     0x7ff824a4c3d7  com.apple.CoreAutoLayout (1.0 - 34) <82054C70-24AD-387E-822B-31C4421580EB> /System/Library/PrivateFrameworks/CoreAutoLayout.framework/Versions/A/CoreAutoLayout
+    0x7ff824a4d000 -     0x7ff824b2db0f  libxml2.2.dylib (39.10) <6A8B04C6-D42A-3799-BCDF-AF9208EF5D5E> /usr/lib/libxml2.2.dylib
+    0x7ff824b2e000 -     0x7ff824ba2bc1  com.apple.CoreVideo (1.8 - 726.2) <38479F11-684B-376D-8E6D-5BDFB740D414> /System/Library/Frameworks/CoreVideo.framework/Versions/A/CoreVideo
+    0x7ff824ba3000 -     0x7ff824ba5ab7  com.apple.loginsupport (3.0 - 264.3.1) <F83D5F29-2710-3030-B73E-0D627C579AD8> /System/Library/PrivateFrameworks/login.framework/Versions/A/Frameworks/loginsupport.framework/Versions/A/loginsupport
+    0x7ff824be3000 -     0x7ff824c0c33a  com.apple.UserManagement (1.0 - 1) <1B10AB47-2CFF-30CC-B214-F9AC90924902> /System/Library/PrivateFrameworks/UserManagement.framework/Versions/A/UserManagement
+    0x7ff826643000 -     0x7ff82667976b  libsystem_containermanager.dylib (725.80.5) <115B6866-3C3D-3E35-8FDC-821FCC5D346D> /usr/lib/system/libsystem_containermanager.dylib
+    0x7ff82667a000 -     0x7ff826694383  com.apple.IOSurface (393.3.2 - 393.3.2) <859EED60-2F03-3FAA-9064-808CBEBDD0E6> /System/Library/Frameworks/IOSurface.framework/Versions/A/IOSurface
+    0x7ff826695000 -     0x7ff82669de5f  com.apple.IOAccelerator (487.0.2 - 487.0.2) <5B1E9646-5E7C-37B0-8957-89E2026BE68D> /System/Library/PrivateFrameworks/IOAccelerator.framework/Versions/A/IOAccelerator
+    0x7ff82669e000 -     0x7ff826992e21  com.apple.Metal (371.5 - 371.5) <8D4CC216-E1F7-32F7-A185-2B856E8E8292> /System/Library/Frameworks/Metal.framework/Versions/A/Metal
+    0x7ff826993000 -     0x7ff8269b7ab7  com.apple.audio.caulk (1.0 - 214) <DB8E5FF5-2EC8-34DC-9BF9-A879D7F71BD6> /System/Library/PrivateFrameworks/caulk.framework/Versions/A/caulk
+    0x7ff8269b8000 -     0x7ff826b5e0ba  com.apple.CoreMedia (1.0 - 3300.7.1.5.1) <55933CEC-00B5-3894-A733-7630E9A11C74> /System/Library/Frameworks/CoreMedia.framework/Versions/A/CoreMedia
+    0x7ff826b5f000 -     0x7ff826e29b7c  libFontParser.dylib (435.2.0.1) <CA689408-5207-3A8B-9EB8-2AF4BD60B51D> /System/Library/PrivateFrameworks/FontServices.framework/libFontParser.dylib
+    0x7ff82715c000 -     0x7ff8274a8634  com.apple.ImageIO (3.3.0 - 2784.3.4) <F49F744B-A863-3F9F-97E7-A230A90CA461> /System/Library/Frameworks/ImageIO.framework/Versions/A/ImageIO
+    0x7ff8274a9000 -     0x7ff827a02207  com.apple.CoreImage (19.0.0 - 1592.80.2) <9A9E1687-EF9A-3432-838A-DF4B7AB5FF1B> /System/Library/Frameworks/CoreImage.framework/Versions/A/CoreImage
+    0x7ff827a03000 -     0x7ff827abe012  com.apple.MetalPerformanceShaders.MPSCore (1.0 - 1) <637EAD5A-6BDA-300D-AF48-1F332BA5F3AF> /System/Library/Frameworks/MetalPerformanceShaders.framework/Versions/A/Frameworks/MPSCore.framework/Versions/A/MPSCore
+    0x7ff827abf000 -     0x7ff827ac296f  libsystem_configuration.dylib (1385.80.4) <582C26CD-03CA-363A-B558-CAC7AC074800> /usr/lib/system/libsystem_configuration.dylib
+    0x7ff827ac3000 -     0x7ff827ac9947  libsystem_sandbox.dylib (2680.80.20) <D599E334-422B-312E-AE87-706E42086E48> /usr/lib/system/libsystem_sandbox.dylib
+    0x7ff827aca000 -     0x7ff827acae88  com.apple.AggregateDictionary (1.0 - 1) <26FB33FB-9229-38D5-8149-2F3CD79014D6> /System/Library/PrivateFrameworks/AggregateDictionary.framework/Versions/A/AggregateDictionary
+    0x7ff827acb000 -     0x7ff827acf64b  com.apple.AppleSystemInfo (3.1.5 - 3.1.5) <26B60543-8DE7-3FB5-9A15-D22F8A6DBE75> /System/Library/PrivateFrameworks/AppleSystemInfo.framework/Versions/A/AppleSystemInfo
+    0x7ff827ad0000 -     0x7ff827ad11cb  liblangid.dylib (140) <67056C03-7235-3A5E-9578-A4410B09A918> /usr/lib/liblangid.dylib
+    0x7ff827ad2000 -     0x7ff827be1e69  com.apple.CoreNLP (1.0 - 313) <64616628-DB61-3B96-8E80-B26DDE832517> /System/Library/PrivateFrameworks/CoreNLP.framework/Versions/A/CoreNLP
+    0x7ff827be2000 -     0x7ff827be813b  com.apple.LinguisticData (1.0 - 483.10) <A8BDB63E-DA3C-30B7-AE0B-90649C72F926> /System/Library/PrivateFrameworks/LinguisticData.framework/Versions/A/LinguisticData
+    0x7ff827be9000 -     0x7ff828e3e45f  libBNNS.dylib (1860.81.1) <5D1CE11C-F9B5-32E3-BCF4-5FB1836D49D8> /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBNNS.dylib
+    0x7ff828e3f000 -     0x7ff829050f3f  libvDSP.dylib (1123.80.6) <971DF864-E2BE-3A7C-A7E2-77341520E36D> /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libvDSP.dylib
+    0x7ff829086000 -     0x7ff829096967  com.apple.IOMobileFramebuffer (343.0.0 - 343.0.0) <8F27F3F9-2A26-36FE-8B4A-8E925768B9F3> /System/Library/PrivateFrameworks/IOMobileFramebuffer.framework/Versions/A/IOMobileFramebuffer
+    0x7ff82928c000 -     0x7ff8292a19d0  com.apple.MobileKeyBag (2.0 - 1.0) <5D22ABA8-C9AD-39F2-8BE9-E202408E3AFA> /System/Library/PrivateFrameworks/MobileKeyBag.framework/Versions/A/MobileKeyBag
+    0x7ff8292a2000 -     0x7ff8292aee5b  com.apple.AssertionServices (1.0 - 1008.80.2) <F2752BD6-5A15-3849-B5CA-85B75F353A01> /System/Library/PrivateFrameworks/AssertionServices.framework/Versions/A/AssertionServices
+    0x7ff8292af000 -     0x7ff82933d6ac  com.apple.securityfoundation (6.0 - 55293) <37E92BCF-0A46-372D-AC5E-91354971B9C6> /System/Library/Frameworks/SecurityFoundation.framework/Versions/A/SecurityFoundation
+    0x7ff82933e000 -     0x7ff82936da70  com.apple.coreservices.BackgroundTaskManagement (1.0 - 104) <458AF8D7-B5F1-37E1-B300-DABC82FE17DE> /System/Library/PrivateFrameworks/BackgroundTaskManagement.framework/Versions/A/BackgroundTaskManagement
+    0x7ff829378000 -     0x7ff82937ad8b  libquarantine.dylib (196.40.3) <53E13020-572B-32F4-9A18-67EDA989574D> /usr/lib/system/libquarantine.dylib
+    0x7ff82937b000 -     0x7ff829384c87  libCheckFix.dylib (33) <20DB9CC6-F5AA-3586-B858-7809F5041A2E> /usr/lib/libCheckFix.dylib
+    0x7ff829385000 -     0x7ff82939cd3f  libcoretls.dylib (187.80.1) <B4EB6DB9-7938-3CF7-BAC6-632C141D587B> /usr/lib/libcoretls.dylib
+    0x7ff82939d000 -     0x7ff8293ac93f  libbsm.0.dylib (90) <459F21C5-CB16-34F3-AB37-6FF79DC68BF6> /usr/lib/libbsm.0.dylib
+    0x7ff8293ad000 -     0x7ff829407fff  libmecab.dylib (1121) <3084635B-59C1-3172-A259-E924DCE62CA9> /usr/lib/libmecab.dylib
+    0x7ff829408000 -     0x7ff82940a637  libgermantok.dylib (31) <6DE15414-8513-39CE-B6D7-DF4514EE5640> /usr/lib/libgermantok.dylib
+    0x7ff82940b000 -     0x7ff8294200ae  libLinearAlgebra.dylib (1545.81.3) <FED4807A-ACE6-38C6-AC6C-C4D13E3ECADE> /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libLinearAlgebra.dylib
+    0x7ff829421000 -     0x7ff82973499d  com.apple.MetalPerformanceShaders.MPSNeuralNetwork (1.0 - 1) <04EA0B98-66DD-3ABF-80D7-B6DF9AE1ABC1> /System/Library/Frameworks/MetalPerformanceShaders.framework/Versions/A/Frameworks/MPSNeuralNetwork.framework/Versions/A/MPSNeuralNetwork
+    0x7ff829735000 -     0x7ff829797900  com.apple.MetalPerformanceShaders.MPSRayIntersector (1.0 - 1) <124DA6EF-4580-3FE0-AFC3-C51BD471DB29> /System/Library/Frameworks/MetalPerformanceShaders.framework/Versions/A/Frameworks/MPSRayIntersector.framework/Versions/A/MPSRayIntersector
+    0x7ff82997f000 -     0x7ff8299bd842  com.apple.MetalPerformanceShaders.MPSMatrix (1.0 - 1) <E6D90368-C5BF-3AB4-91A5-1A84552032D2> /System/Library/Frameworks/MetalPerformanceShaders.framework/Versions/A/Frameworks/MPSMatrix.framework/Versions/A/MPSMatrix
+    0x7ff8299be000 -     0x7ff829bc85e5  com.apple.MetalPerformanceShaders.MPSNDArray (1.0 - 1) <42C46B68-60D1-389A-9AD8-BE8722083B5F> /System/Library/Frameworks/MetalPerformanceShaders.framework/Versions/A/Frameworks/MPSNDArray.framework/Versions/A/MPSNDArray
+    0x7ff829bc9000 -     0x7ff829c6d955  com.apple.MetalPerformanceShaders.MPSImage (1.0 - 1) <FBB83037-44A0-3261-9611-633570931859> /System/Library/Frameworks/MetalPerformanceShaders.framework/Versions/A/Frameworks/MPSImage.framework/Versions/A/MPSImage
+    0x7ff829c6e000 -     0x7ff829c78a8f  com.apple.AppleFSCompression (174 - 1.0) <BD6DD8AB-FD6E-3F4A-8CDA-D4CBC9AF9F41> /System/Library/PrivateFrameworks/AppleFSCompression.framework/Versions/A/AppleFSCompression
+    0x7ff829c79000 -     0x7ff829c877af  libbz2.1.0.dylib (47) <8A89C29D-47E5-398C-B376-4B43B30991A6> /usr/lib/libbz2.1.0.dylib
+    0x7ff829c88000 -     0x7ff829c8e9ff  libsystem_coreservices.dylib (191.3.3) <83378FFB-CC21-317F-A5CE-00E13EEA2809> /usr/lib/system/libsystem_coreservices.dylib
+    0x7ff829c8f000 -     0x7ff829cbafc3  com.apple.CoreServices.OSServices (1141.1 - 1141.1) <393978D3-E6FF-3661-AC67-5215B029858E> /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/OSServices.framework/Versions/A/OSServices
+    0x7ff82a138000 -     0x7ff82a14bfcb  libz.1.dylib (100) <DE29152B-382C-38F3-BA42-D7857A8EDDB9> /usr/lib/libz.1.dylib
+    0x7ff82a14c000 -     0x7ff82a1c291f  libsystem_m.dylib (3309) <09B32095-74C8-3F56-B25C-317FDA74362B> /usr/lib/system/libsystem_m.dylib
+    0x7ff82a1c3000 -     0x7ff82a1c3b97  libcharset.1.dylib (113) <A737128E-81AC-324A-A25D-8D0AB04C657E> /usr/lib/libcharset.1.dylib
+    0x7ff82a1c4000 -     0x7ff82a1c7617  libmacho.dylib (1030.6.3) <D8CECAEB-DE4C-37DE-AA22-AEA401093B3F> /usr/lib/system/libmacho.dylib
+    0x7ff82a1c8000 -     0x7ff82a1de413  libkxld.dylib (12377.81.4) <65FD6FEC-DBAA-3123-B5F4-E56F1758665B> /usr/lib/system/libkxld.dylib
+    0x7ff82a1df000 -     0x7ff82a1eb3af  libcommonCrypto.dylib (600035) <3452C5E0-6C37-374E-B9FB-9809F7B0F631> /usr/lib/system/libcommonCrypto.dylib
+    0x7ff82a1ec000 -     0x7ff82a1f46ef  libunwind.dylib (1900.125) <FA8C0218-B4AC-3ACC-8E09-02B7AFBA02C7> /usr/lib/system/libunwind.dylib
+    0x7ff82a1f5000 -     0x7ff82a1fc747  liboah.dylib (367.3) <A1D3652E-6E87-3600-96D2-71F59D672D84> /usr/lib/liboah.dylib
+    0x7ff82a1fd000 -     0x7ff82a2085c7  libcopyfile.dylib (230.0.1.0.1) <3B68D992-E471-3CEB-817B-89FCB1310AE2> /usr/lib/system/libcopyfile.dylib
+    0x7ff82a209000 -     0x7ff82a2109cf  libcompiler_rt.dylib (103.3) <CEC9DC91-4492-3EAB-BFF7-978D8D42F973> /usr/lib/system/libcompiler_rt.dylib
+    0x7ff82a211000 -     0x7ff82a21576b  libsystem_collections.dylib (1725.40.4) <B8CAAB14-A07F-397E-8308-B120DD468A54> /usr/lib/system/libsystem_collections.dylib
+    0x7ff82a216000 -     0x7ff82a2190a7  libsystem_secinit.dylib (168.40.2) <B3591C44-8188-3A99-9A27-D8204C9BCBF1> /usr/lib/system/libsystem_secinit.dylib
+    0x7ff82a21a000 -     0x7ff82a21c6f7  libremovefile.dylib (84) <DD09D693-E209-3C5A-A02F-82A4F7C90CE8> /usr/lib/system/libremovefile.dylib
+    0x7ff82a21d000 -     0x7ff82a21db37  libkeymgr.dylib (31) <ECBEB523-39F0-3367-A6AA-569468FEB8EC> /usr/lib/system/libkeymgr.dylib
+    0x7ff82a21e000 -     0x7ff82a22670f  libsystem_dnssd.dylib (2881.80.4.0.1) <74166FFB-709A-3798-A82B-68E27BE5F85B> /usr/lib/system/libsystem_dnssd.dylib
+    0x7ff82a227000 -     0x7ff82a22c003  libcache.dylib (95) <979DA563-947E-339F-B993-C6A7A40D6A74> /usr/lib/system/libcache.dylib
+    0x7ff82a22d000 -     0x7ff82a22eb1b  libSystem.B.dylib (1356) <8FDD921D-AB88-37FB-AAC8-9144903E985C> /usr/lib/libSystem.B.dylib
+    0x7ff82a22f000 -     0x7ff82a2311fb  libfakelink.dylib (5) <7DAF4128-ACF8-34F8-8583-F1627857848E> /usr/lib/libfakelink.dylib
+    0x7ff82a232000 -     0x7ff82a232933  com.apple.SoftLinking (1.0 - 67) <73BF542E-788A-393C-A581-E3B484459F5C> /System/Library/PrivateFrameworks/SoftLinking.framework/Versions/A/SoftLinking
+    0x7ff82a268000 -     0x7ff82a26eaa7  libiconv.2.dylib (113) <6B99D27E-4F24-3B92-A816-3AD4797586CE> /usr/lib/libiconv.2.dylib
+    0x7ff82a280000 -     0x7ff82a35ae17  libarchive.2.dylib (160.60.3) <EAE16861-E426-3B71-A167-BFE55C73686B> /usr/lib/libarchive.2.dylib
+    0x7ff82a35b000 -     0x7ff82a3b2c1f  com.apple.SearchKit (1.4.2 - 1.4.2) <B21CCD8A-A557-3E05-AF34-951EEA038F22> /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/SearchKit.framework/Versions/A/SearchKit
+    0x7ff82a3b3000 -     0x7ff82a3ba8ab  libThaiTokenizer.dylib (28) <6040DB45-8F63-30A2-B123-C1E1FE977F23> /usr/lib/libThaiTokenizer.dylib
+    0x7ff82a3bb000 -     0x7ff82a3dc53b  com.apple.applesauce (1.0 - 17.1) <E434F2D4-5628-3A13-BFD6-A1DF470854DF> /System/Library/PrivateFrameworks/AppleSauce.framework/Versions/A/AppleSauce
+    0x7ff82a3dd000 -     0x7ff82a3f64ff  libapple_nghttp2.dylib (37) <560166D3-CB2F-38BB-9B4A-5A4EF45E9648> /usr/lib/libapple_nghttp2.dylib
+    0x7ff82a3f7000 -     0x7ff82a41f3d7  libSparseBLAS.dylib (1545.81.3) <5968C7C7-EE60-356C-B8E3-4084DC7236E7> /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libSparseBLAS.dylib
+    0x7ff82a420000 -     0x7ff82a4214b1  com.apple.MetalPerformanceShaders.MetalPerformanceShaders (1.0 - 1) <D37BB6A6-3EA2-395A-81BB-1A79F64F994B> /System/Library/Frameworks/MetalPerformanceShaders.framework/Versions/A/MetalPerformanceShaders
+    0x7ff82a422000 -     0x7ff82a427b27  libpam.2.dylib (35) <D26A3A50-0097-3133-9C7C-E5D961886CB4> /usr/lib/libpam.2.dylib
+    0x7ff82a428000 -     0x7ff82a50697b  libcompression.dylib (190.40.2) <BBF5F8E8-6533-331F-84A5-AFAF1F91F254> /usr/lib/libcompression.dylib
+    0x7ff82a507000 -     0x7ff82a50c3af  libQuadrature.dylib (8) <63EC393B-1C3A-3224-B246-A755E291CB8A> /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libQuadrature.dylib
+    0x7ff82a50d000 -     0x7ff82b99661f  libLAPACK.dylib (1545.81.3) <C2158ABD-DB08-34C6-B884-7A0A170888DE> /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libLAPACK.dylib
+    0x7ff82b997000 -     0x7ff82b9e5ee6  com.apple.DictionaryServices (1.2 - 373) <812BB483-1465-3870-B60F-27B67DC5AFC0> /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/DictionaryServices.framework/Versions/A/DictionaryServices
+    0x7ff82b9e6000 -     0x7ff82ba0529f  liblzma.5.dylib (21) <FA510DEA-CB99-396E-80D9-29DA8212FACA> /usr/lib/liblzma.5.dylib
+    0x7ff82ba06000 -     0x7ff82ba07517  libcoretls_cfhelpers.dylib (187.80.1) <80C0F501-C0AB-3AB8-92F9-29FCE4E2E87D> /usr/lib/libcoretls_cfhelpers.dylib
+    0x7ff82ba08000 -     0x7ff82ba7e2b7  com.apple.APFS (2632.80.1 - 2632.80.1) <C57D5E76-46FA-3EA1-BAEF-C75AE255407B> /System/Library/PrivateFrameworks/APFS.framework/Versions/A/APFS
+    0x7ff82ba7f000 -     0x7ff82ba8cd3f  libxar.1.dylib (501) <08812E20-1383-350C-A490-2E5D6B3F0896> /usr/lib/libxar.1.dylib
+    0x7ff82ba8d000 -     0x7ff82ba902d7  libutil.dylib (73) <E5C56D48-38DD-3E1A-9080-BCE18A76D36D> /usr/lib/libutil.dylib
+    0x7ff82ba91000 -     0x7ff82baba577  libxslt.1.dylib (21.13) <DB170BBE-39CF-35E2-8BF4-9DB0033B9DF5> /usr/lib/libxslt.1.dylib
+    0x7ff82bac2000 -     0x7ff82bc5f387  libvMisc.dylib (1123.80.6) <7638FDA3-13FF-371E-A7E3-73B3F7BE4AF1> /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libvMisc.dylib
+    0x7ff82bc60000 -     0x7ff82bd8dac3  libate.dylib (3.0.9) <7B0B65A5-02A3-39A0-8F7C-42673DF45EAF> /usr/lib/libate.dylib
+    0x7ff82bd97000 -     0x7ff82bda91b1  com.apple.CrashReporterSupport (10.13 - 15138) <A126426D-2691-39E2-B72C-B5E9B73950C7> /System/Library/PrivateFrameworks/CrashReporterSupport.framework/Versions/A/CrashReporterSupport
+    0x7ff82bee8000 -     0x7ff82bf2a862  com.apple.pluginkit.framework (1.0 - 1) <4E68D613-58EF-3C01-91D6-44F09010D9E0> /System/Library/PrivateFrameworks/PlugInKit.framework/Versions/A/PlugInKit
+    0x7ff82bfaa000 -     0x7ff82bff7457  com.apple.AppleVAFramework (6.2.10 - 6.2.10) <4EBE403F-935C-3203-89A1-6E99B0004293> /System/Library/PrivateFrameworks/AppleVA.framework/Versions/A/AppleVA
+    0x7ff82bff8000 -     0x7ff82c013e3b  libexpat.1.dylib (45) <F3B25F19-BE99-310B-BFD3-56274DC8A92C> /usr/lib/libexpat.1.dylib
+    0x7ff82c014000 -     0x7ff82c01c613  libheimdal-asn1.dylib (710.0.1) <9F597F4F-8887-3D5F-9CC1-5CCCA2B729D1> /usr/lib/libheimdal-asn1.dylib
+    0x7ff82c141000 -     0x7ff82c1faa12  com.apple.MediaExperience (1.0 - 1) <12876F10-8A4A-36CF-81F8-F57979510BB9> /System/Library/PrivateFrameworks/MediaExperience.framework/Versions/A/MediaExperience
+    0x7ff82c225000 -     0x7ff82c237840  com.apple.GraphVisualizer (1.0 - 307) <5C39973D-BAEC-358B-8ACC-7620B60F9B40> /System/Library/PrivateFrameworks/GraphVisualizer.framework/Versions/A/GraphVisualizer
+    0x7ff82c238000 -     0x7ff82c27d5e4  com.apple.OTSVG (1.0 - 877.3.0.1) <E6E403F8-473D-3A28-8302-90DEED0C7A73> /System/Library/PrivateFrameworks/OTSVG.framework/Versions/A/OTSVG
+    0x7ff82c27e000 -     0x7ff82c28b264  com.apple.xpc.AppServerSupport (1.0 - 3089.80.10) <E67E6FF2-D9FC-327B-BEC7-7D0625D76E08> /System/Library/PrivateFrameworks/AppServerSupport.framework/Versions/A/AppServerSupport
+    0x7ff82c28c000 -     0x7ff82c292b5a  libspindump.dylib (412.0.1) <C2C6ED17-129D-3D90-8139-1959C9C94C9F> /usr/lib/libspindump.dylib
+    0x7ff82c293000 -     0x7ff82c33e822  com.apple.Heimdal (4.0 - 2.0) <7615CC47-EE4B-37A5-80D0-7568428335EA> /System/Library/PrivateFrameworks/Heimdal.framework/Versions/A/Heimdal
+    0x7ff82c5e3000 -     0x7ff82c62eb2f  com.apple.AppleJPEG (1.0 - 1) <8A5B9272-F244-3CE3-AC31-36AFB0874CB6> /System/Library/PrivateFrameworks/AppleJPEG.framework/Versions/A/AppleJPEG
+    0x7ff82c62f000 -     0x7ff82c7fda17  libJP2.dylib (2784.3.7) <8CE044DF-B5BC-3FED-BE36-739DC379FE1A> /System/Library/Frameworks/ImageIO.framework/Versions/A/Resources/libJP2.dylib
+    0x7ff82c7fe000 -     0x7ff82c7ffb17  com.apple.WatchdogClient.framework (1.0 - 323.80.7) <535C9F17-688E-3C0A-B084-F74DB1045702> /System/Library/PrivateFrameworks/WatchdogClient.framework/Versions/A/WatchdogClient
+    0x7ff82c800000 -     0x7ff82c84419d  com.apple.MultitouchSupport.framework (9430.5 - 9430.5) <696589D6-0131-3BE4-B3C4-315F1A40C72B> /System/Library/PrivateFrameworks/MultitouchSupport.framework/Versions/A/MultitouchSupport
+    0x7ff82c845000 -     0x7ff82ced522c  com.apple.VideoToolbox (1.0 - 3300.7.1.5.1) <A4D68574-194F-3B6D-97C2-4CC754C75B6F> /System/Library/Frameworks/VideoToolbox.framework/Versions/A/VideoToolbox
+    0x7ff82ced6000 -     0x7ff82cef79ef  libAudioToolboxUtility.dylib (1556.418.1) <487E0AA9-FEB1-34E4-918C-62CA5BC937C6> /usr/lib/libAudioToolboxUtility.dylib
+    0x7ff82cef8000 -     0x7ff82cf260d7  libPng.dylib (2784.3.7) <9A450D56-9829-3193-AEF9-0310711BBCDF> /System/Library/Frameworks/ImageIO.framework/Versions/A/Resources/libPng.dylib
+    0x7ff82cf27000 -     0x7ff82cf8db37  libTIFF.dylib (2784.3.7) <A2D17580-99F9-3E5A-A587-97FCC3A9E477> /System/Library/Frameworks/ImageIO.framework/Versions/A/Resources/libTIFF.dylib
+    0x7ff82cf8e000 -     0x7ff82cfa9ddf  com.apple.IOPresentment (67 - 67) <6B66EE0E-9AFB-3F67-8EAC-7B09F85D7A2F> /System/Library/PrivateFrameworks/IOPresentment.framework/Versions/A/IOPresentment
+    0x7ff82cfaa000 -     0x7ff82cfb06ef  com.apple.GPUWrangler (8.1.12 - 8.1.12) <573E7782-CF3D-35E2-9744-C2E6194B9693> /System/Library/PrivateFrameworks/GPUWrangler.framework/Versions/A/GPUWrangler
+    0x7ff82cfb1000 -     0x7ff82cfb3da7  libRadiance.dylib (2784.3.7) <8D476883-ED99-3D22-AE7C-D96EDB4928C3> /System/Library/Frameworks/ImageIO.framework/Versions/A/Resources/libRadiance.dylib
+    0x7ff82cfb4000 -     0x7ff82cfb9157  com.apple.DSExternalDisplay (3.1 - 380) <6CFF882E-BE0A-3ED6-841A-55D073D91085> /System/Library/PrivateFrameworks/DSExternalDisplay.framework/Versions/A/DSExternalDisplay
+    0x7ff82cfba000 -     0x7ff82cfea967  libJPEG.dylib (2784.3.7) <8055DD7F-0672-39FF-B923-46D03D9486AB> /System/Library/Frameworks/ImageIO.framework/Versions/A/Resources/libJPEG.dylib
+    0x7ff82d01a000 -     0x7ff82d01f82f  libGIF.dylib (2784.3.7) <F1B858EB-A7F4-3F95-B2E6-359AB09EFCAA> /System/Library/Frameworks/ImageIO.framework/Versions/A/Resources/libGIF.dylib
+    0x7ff82d020000 -     0x7ff82d030233  com.apple.CMCaptureCore (1.0 - 665.81.8) <FFBD7870-008D-3770-A3BC-9EBC38DBC449> /System/Library/PrivateFrameworks/CMCaptureCore.framework/Versions/A/CMCaptureCore
+    0x7ff82dfff000 -     0x7ff82e07519b  libusrtcp.dylib (5569.81.5) <481A4BA0-B65E-34FF-81F2-D6009F626F42> /usr/lib/libusrtcp.dylib
+    0x7ff82e076000 -     0x7ff82e569d43  libswiftCore.dylib (6.2.4 - 6.2.4.1.4) <9D3934B4-0C6E-39E7-9EF5-2C182D7F3DB6> /usr/lib/swift/libswiftCore.dylib
+    0x7ff82e614000 -     0x7ff82e663ca3  libSessionUtility.dylib (398.303) <F57C4C2F-9EE0-3383-83C9-9F5C2E355BE7> /System/Library/PrivateFrameworks/AudioSession.framework/libSessionUtility.dylib
+    0x7ff82e664000 -     0x7ff82e82e9c4  com.apple.audio.toolbox.AudioToolbox (1.14 - 1.14) <02261328-70D7-3541-9726-EB13A60F590A> /System/Library/Frameworks/AudioToolbox.framework/Versions/A/AudioToolbox
+    0x7ff82e82f000 -     0x7ff82e8a8549  com.apple.audio.AudioSession (1.0 - 398.303) <E3E503E6-7D7E-3075-96DA-9D2486B12298> /System/Library/PrivateFrameworks/AudioSession.framework/Versions/A/AudioSession
+    0x7ff82e8a9000 -     0x7ff82e8c0dfa  libAudioStatistics.dylib (262.202) <0FE65BD7-B784-3B76-987D-ADD8B7E185C1> /usr/lib/libAudioStatistics.dylib
+    0x7ff82e92e000 -     0x7ff82e94a6df  libresolv.9.dylib (93) <AEFA9882-3A6C-398C-B8FD-CD265CFAAAC8> /usr/lib/libresolv.9.dylib
+    0x7ff82e94b000 -     0x7ff82e95d4b7  libsasl2.2.dylib (215) <DE48D68B-A395-3BEB-BD5A-01F637064F43> /usr/lib/libsasl2.2.dylib
+    0x7ff82eb50000 -     0x7ff82ec30157  libSMC.dylib (38) <7488DC8A-88A9-3E3C-AFD5-31FBA3EA5F91> /usr/lib/libSMC.dylib
+    0x7ff82ec94000 -     0x7ff82ec9eba7  com.apple.NetAuth (6.2 - 6.2) <80AE7F39-D48C-3FB8-B5A4-20A23AE6D8EB> /System/Library/PrivateFrameworks/NetAuth.framework/Versions/A/NetAuth
+    0x7ff82ecad000 -     0x7ff82ecba257  com.apple.perfdata (1.0 - 122) <40F8E692-98D2-3312-87CF-349F18DC0234> /System/Library/PrivateFrameworks/perfdata.framework/Versions/A/perfdata
+    0x7ff82ecbb000 -     0x7ff82ecc9434  libperfcheck.dylib (46) <6FCAB53C-0C96-37CB-AAA0-3B982F4BDDDE> /usr/lib/libperfcheck.dylib
+    0x7ff82ecca000 -     0x7ff82ecd8e57  com.apple.Kerberos (3.0 - 1) <E9C315E3-53ED-3A49-B2B3-647787733186> /System/Library/Frameworks/Kerberos.framework/Versions/A/Kerberos
+    0x7ff82ecd9000 -     0x7ff82ed2140f  com.apple.GSS (4.0 - 2.0) <244E7BA6-4506-3DA3-881F-CB4899A15DD0> /System/Library/Frameworks/GSS.framework/Versions/A/GSS
+    0x7ff82ed22000 -     0x7ff82ed3058b  com.apple.CommonAuth (4.0 - 2.0) <52A23AC5-A6D0-3FEC-ABE1-06A36F1C43A7> /System/Library/PrivateFrameworks/CommonAuth.framework/Versions/A/CommonAuth
+    0x7ff82ed31000 -     0x7ff82ee11ca6  com.apple.MobileAssets (1.0 - 1837.80.27.0.1) <624FA7AA-CCF7-3BC4-9269-0BFE7E455BD3> /System/Library/PrivateFrameworks/MobileAsset.framework/Versions/A/MobileAsset
+    0x7ff82eea5000 -     0x7ff82eeb3640  com.apple.CorePhoneNumbers (1.0 - 1) <FDD5EB9F-562F-3E4F-950D-017D7BFF12BC> /System/Library/PrivateFrameworks/CorePhoneNumbers.framework/Versions/A/CorePhoneNumbers
+    0x7ff83087a000 -     0x7ff83093861f  com.apple.combine (1.0 - 3023) <6171A77B-5E93-3C4E-82F9-A3DA037B6A53> /System/Library/Frameworks/Combine.framework/Versions/A/Combine
+    0x7ff832d7f000 -     0x7ff832d7f88f  com.apple.Accelerate.vecLib (3.11 - vecLib 3.11) <605D162F-9ADC-32A1-A1AD-98A4EEAF7A1D> /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/vecLib
+    0x7ff832da9000 -     0x7ff832da99af  com.apple.CoreServices (1226 - 1226) <15EDA61F-BB6D-3A9C-A941-C6B7099676EF> /System/Library/Frameworks/CoreServices.framework/Versions/A/CoreServices
+    0x7ff83301c000 -     0x7ff83301c437  com.apple.Accelerate (1.11 - Accelerate 1.11) <15EFC1F2-7757-3F85-8967-33A4D150B0ED> /System/Library/Frameworks/Accelerate.framework/Versions/A/Accelerate
+    0x7ff833e40000 -     0x7ff833e4e302  com.apple.SymptomDiagnosticReporter (1.0 - 411.80.3) <6A40A6D7-2AE8-3C71-9299-D9ED65214408> /System/Library/PrivateFrameworks/SymptomDiagnosticReporter.framework/Versions/A/SymptomDiagnosticReporter
+    0x7ff833e4f000 -     0x7ff833e7e6d7  com.apple.PowerLog (1.0 - 1) <5417D6C7-A1EC-3D1F-8ADD-DF90457327B3> /System/Library/PrivateFrameworks/PowerLog.framework/Versions/A/PowerLog
+    0x7ff833e8c000 -     0x7ff833f319c8  com.apple.DiscRecording (9.0.3 - 9030.4.5) <D80D929B-11D8-3609-BC5B-D6E9C6155571> /System/Library/Frameworks/DiscRecording.framework/Versions/A/DiscRecording
+    0x7ff833f32000 -     0x7ff833f6413f  com.apple.MediaKit (16 - 938) <48379C5D-A19A-3E42-95D7-10AC4F81ECE3> /System/Library/PrivateFrameworks/MediaKit.framework/Versions/A/MediaKit
+    0x7ff834d9b000 -     0x7ff834db0400  libswiftDispatch.dylib (56) <D71DEF2E-BF15-3681-90EA-6097B4C3A027> /usr/lib/swift/libswiftDispatch.dylib
+    0x7ff8350e5000 -     0x7ff835176c28  com.apple.BoardServices (1.0 - 732.1.1) <139D11C8-477D-39CE-9D7C-F24644644A4A> /System/Library/PrivateFrameworks/BoardServices.framework/Versions/A/BoardServices
+    0x7ff8351b1000 -     0x7ff8351bc93e  com.apple.GraphicsServices (1.0 - 1.0) <4C3C9E09-DB5E-3EAA-9DC7-F22A7E0B3122> /System/Library/PrivateFrameworks/GraphicsServices.framework/Versions/A/GraphicsServices
+    0x7ff8354e0000 -     0x7ff8354fe641  com.apple.DebugSymbols (216 - 217) <28CF5AA1-D907-37DF-A13D-8FDF969F4425> /System/Library/PrivateFrameworks/DebugSymbols.framework/Versions/A/DebugSymbols
+    0x7ff8354ff000 -     0x7ff83561c377  com.apple.CoreSymbolication (16.0 - 64572.108.2) <EC900465-63B7-364B-A5F2-AAD86E7CE171> /System/Library/PrivateFrameworks/CoreSymbolication.framework/Versions/A/CoreSymbolication
+    0x7ff83561d000 -     0x7ff835626e92  com.apple.CoreTime (334.0.16.1 - 334.0.16.1) <ECB476ED-4E14-3674-B790-1618DECB2E12> /System/Library/PrivateFrameworks/CoreTime.framework/Versions/A/CoreTime
+    0x7ff836ed0000 -     0x7ff836f3f66e  com.apple.BackBoardServices (1.0 - 1.0) <DBD0F586-63C2-3F54-BB80-7080930A81CE> /System/Library/PrivateFrameworks/BackBoardServices.framework/Versions/A/BackBoardServices
+    0x7ff836f40000 -     0x7ff836f7a0a7  com.apple.LDAPFramework (2.4.28 - 194.5) <E5395A09-C187-3E4B-95C8-DCEAB0F7FE31> /System/Library/Frameworks/LDAP.framework/Versions/A/LDAP
+    0x7ff836f7b000 -     0x7ff836f7c55b  com.apple.TrustEvaluationAgent (2.0 - 38) <EE161972-ED2D-3E9F-B62E-8AACD6D7FDE4> /System/Library/PrivateFrameworks/TrustEvaluationAgent.framework/Versions/A/TrustEvaluationAgent
+    0x7ff8370b0000 -     0x7ff83715950e  com.apple.DiskImagesFramework (681.60.1 - 681.60.1) <4756ABC1-4C20-3951-92F5-95177C83355D> /System/Library/PrivateFrameworks/DiskImages.framework/Versions/A/DiskImages
+    0x7ff83719a000 -     0x7ff8371b0401  com.apple.RemoteServiceDiscovery (1.0 - 202.80.2) <6DFC4A8D-F59B-3453-B96E-5A8EC73CD834> /System/Library/PrivateFrameworks/RemoteServiceDiscovery.framework/Versions/A/RemoteServiceDiscovery
+    0x7ff8371b1000 -     0x7ff8371c7d59  com.apple.xpc.RemoteXPC (1.0 - 3089.80.10) <3DCA7FE3-81D5-33C0-A83F-5CD1EE53068B> /System/Library/PrivateFrameworks/RemoteXPC.framework/Versions/A/RemoteXPC
+    0x7ff837260000 -     0x7ff8372e3307  libcurl.4.dylib (162) <80A40EE5-F0CB-3B3F-BCC7-6F95E69C2E80> /usr/lib/libcurl.4.dylib
+    0x7ff8372ea000 -     0x7ff837328ca0  com.apple.AppSupport (1.0.0 - 29) <C562DCDF-2C2C-304E-8303-137D2818C664> /System/Library/PrivateFrameworks/AppSupport.framework/Versions/A/AppSupport
+    0x7ff8375fa000 -     0x7ff8375fc7f7  com.apple.InternationalTextSearch (1.0 - 1) <5C5842AF-8989-3C41-93AC-06069B50156C> /System/Library/PrivateFrameworks/InternationalTextSearch.framework/Versions/A/InternationalTextSearch
+    0x7ff837ae0000 -     0x7ff837ae0417  libHeimdalProxy.dylib (88) <DBFC6A7F-94D2-35C7-8B93-CCB526A30FD6> /System/Library/Frameworks/Kerberos.framework/Versions/A/Libraries/libHeimdalProxy.dylib
+    0x7ff837b06000 -     0x7ff837b2565e  com.apple.StreamingZip (1.0 - 1) <FAE630F5-439E-3FC0-BCCB-73D375A9296F> /System/Library/PrivateFrameworks/StreamingZip.framework/Versions/A/StreamingZip
+    0x7ff837b79000 -     0x7ff837b7c0f5  libswiftObjectiveC.dylib (951.1) <D07204B1-D0D9-3140-9491-7060EA7F853E> /usr/lib/swift/libswiftObjectiveC.dylib
+    0x7ff837b7d000 -     0x7ff837b98dfb  libswiftos.dylib (1076.40.2) <120A5CBE-C233-37F3-840B-461BB1F2037F> /usr/lib/swift/libswiftos.dylib
+    0x7ff838c0b000 -     0x7ff838c95dcc  com.apple.proactive.support.ProactiveSupport (1.0 - 415.1) <7D0ED71B-29C7-3845-A9A1-4C05F776FF1D> /System/Library/PrivateFrameworks/ProactiveSupport.framework/Versions/A/ProactiveSupport
+    0x7ff9178f2000 -     0x7ff9179b410a  com.apple.audio.midi.CoreMIDI (2.0 - 88) <AD853C54-862C-378E-A0A5-A193F215546F> /System/Library/Frameworks/CoreMIDI.framework/Versions/A/CoreMIDI
+    0x7ff918493000 -     0x7ff91849733f  com.apple.IOSurfaceAccelerator (1.0.0 - 1.0.0) <17C1E836-4CBB-3BF5-BDC9-1E42CA258D1B> /System/Library/PrivateFrameworks/IOSurfaceAccelerator.framework/Versions/A/IOSurfaceAccelerator
+    0x7ff91d5f3000 -     0x7ff91d6040a3  com.apple.HID (1.0 - 1) <9710FD30-DE52-3CAC-B784-AACF657781DA> /System/Library/PrivateFrameworks/HID.framework/Versions/A/HID
+    0x7ff922003000 -     0x7ff9220119b4  com.apple.NetFS (6.0 - 4.0) <466491A0-C2A9-3713-A595-FFCE726A9334> /System/Library/Frameworks/NetFS.framework/Versions/A/NetFS
+    0x7ff922540000 -     0x7ff92254291f  libswiftDarwin.dylib (347.40.2) <170C5F40-698E-3AAB-BE29-993E5915760D> /usr/lib/swift/libswiftDarwin.dylib
+    0x7ff9243ca000 -     0x7ff9244aeebf  libquic.dylib (5569.81.5) <09A56B3F-81DD-3799-8210-AF613E44A2F4> /usr/lib/libquic.dylib
+    0x7ff9244b9000 -     0x7ff9244e03a9  com.apple.private.SystemPolicy (1.0 - 1) <48A92A44-2A7D-336F-960B-4AC52E791EEE> /System/Library/PrivateFrameworks/SystemPolicy.framework/Versions/A/SystemPolicy
+    0x7ff92531d000 -     0x7ff9253af83c  com.apple.LoggingSupport (1.0 - 1815.80.2) <B0409F5C-1A4C-3587-A113-46DDE5773170> /System/Library/PrivateFrameworks/LoggingSupport.framework/Versions/A/LoggingSupport
+    0x7ff9253b0000 -     0x7ff9253bc56f  com.apple.MallocStackLogging (1.0 - 64573.4.1) <622B5E85-05F0-300A-9BA3-CA35D802B33E> /System/Library/PrivateFrameworks/MallocStackLogging.framework/Versions/A/MallocStackLogging
+    0x7ff9253e0000 -     0x7ff925432a84  libmis.dylib (463.0.8) <2E91156D-C096-3473-BA0A-AE2CD6CA06AE> /usr/lib/libmis.dylib
+    0x7ff925433000 -     0x7ff92543673b  com.apple.gpusw.GPURawCounter (34 - 34) <4D638C35-5CD9-3F1D-BA38-84E17670E57B> /System/Library/PrivateFrameworks/GPURawCounter.framework/Versions/A/GPURawCounter
+    0x7ff925437000 -     0x7ff92545065f  libswiftCoreAudio.dylib (411.417) <1513624D-E0D6-3453-B43A-9F2CBFD5C042> /usr/lib/swift/libswiftCoreAudio.dylib
+    0x7ff925451000 -     0x7ff925456cb7  libswiftCoreFoundation.dylib (2401) <B147B2E7-0C5F-36F9-A0EF-35B69B43FFBC> /usr/lib/swift/libswiftCoreFoundation.dylib
+    0x7ff925461000 -     0x7ff92549d542  libswiftXPC.dylib (105.0.14) <ED08CC62-F193-344F-BD8F-07596C8B7A35> /usr/lib/swift/libswiftXPC.dylib
+    0x7ff92549f000 -     0x7ff92549f993  libswiftIOKit.dylib (1) <84B3912D-1406-3B4D-9C53-B350412E1223> /usr/lib/swift/libswiftIOKit.dylib
+    0x7ff92764c000 -     0x7ff92765defb  libbootpolicy.dylib (289.0.1) <94CA75E7-9F63-30B3-B63F-6ED9BCF815F4> /usr/lib/libbootpolicy.dylib
+    0x7ff9290f2000 -     0x7ff92911193f  libswiftsimd.dylib (23) <1687E0DE-1FD9-3388-B10B-5BD61980DB57> /usr/lib/swift/libswiftsimd.dylib
+    0x7ff92a8f0000 -     0x7ff92a8f97bf  com.apple.IOAccelMemoryInfo (1.0 - 1) <FAF3DB02-CA22-328E-8F55-C03A0E7A7033> /System/Library/PrivateFrameworks/IOAccelMemoryInfo.framework/Versions/A/IOAccelMemoryInfo
+    0x7ff92bf4a000 -     0x7ff92bf5342f  libswiftCoreMIDI.dylib (6) <FB375D12-E3C1-3B8C-A239-129FED37B90D> /usr/lib/swift/libswiftCoreMIDI.dylib
+    0x7ff92c6dd000 -     0x7ff92c6e30ce  com.apple.MSUDataAccessor (1.0 - 1) <DABE5F2B-7440-37BD-B753-41773262C9B1> /System/Library/PrivateFrameworks/MSUDataAccessor.framework/Versions/A/MSUDataAccessor
+    0x7ff92cb00000 -     0x7ff92cb6094e  com.apple.SoftwareUpdateCoreSupport (1.0 - 1) <7A14EA6F-279E-339E-B33C-13FB4A3BDCAF> /System/Library/PrivateFrameworks/SoftwareUpdateCoreSupport.framework/Versions/A/SoftwareUpdateCoreSupport
+    0x7ff93031f000 -     0x7ff930376838  com.apple.biome.BiomeFoundation (1.0 - 200.6) <BA1585BD-661D-373D-9445-FF74C0624420> /System/Library/PrivateFrameworks/BiomeFoundation.framework/Versions/A/BiomeFoundation
+    0x7ff9334cc000 -     0x7ff9334d808a  libswiftMetal.dylib (371.5) <AAD416B2-3EFB-32D9-95BE-7C583B6758DF> /usr/lib/swift/libswiftMetal.dylib
+    0x7ff934362000 -     0x7ff93442964c  libFDR.dylib (1499.80.8) <EDF8D352-CA00-3B1D-A600-6BC28227A95A> /usr/lib/libFDR.dylib
+    0x7ff9344b2000 -     0x7ff9349f7b48  com.apple.biome.BiomeStreams (1.0 - 200.6) <1F3FC0A5-2CFF-3D38-A3CB-3C0ACF06237A> /System/Library/PrivateFrameworks/BiomeStreams.framework/Versions/A/BiomeStreams
+    0x7ff934e45000 -     0x7ff934e59825  com.apple.SoftwareUpdateCoreConnect (1.0 - 1) <A5F48DFC-AAD5-3ED7-A3F2-1A8E2A9428D9> /System/Library/PrivateFrameworks/SoftwareUpdateCoreConnect.framework/Versions/A/SoftwareUpdateCoreConnect
+    0x7ff93742d000 -     0x7ff93749c4f1  com.apple.osanalytics.OSAnalytics (1.0 - 1) <4B75D13A-22C7-30C0-BD8F-59C7BAE28C55> /System/Library/PrivateFrameworks/OSAnalytics.framework/Versions/A/OSAnalytics
+    0x7ffa18637000 -     0x7ffa18639117  libswiftQuartzCore.dylib (5) <2AFFE83C-0088-3DF9-ABEE-E0DE762F494C> /usr/lib/swift/libswiftQuartzCore.dylib
+    0x7ffa18a43000 -     0x7ffa18a47de7  com.apple.kperf (1.0 - 1) <C8B29C08-3F7B-3392-8DFC-4254964CBC96> /System/Library/PrivateFrameworks/kperf.framework/Versions/A/kperf
+    0x7ffa18b41000 -     0x7ffa18b45a9f  com.apple.MobileSystemServices (1.0 - 1) <D6849A49-EBBE-3921-B2D1-78594C84DDB8> /System/Library/PrivateFrameworks/MobileSystemServices.framework/Versions/A/MobileSystemServices
+    0x7ffa1a0c7000 -     0x7ffa1a0e858d  libamsupport.dylib (434.40.3) <1F90491F-ECE3-355A-AC89-2DD99C540E24> /usr/lib/libamsupport.dylib
+    0x7ffa1a46d000 -     0x7ffa1a4cda24  com.apple.biome.BiomePubSub (1.0 - 200.6) <BB15B983-3E7E-3E96-BCE8-CF4D79A31296> /System/Library/PrivateFrameworks/BiomePubSub.framework/Versions/A/BiomePubSub
+    0x7ffa1a4ce000 -     0x7ffa1a511cd2  com.apple.biome.BiomeStorage (1.0 - 200.6) <25DA955F-4067-3BAA-A4E1-15261BC28C5F> /System/Library/PrivateFrameworks/BiomeStorage.framework/Versions/A/BiomeStorage
+    0x7ffa1cf48000 -     0x7ffa1cf56464  libswiftUniformTypeIdentifiers.dylib (877.3.5) <90D7F8DE-A147-3A5A-ADAD-DB338CF4A911> /usr/lib/swift/libswiftUniformTypeIdentifiers.dylib
+    0x7ffa1cf57000 -     0x7ffa1d0041ef  libswiftAccelerate.dylib (77) <DA37CD59-D122-3919-A3FB-50C9A24F0AB3> /usr/lib/swift/libswiftAccelerate.dylib
+    0x7ffa1d147000 -     0x7ffa1d157477  libpartition2_dynamic.dylib (3476.80.22) <EF53AAD1-BB1D-3ED5-A617-EE918BDC719B> /usr/lib/libpartition2_dynamic.dylib
+    0x7ffa226a4000 -     0x7ffa226a58e3  libswiftOSLog.dylib (10) <3C3B3FE4-A12A-3415-ADE9-42279170AF68> /usr/lib/swift/libswiftOSLog.dylib
+    0x7ffa2664b000 -     0x7ffa267575d2  com.apple.Symbolication (16.0 - 64573.4.1) <7795B15D-9DD9-3B65-8956-3A1D23B17CC9> /System/Library/PrivateFrameworks/Symbolication.framework/Versions/A/Symbolication
+    0x7ffa2ac91000 -     0x7ffa2aca09c5  com.apple.OSLog (1.0 - 1815.80.2) <4D66EEFC-A7B8-3D26-9E46-0CC8386CE49B> /System/Library/Frameworks/OSLog.framework/Versions/A/OSLog
+    0x7ffa2af87000 -     0x7ffa2b073184  com.apple.InternalSwiftProtobuf (1.0 - 1.26.0) <4CB2A629-E8C3-3574-8A3D-437CD4AD9492> /System/Library/PrivateFrameworks/InternalSwiftProtobuf.framework/Versions/A/InternalSwiftProtobuf
+    0x7ffa2b169000 -     0x7ffa2b1742dc  com.apple.HIDDisplay (1.0 - 1) <7C325535-FD32-3891-9270-3B39938CFB5F> /System/Library/PrivateFrameworks/HIDDisplay.framework/Versions/A/HIDDisplay
+    0x7ffa327fa000 -     0x7ffa327faa6b  com.apple.FeatureFlags (1.0 - 101) <2C7CD970-77B8-3437-AB2E-412A32C1FA51> /System/Library/PrivateFrameworks/FeatureFlags.framework/Versions/A/FeatureFlags
+    0x7ffb1ac9a000 -     0x7ffb1ac9c0d7  com.apple.ConfigProfileHelper (18.0 - 1800) <028EDDE4-4D92-3B3C-A860-0CABC87117F1> /System/Library/PrivateFrameworks/ConfigProfileHelper.framework/Versions/A/ConfigProfileHelper
+    0x7ffb1f6b5000 -     0x7ffb1f6bbe83  libCoreFSCache.dylib (351) <A23F10A5-F1A8-3373-B6FE-B311F8554A30> /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libCoreFSCache.dylib
+    0x7ffb1f6bc000 -     0x7ffb1f6c0a73  libCoreVMClient.dylib (351) <A6BEE027-021B-3E61-8CD2-4F051F884469> /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libCoreVMClient.dylib
+    0x7ffb1f6c1000 -     0x7ffb1f6d0db7  com.apple.opengl (23.0.2 - 23.0.2) <455C7698-527F-3B29-B12B-E23C43ADBD66> /System/Library/Frameworks/OpenGL.framework/Versions/A/OpenGL
+    0x7ffb1f6d1000 -     0x7ffb1f6d331b  libCVMSPluginSupport.dylib (23.0.2) <E461F460-C345-33C0-8CD5-962BA6330DAC> /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libCVMSPluginSupport.dylib
+    0x7ffb1f6d4000 -     0x7ffb1f6dc29f  libGFXShared.dylib (23.0.2) <1EB25B78-0BEE-38B7-87D6-7A2FEEBBF92A> /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGFXShared.dylib
+    0x7ffb1f6dd000 -     0x7ffb1f71237f  libGLImage.dylib (23.0.2) <ACB79E94-6206-3833-9D9A-B8F5BBB3AA88> /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGLImage.dylib
+    0x7ffb1f713000 -     0x7ffb1f750b47  libGLU.dylib (23.0.2) <A58BFB2C-1851-3510-B406-1B26726322AD> /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGLU.dylib
+    0x7ffb1f8d3000 -     0x7ffb1f8dd6d3  libGL.dylib (23.0.2) <DE5854F9-D150-3BC6-A6FE-BA65868174A9> /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib
+    0x7ffb20380000 -     0x7ffb203d695f  com.apple.opencl (5.5 - 5.5) <A3282AE6-9287-3F5B-9252-91227F9047DB> /System/Library/Frameworks/OpenCL.framework/Versions/A/OpenCL
+    0x7ffb222fc000 -     0x7ffb2241d755  com.apple.ExtensionFoundation (97 - 97) <A6A63023-5A42-3740-A7F2-36B791A2CEE0> /System/Library/Frameworks/ExtensionFoundation.framework/Versions/A/ExtensionFoundation
+    0x7ffb23440000 -     0x7ffb2347c26f  com.apple.LightweightCodeRequirements (1.0 - 1) <25CB62D7-2A30-3EAB-BB57-BF98C002788C> /System/Library/Frameworks/LightweightCodeRequirements.framework/Versions/A/LightweightCodeRequirements
+    0x7ffb24287000 -     0x7ffb242a6047  com.apple.MPSBenchmarkLoop (1.0 - 1) <02200EA0-6522-364B-B61C-5D91A82B6DCD> /System/Library/Frameworks/MetalPerformanceShaders.framework/Versions/A/Frameworks/MPSBenchmarkLoop.framework/Versions/A/MPSBenchmarkLoop
+    0x7ffb242a7000 -     0x7ffb242bbea9  com.apple.MPSFunctions (1.0 - 1) <BDB47620-C7A4-300B-B241-979EB95B5F73> /System/Library/Frameworks/MetalPerformanceShaders.framework/Versions/A/Frameworks/MPSFunctions.framework/Versions/A/MPSFunctions
+    0x7ffb242bc000 -     0x7ffb242c1625  com.apple.MPSHost (1.0 - 1) <96FBE89A-08A2-30C5-9298-619F21A7489F> /System/Library/Frameworks/MetalPerformanceShaders.framework/Versions/A/Frameworks/MPSHost.framework/Versions/A/MPSHost
+    0x7ffb2a810000 -     0x7ffb2a96ea66  com.apple.SwiftData (1.0 - 133) <5F043649-9BF1-3792-B48D-B940A6DE5DE2> /System/Library/Frameworks/SwiftData.framework/Versions/A/SwiftData
+    0x7ffb3043f000 -     0x7ffb3045435e  com.apple.AppleDeviceQuerySupport (1.0 - 396.80.5) <13AEE505-8BEE-379B-82CF-E3058239A273> /System/Library/PrivateFrameworks/AppleDeviceQuerySupport.framework/Versions/A/AppleDeviceQuerySupport
+    0x7ffb30bcd000 -     0x7ffb30c41eef  com.apple.AppleKeyStore (1.0 - 1.0) <FEE53EFF-23FE-3334-B201-5F6032A88D62> /System/Library/PrivateFrameworks/AppleKeyStore.framework/Versions/A/AppleKeyStore
+    0x7ffb314b0000 -     0x7ffb314c7e2b  com.apple.private.AppleMobileFileIntegrity-fmk (1.0 - 1) <40822E64-6B4D-3553-B7C1-6681B82B085D> /System/Library/PrivateFrameworks/AppleMobileFileIntegrity.framework/Versions/A/AppleMobileFileIntegrity
+    0x7ffb3195e000 -     0x7ffb3196e24f  com.apple.AtomicsInternal (1.1.0 - 112) <E27347C9-69AE-3FBF-A7D8-E14DFD740EB1> /System/Library/PrivateFrameworks/AtomicsInternal.framework/Versions/A/AtomicsInternal
+    0x7ffb31a14000 -     0x7ffb31a3cf79  com.apple.imgaudio.AudioAnalytics (1.0 - 1) <F476BB90-1E62-3F77-87C3-736B8D368161> /System/Library/PrivateFrameworks/AudioAnalytics.framework/Versions/A/AudioAnalytics
+    0x7ffb31f05000 -     0x7ffb31f4f915  com.apple.BackBoardHIDEventFoundation (1.0 - 1) <5AE456AA-3229-333C-9847-49EBC7CFB46B> /System/Library/PrivateFrameworks/BackBoardHIDEventFoundation.framework/Versions/A/BackBoardHIDEventFoundation
+    0x7ffb31fc9000 -     0x7ffb31fe1332  com.apple.biome.BiomeDSL (1.0 - 200.6) <3DDDE410-AD22-3FD9-A51A-DEA8D2D02366> /System/Library/PrivateFrameworks/BiomeDSL.framework/Versions/A/BiomeDSL
+    0x7ffb31fe2000 -     0x7ffb3293b528  com.apple.BiomeLibrary (246.32) <23E0B39E-DF69-3CB4-B29C-0A4B87061490> /System/Library/PrivateFrameworks/BiomeLibrary.framework/Versions/A/BiomeLibrary
+    0x7ffb3293c000 -     0x7ffb329413b4  com.apple.biome.BiomeSync (1.0 - 200.6) <3AF29E1E-BA6C-3346-A070-99AF57342430> /System/Library/PrivateFrameworks/BiomeSync.framework/Versions/A/BiomeSync
+    0x7ffb33d4b000 -     0x7ffb33dcdbe3  com.apple.biome.CascadeSets (1.0 - 200.6) <7C66E10A-D56B-30FA-8D8D-E562113A5646> /System/Library/PrivateFrameworks/CascadeSets.framework/Versions/A/CascadeSets
+    0x7ffb34e4c000 -     0x7ffb34f67f67  com.apple.CollectionsInternal (1.2.0 - 112) <12EB3527-19AB-37EE-8667-A6DD605F7D9E> /System/Library/PrivateFrameworks/CollectionsInternal.framework/Versions/A/CollectionsInternal
+    0x7ffc1afe6000 -     0x7ffc1aff9a14  com.apple.DeviceRecovery (1.0 - 1) <6D94DA2B-DF52-3133-AC1C-17D303B22F4E> /System/Library/PrivateFrameworks/DeviceRecovery.framework/Versions/A/DeviceRecovery
+    0x7ffc1cdfb000 -     0x7ffc1cdfe310  com.apple.FontServices (1.0 - 1) <A4DC2D0E-C433-30B5-872A-92DBF452F141> /System/Library/PrivateFrameworks/FontServices.framework/Versions/A/FontServices
+    0x7ffc1cdff000 -     0x7ffc1ceeeddf  libXTFontStaticRegistryData.dylib (335.3.0.1) <8631B7ED-D236-3380-BEE2-BB0FF78DB038> /System/Library/PrivateFrameworks/FontServices.framework/libXTFontStaticRegistryData.dylib
+    0x7ffc1cef0000 -     0x7ffc1cefc6cc  com.apple.FramePacing (1.0 - 1) <EF130C66-B9B8-3A7F-8C61-D39791239DAB> /System/Library/PrivateFrameworks/FramePacing.framework/Versions/A/FramePacing
+    0x7ffc1de5e000 -     0x7ffc1de64607  libGPUCompilerUtils.dylib (32023.864) <37846F9A-AD5D-3FFC-8AF9-3DB6A1B7CE15> /System/Library/PrivateFrameworks/GPUCompiler.framework/Versions/32023/Libraries/libGPUCompilerUtils.dylib
+    0x7ffc22787000 -     0x7ffc227d002f  libllvm-flatbuffers.dylib (32023.864) <A22DCB9E-2D7C-3124-917D-577E93107843> /System/Library/PrivateFrameworks/GPUCompiler.framework/Versions/32023/Libraries/libllvm-flatbuffers.dylib
+    0x7ffc28f8b000 -     0x7ffc29090be2  com.apple.InstalledContentLibrary (1.0 - 1.0) <B084F88F-11E4-36FA-A1D4-184B6D498D21> /System/Library/PrivateFrameworks/InstalledContentLibrary.framework/Versions/A/InstalledContentLibrary
+    0x7ffc2b1ed000 -     0x7ffc2b879dec  com.apple.IntelligencePlatformLibrary (246.32) <13F7B0CE-783E-37C5-8627-29B6FE5F85EC> /System/Library/PrivateFrameworks/IntelligencePlatformLibrary.framework/Versions/A/IntelligencePlatformLibrary
+    0x7ffc2d053000 -     0x7ffc2d75f2bf  com.apple.MIL (3510.2 - 3510.2.1) <428EE567-2118-349A-BC68-262DE585C4E4> /System/Library/PrivateFrameworks/MIL.framework/Versions/A/MIL
+    0x7ffc3084b000 -     0x7ffc308a3645  com.apple.MessageSecurity (1.0 - 195.80.13) <6BECC6DB-5917-3391-B863-94CEF44DA9E3> /System/Library/PrivateFrameworks/MessageSecurity.framework/Versions/A/MessageSecurity
+    0x7ffc3540a000 -     0x7ffc354c1287  com.apple.ParsingInternal (0.0.1 - 112) <337B30E6-3FC5-31B9-9E49-071A7E685A3D> /System/Library/PrivateFrameworks/ParsingInternal.framework/Versions/A/ParsingInternal
+    0x7ffd181d8000 -     0x7ffd181f8073  com.apple.accessibility.PhotosensitivityProcessing (1.0 - 1) <C8E4AC76-F2FD-3783-80EA-B2FA8B8A902B> /System/Library/PrivateFrameworks/PhotosensitivityProcessing.framework/Versions/A/PhotosensitivityProcessing
+    0x7ffd185b7000 -     0x7ffd185e1cc7  com.apple.PoirotSQLite (1.0 - 1) <C62190FE-636E-34E5-A95A-8E61DC852C23> /System/Library/PrivateFrameworks/PoirotSQLite.framework/Versions/A/PoirotSQLite
+    0x7ffd185e2000 -     0x7ffd1864f135  com.apple.PoirotSchematizer (1.0 - 1) <8BA1B698-B1B8-361E-AF30-DAABC24DC1B1> /System/Library/PrivateFrameworks/PoirotSchematizer.framework/Versions/A/PoirotSchematizer
+    0x7ffd18650000 -     0x7ffd186744f4  com.apple.PoirotUDFs (1.0 - 1) <0A46B5FE-2CFB-3F47-A48D-BD5F885BDEBF> /System/Library/PrivateFrameworks/PoirotUDFs.framework/Versions/A/PoirotUDFs
+    0x7ffd191b8000 -     0x7ffd192b6e64  com.apple.ProDisplayLibrary (10.4.27 - 10.4.27) <8D9F6F39-BB89-3907-9AF5-BBA22938FAE6> /System/Library/PrivateFrameworks/ProDisplayLibrary.framework/Versions/A/ProDisplayLibrary
+    0x7ffd19fd9000 -     0x7ffd19fe0f9f  com.apple.ReflectionInternal (1.0.0 - 112) <3B99B78C-7EA0-3643-AFD6-02787600067D> /System/Library/PrivateFrameworks/ReflectionInternal.framework/Versions/A/ReflectionInternal
+    0x7ffd1ad1b000 -     0x7ffd1ad2faf7  com.apple.RuntimeInternal (1.0.0 - 112) <3D165F4B-EF99-3FB4-89A1-5702241BB5A4> /System/Library/PrivateFrameworks/RuntimeInternal.framework/Versions/A/RuntimeInternal
+    0x7ffd2473c000 -     0x7ffd24766647  com.apple.security.SwiftASN1Internal (1.0 - 1) <6071BAC4-D313-3AA0-8DC0-8F59CAC4FF04> /System/Library/PrivateFrameworks/SwiftASN1Internal.framework/Versions/A/SwiftASN1Internal
+    0x7ffd2bb05000 -     0x7ffd2bb05fc7  com.apple.VideoToolboxParavirtualizationSupport (63.4.3 - 63.4.3) <CD700C1A-FBB3-3F1C-8221-459012C811DC> /System/Library/PrivateFrameworks/VideoToolboxParavirtualizationSupport.framework/Versions/A/VideoToolboxParavirtualizationSupport
+    0x7ffd35866000 -     0x7ffd3590609f  libAppleArchive.dylib (443.0.1) <939E89A6-EBB5-379E-9C84-F4D03E9CD93E> /usr/lib/libAppleArchive.dylib
+    0x7ffd359e6000 -     0x7ffd359f109c  libCoreEntitlements.dylib (80.0.1) <8AD259D8-5A05-3BB5-BA46-A659607E18F1> /usr/lib/libCoreEntitlements.dylib
+    0x7ffd35c8e000 -     0x7ffd35c95747  libRosetta.dylib (367.3) <A1D3652E-6E87-3600-96D2-71F59D672D84> /usr/lib/libRosetta.dylib
+    0x7ffd35d0b000 -     0x7ffd35d13b58  libTLE.dylib (80.0.1) <F53641DD-3F44-30BD-872F-0B85581E2D9A> /usr/lib/libTLE.dylib
+    0x7ffd360a3000 -     0x7ffd361bcc67  libcrypto.46.dylib (109) <330C94C1-BAB7-3DFE-8B57-426A6C10CA29> /usr/lib/libcrypto.46.dylib
+    0x7ffd362f6000 -     0x7ffd363113af  libhvf.dylib (9) <E4CD9647-C803-3298-9B3E-86448680A1B3> /usr/lib/libhvf.dylib
+    0x7ffd36cc6000 -     0x7ffd36cfe26b  libssl.48.dylib (109) <07890932-6568-3F5E-BC7D-B17D50B26B27> /usr/lib/libssl.48.dylib
+    0x7ffd36d39000 -     0x7ffd36d63f47  libswiftPrespecialized.dylib (0) <FD46479C-C59D-3759-B31D-A8E0107F48A5> /usr/lib/libswiftPrespecialized.dylib
+    0x7ffd36f8d000 -     0x7ffd36f9cfd7  libswiftDistributed.dylib (6.2.4 - 6.2.4.1.4) <D19108A7-F156-3F33-AF02-6305F31CAC82> /usr/lib/swift/libswiftDistributed.dylib
+    0x7ffd36fb3000 -     0x7ffd36fc2c4f  libswiftObservation.dylib (6.2.4 - 6.2.4.1.4) <0E7FBF5C-B046-3FD0-86C2-8ED2AB1E59D3> /usr/lib/swift/libswiftObservation.dylib
+    0x7ffd3711a000 -     0x7ffd371210b7  libswiftSynchronization.dylib (6.2.4 - 6.2.4.1.4) <0AB42FAB-3016-3EA8-AF2C-72DE28C32B73> /usr/lib/swift/libswiftSynchronization.dylib
+    0x7ffd37122000 -     0x7ffd3713800f  libswiftSystem.dylib (72.2) <009B1EB4-0CB8-3941-BEC5-262FAECEBAF1> /usr/lib/swift/libswiftSystem.dylib
+    0x7ffd37151000 -     0x7ffd371537eb  libswift_Builtin_float.dylib (6.2.4 - 6.2.4.1.4) <2A6345A7-A5FA-38E8-815E-0805D9FF84EC> /usr/lib/swift/libswift_Builtin_float.dylib
+    0x7ffd37154000 -     0x7ffd371c0a0f  libswift_Concurrency.dylib (6.2.4 - 6.2.4.1.4) <E625BF51-4108-3645-9091-B460BD303D65> /usr/lib/swift/libswift_Concurrency.dylib
+    0x7ffd371c1000 -     0x7ffd371c45e7  libswift_DarwinFoundation1.dylib (347.40.2) <8F6E2E49-0B30-3E14-ABF5-BD6B81901CC6> /usr/lib/swift/libswift_DarwinFoundation1.dylib
+    0x7ffd371c5000 -     0x7ffd371c5c03  libswift_DarwinFoundation2.dylib (347.40.2) <8FB3F445-B1B2-3207-8644-EA694CEFC181> /usr/lib/swift/libswift_DarwinFoundation2.dylib
+    0x7ffd371c6000 -     0x7ffd371c6797  libswift_DarwinFoundation3.dylib (347.40.2) <7451A2C8-E6B6-3BEE-A816-F5EB02AD5DA0> /usr/lib/swift/libswift_DarwinFoundation3.dylib
+    0x7ffd371fc000 -     0x7ffd372a74f7  libswift_RegexParser.dylib (6.2.4 - 6.2.4.1.4) <B82EAEA5-DD22-30B7-B4C3-E57F8CFE34D5> /usr/lib/swift/libswift_RegexParser.dylib
+    0x7ffd372a8000 -     0x7ffd373288af  libswift_StringProcessing.dylib (6.2.4 - 6.2.4.1.4) <0E22A783-A440-3531-933C-37235208CB4B> /usr/lib/swift/libswift_StringProcessing.dylib
+    0x7ffd3748e000 -     0x7ffd37492023  libsystem_darwindirectory.dylib (122) <6AD089C7-08CE-384A-99D3-C1423438D8E0> /usr/lib/system/libsystem_darwindirectory.dylib
+    0x7ffd37493000 -     0x7ffd3749c3fb  libsystem_eligibility.dylib (289.80.56) <DB18CBDC-C09A-3E6F-94C2-9ACD01EC4D20> /usr/lib/system/libsystem_eligibility.dylib
+    0x7ffd3749d000 -     0x7ffd374a5143  libsystem_sanitizers.dylib (25) <10D435C2-FCAE-3D92-BB28-DE1E5A9FA5A3> /usr/lib/system/libsystem_sanitizers.dylib
+    0x7ffd374a6000 -     0x7ffd374a6ba7  libsystem_trial.dylib (474.2.0.5.2) <54881E6D-2E14-3736-A0EC-BF8EF9456DE6> /usr/lib/system/libsystem_trial.dylib
