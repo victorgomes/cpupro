@@ -94,7 +94,7 @@ discovery.view.define('turbofan-graph-viewer', {
                                     $edges: ${phasePath}.data.edges.[target = $nodeId];
                                     $otherPhase: ${otherPhasePath};
                                     $isDiffMode: $otherPhase and $otherPhase.name != "---";
-                                    $otherNode: $isDiffMode ? $otherPhase.data.nodes.[id = $nodeId] : null;
+                                    $otherNode: $isDiffMode ? $otherPhase.data.nodes.[id = $nodeId][0] : null;
                                     
                                     $isMissingInOther: $isDiffMode and not $otherNode;
                                     $diffClass: $isMissingInOther ? (${isBase ? "'tf-node-added'" : "'tf-node-removed'"}) : '';
@@ -104,7 +104,7 @@ discovery.view.define('turbofan-graph-viewer', {
                                     
                                     $inputsHTML: $edges.map(=> (
                                         '<span class="tf-node-input" data-node-id="' + source + '" style="color: ' + ($customColors[type] or 'inherit') + ';" title="' + type + '">#' + source + '</span>'
-                                    )).join(', ');
+                                    )).join(' ');
                                     $titleHtml: title.replace(/</g, '&lt;').replace(/>/g, '&gt;');
                                     '<div class="tf-node tf-node-' + id + ' ' + $finalClass + '"><span class="tf-node-id" data-node-id="' + id + '">#' + id + '</span> <span class="tf-node-title">' + $titleHtml + '</span> ' + ($inputsHTML ? '(' + $inputsHTML + ')' : '()') + '</div>'
                                 `
@@ -139,7 +139,7 @@ discovery.view.define('turbofan-graph-viewer', {
                                             $edges: ${phasePath}.data.edges.[target = $nodeId];
                                             $otherPhase: ${otherPhasePath};
                                             $isDiffMode: $otherPhase and $otherPhase.name != "---";
-                                            $otherNode: $isDiffMode ? $otherPhase.data.nodes.[id = $nodeId] : null;
+                                            $otherNode: $isDiffMode ? $otherPhase.data.nodes.[id = $nodeId][0] : null;
                                             
                                             $isMissingInOther: $isDiffMode and not $otherNode;
                                             $diffClass: $isMissingInOther ? (${isBase ? "'tf-node-added'" : "'tf-node-removed'"}) : '';
@@ -149,7 +149,7 @@ discovery.view.define('turbofan-graph-viewer', {
                                             
                                             $inputsHTML: $edges ? $edges.map(=> (
                                                 '<span class="tf-node-input" data-node-id="' + source + '" style="color: ' + ($customColors[type] or 'inherit') + ';" title="' + type + '">#' + source + '</span>'
-                                            )).join(', ') : '';
+                                            )).join(' ') : '';
                                             
                                             $customData: ${phasePath}.keys()
                                                 .[${phasePath}[$].type = "turboshaft_custom_data"]
@@ -159,11 +159,11 @@ discovery.view.define('turbofan-graph-viewer', {
                                                 })
                                                 .[value];
                                                 
-                                            $filteredCustomData: $customData.[name != "Properties"];
+                                            $filteredCustomData: $customData.[name != "Properties" and name != "op_effects"];
                                             $tooltipLines: $filteredCustomData.map(=> name + ': ' + value).join('&#10;');
                                             $tooltipContent: $tooltipLines.replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
                                             
-                                            $propsVal: $customData.[name = "Properties"].value;
+                                            $propsVal: $customData.[name = "Properties"].value | join('');
                                             $propsStr: properties ? '[' + properties + ']' : ($propsVal ? $propsVal : '');
                                             $propsHtml: $propsStr ? ' <span class="tf-node-properties" style="color: #999;">' + $propsStr.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</span>' : '';
                                             
