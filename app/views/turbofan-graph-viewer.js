@@ -97,7 +97,7 @@ discovery.view.define('turbofan-graph-viewer', {
                                     $otherNode: $isDiffMode ? $otherPhase.data.nodes.[id = $nodeId] : null;
                                     
                                     $isMissingInOther: $isDiffMode and not $otherNode;
-                                    $diffClass: $isMissingInOther ? (${isBase ? "'tf-node-removed'" : "'tf-node-added'"}) : '';
+                                    $diffClass: $isMissingInOther ? (${isBase ? "'tf-node-added'" : "'tf-node-removed'"}) : '';
                                     
                                     $changedOp: $isDiffMode and $otherNode and $otherNode.title != title;
                                     $finalClass: $diffClass or ($changedOp ? 'tf-node-changed' : '');
