@@ -23,7 +23,7 @@ discovery.view.define('turbofan-graph-viewer', {
                                 when: 'type = "graph"',
                                 content: {
                                     view: 'tree',
-                                    data: 'data.nodes',
+                                    data: 'data.nodes.sort(id asc)',
                                     expanded: 3,
                                     item: [
                                         { view: 'text', data: '`[${id}] ${title}`' },
