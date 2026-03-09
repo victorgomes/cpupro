@@ -26,7 +26,7 @@ discovery.view.define('call-frame-codes-table', {
 
                     index: $codes.indexOf($),
                     code: $,
-                    tfTrace: #.turbofan.[function.functionName = $ownerCallFrame.name][$tfCodes.indexOf($) != -1 ? $tfCodes.indexOf($) : 0],
+                    tfTrace: $tfCodes.indexOf($) != -1 ? #.turbofan.[function.functionName = $ownerCallFrame.name][$tfCodes.indexOf($)] : null,
                     positions.parsePositions($size),
                     inlined.parseInlined($fns).({
                         ...,
