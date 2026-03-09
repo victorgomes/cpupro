@@ -17,7 +17,9 @@ if (!fs.existsSync(d8Path)) {
 }
 
 // 1. Run d8 with --prof
-const args = process.argv.slice(2);
+const rawArgs = process.argv.slice(2);
+const runTickProcessor = rawArgs.includes('--preprocess');
+const args = rawArgs.filter(arg => arg !== '--preprocess');
 const d8Args = ['--prof', ...args];
 
 console.log(`Running: ${d8Path} ${d8Args.join(' ')}`);
@@ -35,34 +37,40 @@ if (!fs.existsSync(logPath)) {
     process.exit(1);
 }
 
-// 2. Run tick processor
-const platform = os.platform();
-const processorName = platform === 'darwin' ? 'mac-tick-processor' : 'linux-tick-processor';
-const processorPath = path.join(os.homedir(), `v8/v8/tools/${processorName}`);
+let cpuproTarget = logPath;
 
-if (!fs.existsSync(processorPath)) {
-    console.error(`Error: Tick processor not found at ${processorPath}`);
-    process.exit(1);
+if (runTickProcessor) {
+    // 2. Run tick processor
+    const platform = os.platform();
+    const processorName = platform === 'darwin' ? 'mac-tick-processor' : 'linux-tick-processor';
+    const processorPath = path.join(os.homedir(), `v8/v8/tools/${processorName}`);
+
+    if (!fs.existsSync(processorPath)) {
+        console.error(`Error: Tick processor not found at ${processorPath}`);
+        process.exit(1);
+    }
+
+    const jsonPath = path.resolve('v8.json');
+    console.log(`Processing log with ${processorPath} > ${jsonPath}`);
+
+    // We need to write the stdout to v8.json
+    const processorArgs = ['v8.log', '--preprocess'];
+    const processorResult = spawnSync(processorPath, processorArgs, {
+        stdio: ['inherit', fs.openSync(jsonPath, 'w'), 'inherit']
+    });
+
+    if (processorResult.error || processorResult.status !== 0) {
+        console.error('Tick processor failed.');
+        process.exit(processorResult.status || 1);
+    }
+    
+    cpuproTarget = jsonPath;
 }
 
-const jsonPath = path.resolve('v8.json');
-console.log(`Processing log with ${processorPath} > ${jsonPath}`);
-
-// We need to write the stdout to v8.json
-const processorArgs = ['v8.log', '--preprocess'];
-const processorResult = spawnSync(processorPath, processorArgs, {
-    stdio: ['inherit', fs.openSync(jsonPath, 'w'), 'inherit']
-});
-
-if (processorResult.error || processorResult.status !== 0) {
-    console.error('Tick processor failed.');
-    process.exit(processorResult.status || 1);
-}
-
-// 3. Run cpupro on the generated JSON
+// 3. Run cpupro on the generated trace
 const cpuproPath = path.join(__dirname, 'cpupro');
-console.log(`Analyzing with cpupro: ${cpuproPath} ${jsonPath}`);
-const cpuproResult = spawnSync('node', [cpuproPath, jsonPath], { stdio: 'inherit' });
+console.log(`Analyzing with cpupro: ${cpuproPath} ${cpuproTarget}`);
+const cpuproResult = spawnSync('node', [cpuproPath, cpuproTarget], { stdio: 'inherit' });
 
 if (cpuproResult.error || cpuproResult.status !== 0) {
     console.error('cpupro execution failed.');
