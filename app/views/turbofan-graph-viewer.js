@@ -5,6 +5,13 @@ discovery.view.define('turbofan-graph-viewer', {
                 const nodeId = e.target.dataset.nodeId;
                 const nodeEl = el.querySelector(`.tf-node-${nodeId}`);
                 if (nodeEl) nodeEl.classList.add('tf-node-highlight');
+            } else if (e.target.classList.contains('tf-node-id')) {
+                const nodeId = e.target.dataset.nodeId;
+                const uses = el.querySelectorAll(`.tf-node-input[data-node-id="${nodeId}"]`);
+                for (const use of uses) {
+                    const parentNode = use.closest('.tf-node');
+                    if (parentNode) parentNode.classList.add('tf-node-highlight');
+                }
             }
         });
         el.addEventListener('mouseout', (e) => {
@@ -12,6 +19,13 @@ discovery.view.define('turbofan-graph-viewer', {
                 const nodeId = e.target.dataset.nodeId;
                 const nodeEl = el.querySelector(`.tf-node-${nodeId}`);
                 if (nodeEl) nodeEl.classList.remove('tf-node-highlight');
+            } else if (e.target.classList.contains('tf-node-id')) {
+                const nodeId = e.target.dataset.nodeId;
+                const uses = el.querySelectorAll(`.tf-node-input[data-node-id="${nodeId}"]`);
+                for (const use of uses) {
+                    const parentNode = use.closest('.tf-node');
+                    if (parentNode) parentNode.classList.remove('tf-node-highlight');
+                }
             }
         });
 
@@ -37,26 +51,30 @@ discovery.view.define('turbofan-graph-viewer', {
                             {
                                 when: 'type = "graph"',
                                 content: {
-                                    view: 'list',
-                                    data: 'data.nodes.sort(id ascN)',
-                                    item: {
-                                        view: 'html',
-                                        data: `
-                                            $customColors: {
-                                                value: '#2196f3',
-                                                effect: '#ff9800',
-                                                control: '#4caf50',
-                                                'frame-state': '#9c27b0',
-                                                context: '#e91e63'
-                                            };
-                                            $nodeId: id;
-                                            $edges: #.tfPhase.data.edges.[target = $nodeId];
-                                            $inputsHTML: $edges.map(=> 
-                                                '<span class="tf-node-input" data-node-id="' + source + '" style="color: ' + ($customColors[type] or 'inherit') + ';" title="' + type + '">#' + source + '</span>'
-                                            ).join(', ');
-                                            $titleHtml: title.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                                            '<div class="tf-node tf-node-' + id + '"><span class="tf-node-id">#' + id + '</span>:' + $titleHtml + '(' + $inputsHTML + ')</div>'
-                                        `
+                                    view: 'block',
+                                    className: 'source tf-graph',
+                                    content: {
+                                        view: 'list',
+                                        data: 'data.nodes.sort(id ascN)',
+                                        item: {
+                                            view: 'html',
+                                            data: `
+                                                $customColors: {
+                                                    value: '#2196f3',
+                                                    effect: '#ff9800',
+                                                    control: '#4caf50',
+                                                    'frame-state': '#9c27b0',
+                                                    context: '#e91e63'
+                                                };
+                                                $nodeId: id;
+                                                $edges: #.tfPhase.data.edges.[target = $nodeId];
+                                                $inputsHTML: $edges.map(=> 
+                                                    '<span class="tf-node-input" data-node-id="' + source + '" style="color: ' + ($customColors[type] or 'inherit') + ';" title="' + type + '">#' + source + '</span>'
+                                                ).join(', ');
+                                                $titleHtml: title.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                                                '<div class="tf-node tf-node-' + id + '"><span class="tf-node-id" data-node-id="' + id + '">#' + id + '</span> <span class="tf-node-title">' + $titleHtml + '</span> ' + ($inputsHTML ? '(' + $inputsHTML + ')' : '()') + '</div>'
+                                            `
+                                        }
                                     }
                                 }
                             },

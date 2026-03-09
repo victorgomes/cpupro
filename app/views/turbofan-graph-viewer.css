@@ -11,8 +11,20 @@
     background-color: var(--discovery-rgba-color-hover, rgba(125, 125, 125, 0.2));
 }
 
+.tf-graph {
+    background-color: #cdcdcd1a;
+    padding: 8px;
+    border-radius: 4px;
+}
+
 .tf-node-id {
     color: #969696a6;
+    display: inline-block;
+    min-width: 5ch;
+}
+
+.tf-node-title {
+    color: #999;
 }
 
 .tf-node-input {
