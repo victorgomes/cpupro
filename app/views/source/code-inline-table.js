@@ -51,7 +51,7 @@ discovery.view.define('code-inline-table-viewer', {
             { when: '#.mode="table"', content: {
                 view: 'table',
                 limit: false,
-                data: 'inlined.({ ..., entry: parent is number ? `F${fn}O${offset}I${parent}` : `F${fn}O${offset}` })',
+                data: 'inlined.parseInlined($fns).({ ..., entry: parent is number ? `F${fn}O${offset}I${parent}` : `F${fn}O${offset}` })',
                 cols: [
                     { header: '#', data: 'index' },
                     { header: 'Entry', sorting: 'entry ascN', content: 'text-match{ text: entry, match: /\\D+/g }' },
