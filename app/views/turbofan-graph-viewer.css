@@ -1,0 +1,25 @@
+.tf-node {
+    font-family: var(--discovery-monospace-font-family, monospace);
+    line-height: 1.4;
+    transition: background-color 0.1s, color 0.1s;
+    border-radius: 4px;
+    padding: 0 4px;
+    margin-left: -4px;
+}
+
+.tf-node.tf-node-highlight {
+    background-color: var(--discovery-rgba-color-hover, rgba(125, 125, 125, 0.2));
+}
+
+.tf-node-id {
+    color: #969696a6;
+}
+
+.tf-node-input {
+    cursor: default;
+    border-bottom: 1px dotted transparent;
+}
+
+.tf-node-input:hover {
+    border-bottom-color: currentColor;
+}

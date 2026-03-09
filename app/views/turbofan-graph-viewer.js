@@ -1,5 +1,20 @@
 discovery.view.define('turbofan-graph-viewer', {
     render(el, config, data, context) {
+        el.addEventListener('mouseover', (e) => {
+            if (e.target.classList.contains('tf-node-input')) {
+                const nodeId = e.target.dataset.nodeId;
+                const nodeEl = el.querySelector(`.tf-node-${nodeId}`);
+                if (nodeEl) nodeEl.classList.add('tf-node-highlight');
+            }
+        });
+        el.addEventListener('mouseout', (e) => {
+            if (e.target.classList.contains('tf-node-input')) {
+                const nodeId = e.target.dataset.nodeId;
+                const nodeEl = el.querySelector(`.tf-node-${nodeId}`);
+                if (nodeEl) nodeEl.classList.remove('tf-node-highlight');
+            }
+        });
+
         return this.render(el, {
             view: 'context',
             modifiers: [
@@ -23,7 +38,7 @@ discovery.view.define('turbofan-graph-viewer', {
                                 when: 'type = "graph"',
                                 content: {
                                     view: 'list',
-                                    data: 'data.nodes',
+                                    data: 'data.nodes.sort(id ascN)',
                                     item: {
                                         view: 'html',
                                         data: `
@@ -37,10 +52,10 @@ discovery.view.define('turbofan-graph-viewer', {
                                             $nodeId: id;
                                             $edges: #.tfPhase.data.edges.[target = $nodeId];
                                             $inputsHTML: $edges.map(=> 
-                                                '<span style="color: ' + ($customColors[type] or 'inherit') + ';" title="' + type + '">#' + source + '</span>'
+                                                '<span class="tf-node-input" data-node-id="' + source + '" style="color: ' + ($customColors[type] or 'inherit') + ';" title="' + type + '">#' + source + '</span>'
                                             ).join(', ');
                                             $titleHtml: title.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                                            '<div style="font-family: monospace;">#' + id + ':' + $titleHtml + '(' + $inputsHTML + ')</div>'
+                                            '<div class="tf-node tf-node-' + id + '"><span class="tf-node-id">#' + id + '</span>:' + $titleHtml + '(' + $inputsHTML + ')</div>'
                                         `
                                     }
                                 }
