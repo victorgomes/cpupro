@@ -238,10 +238,75 @@ const pageContent = [
           content : {
             view : 'block',
             content : [
-              {view : 'h4', data : '#.tfPhase.name'}, {
-                view : 'tree',
-                data : '#.tfPhase.nodes',
-                item : [ 'text:`${id}: ${label}`' ]
+              {view : 'h4', data : '#.tfPhase.name'},
+              {
+                view: 'switch',
+                data: '#.tfPhase',
+                content: [
+                  {
+                    when: 'type = "graph"',
+                    content: {
+                      view : 'tree',
+                      data : 'data.nodes',
+                      item : [ 'text:`${id}: ${label}`' ]
+                    }
+                  },
+                  {
+                    when: 'type = "turboshaft_graph"',
+                    content: {
+                      view: 'list',
+                      data: 'data.blocks',
+                      item: [
+                        { view: 'h5', content: 'text:`Block ${id}`'},
+                        {
+                          view: 'list',
+                          data: '#.tfPhase.data.nodes.[block_id = @.id]',
+                          item: 'text:`${id}: ${title}`'
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    when: 'type = "sequence" or type = "instructions"',
+                    content: {
+                      view: 'list',
+                      data: 'data.blocks',
+                      item: [
+                        { view: 'h5', content: 'text:`Block ${id}`'},
+                        {
+                          view: 'list',
+                          data: 'instructions',
+                          item: 'text:`${id}: ${opcode}`'
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    when: 'type = "schedule"',
+                    content: {
+                      view: 'list',
+                      data: 'data.blocks',
+                      item: [
+                        { view: 'h5', content: 'text:`Block ${id}`'},
+                        {
+                          view: 'list',
+                          data: '#.tfPhase.data.nodes.[block_id = @.id]',
+                          item: 'text:`${id}: ${label}`'
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    when: 'type = "disassembly"',
+                    content: {
+                      view: 'block',
+                      content: 'text:data'
+                    }
+                  },
+                  {
+                    content: 'text:"Unsupported phase type: " + type'
+                  }
+                ]
               }
             ]
           }
