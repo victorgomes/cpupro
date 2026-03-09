@@ -15,7 +15,10 @@
         "analysis",
         "discovery"
     ],
-    "bin": "./bin/cpupro",
+    "bin": {
+        "cpupro": "./bin/cpupro",
+        "d8pro": "./bin/d8pro"
+    },
     "files": [
         "bin",
         "build/app.html",
