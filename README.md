@@ -1,6 +1,6 @@
-[![NPM version](https://img.shields.io/npm/v/cpupro.svg)](https://www.npmjs.com/package/cpupro)
-
 # CPUpro
+
+A fork from https://github.com/discoveryjs/cpupro focused entirely on `d8` execution.
 
 Rethinking of CPU profile analysis and processing. Focused on profiles and logs of any size collected in V8 runtimes: Node.js, Deno and Chromium browsers.
 
@@ -17,13 +17,24 @@ Supported formats:
 
 ## Usage
 
-### Scenario #1 – A viewer for CPU profiles
+### Scenario #1 - Using `d8pro` Wrapper
 
-Head to the [viewer on GitHub pages](https://discoveryjs.github.io/cpupro/), open a file in one of supported formats or drop it on the page.
+This fork includes `d8pro` wrapper script designed for profilling using `d8`.
 
-<img width="1267" alt="Demo" src="https://github.com/lahmatiy/cpupro/assets/270491/ea4d54b7-8d37-456a-8db3-628a1da7df3e">
+**Requirements:**
+- A local checkout of the V8 repository.
+- A macOS or Linux operating system.
 
-### Scenario #2 – CLI
+**Usage:**
+Run `d8pro` followed by any standard `d8` arguments. The wrapper will inject `--prof`, run your target file, process the output `v8.log` automatically using the V8 tick processor to get JS JIT symbols, and open `cpupro`.
+
+```
+d8pro my-script.js
+```
+
+<img width="800" alt="d8pro Demo" src="d8pro.png">
+
+### Scenario #2 – Using `cpupro` CLI
 
 CLI allows to generate a report (an viewer with embedded data) from a profile file.
 
