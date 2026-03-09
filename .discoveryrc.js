@@ -105,6 +105,7 @@ module.exports = {
             './views/timeline-profiles.js',
             './views/timeline-segments.css',
             './views/timeline-segments.js',
+            './views/turbofan-graph-viewer.js',
             './views/update-on-timings-change.css',
             './views/update-on-timings-change.js',
             './views/value-fraction.css',

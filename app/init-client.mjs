@@ -103,5 +103,6 @@ discovery.setContext({
         module: moduleConvolutionRule,
         topLevel: topLevelConvolutionRule,
         profilePresence: profilePresenceConvolutionRule
-    }
+    },
+    turbofan: typeof window !== 'undefined' ? window.__turbofanData : null
 });

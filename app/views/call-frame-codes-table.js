@@ -17,13 +17,16 @@ discovery.view.define('call-frame-codes-table', {
                 view: 'table',
                 className: 'view-call-frame-codes-table',
                 when: true,
-                data: `$codes: $; .({
+                data: `$codes: $; 
+                $tfCodes: $codes.[tier = "Turbofan" or tier = "Maglev"];
+                .({
                     $ownerCallFrame: callFrame;
                     $fns;
                     $size;
 
                     index: $codes.indexOf($),
                     code: $,
+                    tfTrace: #.turbofan.[function.functionName = $ownerCallFrame.name][$tfCodes.indexOf($) != -1 ? $tfCodes.indexOf($) : 0],
                     positions.parsePositions($size),
                     inlined.parseInlined($fns).({
                         ...,
@@ -134,6 +137,20 @@ discovery.view.define('call-frame-codes-table', {
                         content: ['text-with-unit{ value: code.size.bytes(), unit: true }'],
                         detailsWhen: 'code.disassemble',
                         details: 'code-disassemble-viewer:code'
+                    },
+                    {
+                        header: 'Graphs',
+                        colWhen: '#.turbofan',
+                        align: 'left',
+                        content: {
+                            view: 'switch',
+                            content: [
+                                { when: 'tfTrace.phases', content: 'text:`${tfTrace.phases.size()} phases`' },
+                                { content: 'text:"—"' }
+                            ]
+                        },
+                        detailsWhen: 'tfTrace.phases',
+                        details: 'turbofan-graph-viewer:tfTrace'
                     },
                     {
                         header: 'Position table',
