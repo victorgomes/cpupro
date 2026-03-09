@@ -29,153 +29,196 @@ discovery.view.define('turbofan-graph-viewer', {
             }
         });
 
+        const createGraphPane = (phasePath, otherPhasePath, isBase) => ({
+            view: 'switch',
+            data: phasePath,
+            content: [
+                {
+                    when: 'type = "graph"',
+                    content: {
+                        view: 'block',
+                        className: 'source tf-graph',
+                        content: {
+                            view: 'list',
+                            data: function(phase) {
+                                if (!phase || !phase.data || !phase.data.nodes) return [];
+                                const nodes = phase.data.nodes;
+                                const edges = phase.data.edges || [];
+                                const edgesByTarget = new Map();
+                                for (const edge of edges) {
+                                    if (!edgesByTarget.has(edge.target)) edgesByTarget.set(edge.target, []);
+                                    edgesByTarget.get(edge.target).push(edge);
+                                }
+                                
+                                const visited = new Set();
+                                const tempMark = new Set();
+                                const sorted = [];
+                                const nodeById = new Map();
+                                for (const node of nodes) {
+                                    nodeById.set(node.id, node);
+                                }
+                                
+                                function visit(nodeId) {
+                                    if (visited.has(nodeId)) return;
+                                    if (tempMark.has(nodeId)) return;
+                                    tempMark.add(nodeId);
+                                    const nodeEdges = edgesByTarget.get(nodeId) || [];
+                                    nodeEdges.sort((a, b) => a.index - b.index);
+                                    for (const edge of nodeEdges) {
+                                        visit(edge.source);
+                                    }
+                                    tempMark.delete(nodeId);
+                                    visited.add(nodeId);
+                                    if (nodeById.has(nodeId)) {
+                                        sorted.push(nodeById.get(nodeId));
+                                    }
+                                }
+                                
+                                const sortedNodes = nodes.slice().sort((a, b) => a.id - b.id);
+                                for (const node of sortedNodes) {
+                                    visit(node.id);
+                                }
+                                return sorted;
+                            },
+                            item: {
+                                view: 'html',
+                                data: `
+                                    $customColors: {
+                                        value: '#2196f3',
+                                        effect: '#ff9800',
+                                        control: '#4caf50',
+                                        'frame-state': '#9c27b0',
+                                        context: '#e91e63'
+                                    };
+                                    $nodeId: id;
+                                    $edges: ${phasePath}.data.edges.[target = $nodeId];
+                                    $otherPhase: ${otherPhasePath};
+                                    $isDiffMode: $otherPhase and $otherPhase.name != "---";
+                                    $otherNode: $isDiffMode ? $otherPhase.data.nodes.[id = $nodeId] : null;
+                                    
+                                    $isMissingInOther: $isDiffMode and not $otherNode;
+                                    $diffClass: $isMissingInOther ? (${isBase ? "'tf-node-removed'" : "'tf-node-added'"}) : '';
+                                    
+                                    $changedOp: $isDiffMode and $otherNode and $otherNode.title != title;
+                                    $finalClass: $diffClass or ($changedOp ? 'tf-node-changed' : '');
+                                    
+                                    $inputsHTML: $edges.map(=> (
+                                        '<span class="tf-node-input" data-node-id="' + source + '" style="color: ' + ($customColors[type] or 'inherit') + ';" title="' + type + '">#' + source + '</span>'
+                                    )).join(', ');
+                                    $titleHtml: title.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                                    '<div class="tf-node tf-node-' + id + ' ' + $finalClass + '"><span class="tf-node-id" data-node-id="' + id + '">#' + id + '</span> <span class="tf-node-title">' + $titleHtml + '</span> ' + ($inputsHTML ? '(' + $inputsHTML + ')' : '()') + '</div>'
+                                `
+                            }
+                        }
+                    }
+                },
+                {
+                    when: 'type = "turboshaft_graph"',
+                    content: {
+                        view: 'list',
+                        data: 'data.blocks',
+                        item: [
+                            { view: 'h5', content: 'text:`Block ${id}`' },
+                            {
+                                view: 'list',
+                                data: `$blockId: id; ${phasePath}.data.nodes.[block_id = $blockId]`,
+                                item: [
+                                    { view: 'text', data: '`${id}: ${title} ${op_effects || ""}`' },
+                                    {
+                                        view: 'list',
+                                        data: `$nodeId: id;
+                                            ${phasePath}.keys()
+                                                .[${phasePath}[$].type = "turboshaft_custom_data"]
+                                                .({
+                                                    name: $,
+                                                    value: ${phasePath}[$].data.[key = $nodeId].value[0]
+                                                })
+                                                .[value]`,
+                                        whenData: true,
+                                        item: 'text:`${name}: ${value}`'
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                },
+                {
+                    when: 'type = "schedule" or type = "disassembly"',
+                    content: {
+                        view: 'source',
+                        data: '{ content: data, syntax: type = "disassembly" ? "x86asm" : "text", lineNum: false }'
+                    }
+                },
+                {
+                    when: 'type = "sequence" or type = "instructions"',
+                    content: {
+                        view: 'list',
+                        data: 'data.blocks',
+                        item: [
+                            { view: 'h5', content: 'text:`Block ${id}`' },
+                            {
+                                view: 'list',
+                                data: 'instructions',
+                                item: 'text:`${id}: ${opcode}`'
+                            }
+                        ]
+                    }
+                },
+                {
+                    content: {
+                        view: 'block',
+                        className: 'data-unavailable',
+                        content: 'text:`Unsupported phase type: ${type}`'
+                    }
+                }
+            ]
+        });
+
         return this.render(el, {
             view: 'context',
             modifiers: [
                 {
-                    view: 'select',
-                    name: 'tfPhase',
-                    data: 'phases',
-                    text: 'name',
-                    value: '$[name="V8.TFBytecodeGraphBuilder"] or $[0]'
+                    view: 'block',
+                    className: 'tf-toolbar',
+                    content: [
+                        { view: 'text', data: '"Phase: "' },
+                        {
+                            view: 'select',
+                            name: 'tfPhase',
+                            data: 'phases',
+                            text: 'name',
+                            value: '$[name="V8.TFBytecodeGraphBuilder"] or $[0]'
+                        },
+                        { view: 'text', data: '" Compare with: "' },
+                        {
+                            view: 'select',
+                            name: 'tfDiffPhase',
+                            data: '[{ name: "---", value: null }] + phases',
+                            text: 'name',
+                            value: '$[0]'
+                        }
+                    ]
                 }
             ],
             content: {
                 view: 'block',
+                className: 'tf-graph-container',
                 content: [
                     {
-                        view: 'switch',
-                        data: '#.tfPhase',
+                        view: 'block',
+                        className: 'tf-graph-pane tf-graph-diff-pane',
+                        when: '#.tfDiffPhase.name != "---"',
                         content: [
-                            {
-                                when: 'type = "graph"',
-                                content: {
-                                    view: 'block',
-                                    className: 'source tf-graph',
-                                    content: {
-                                        view: 'list',
-                                        data: function(phase) {
-                                            if (!phase || !phase.data || !phase.data.nodes) return [];
-                                            const nodes = phase.data.nodes;
-                                            const edges = phase.data.edges || [];
-                                            const edgesByTarget = new Map();
-                                            for (const edge of edges) {
-                                                if (!edgesByTarget.has(edge.target)) edgesByTarget.set(edge.target, []);
-                                                edgesByTarget.get(edge.target).push(edge);
-                                            }
-                                            
-                                            const visited = new Set();
-                                            const tempMark = new Set();
-                                            const sorted = [];
-                                            const nodeById = new Map();
-                                            for (const node of nodes) {
-                                                nodeById.set(node.id, node);
-                                            }
-                                            
-                                            function visit(nodeId) {
-                                                if (visited.has(nodeId)) return;
-                                                if (tempMark.has(nodeId)) return;
-                                                tempMark.add(nodeId);
-                                                const nodeEdges = edgesByTarget.get(nodeId) || [];
-                                                nodeEdges.sort((a, b) => a.index - b.index);
-                                                for (const edge of nodeEdges) {
-                                                    visit(edge.source);
-                                                }
-                                                tempMark.delete(nodeId);
-                                                visited.add(nodeId);
-                                                if (nodeById.has(nodeId)) {
-                                                    sorted.push(nodeById.get(nodeId));
-                                                }
-                                            }
-                                            
-                                            const sortedNodes = nodes.slice().sort((a, b) => a.id - b.id);
-                                            for (const node of sortedNodes) {
-                                                visit(node.id);
-                                            }
-                                            return sorted;
-                                        },
-                                        item: {
-                                            view: 'html',
-                                            data: `
-                                                $customColors: {
-                                                    value: '#2196f3',
-                                                    effect: '#ff9800',
-                                                    control: '#4caf50',
-                                                    'frame-state': '#9c27b0',
-                                                    context: '#e91e63'
-                                                };
-                                                $nodeId: id;
-                                                $edges: #.tfPhase.data.edges.[target = $nodeId];
-                                                $inputsHTML: $edges.map(=> 
-                                                    '<span class="tf-node-input" data-node-id="' + source + '" style="color: ' + ($customColors[type] or 'inherit') + ';" title="' + type + '">#' + source + '</span>'
-                                                ).join(', ');
-                                                $titleHtml: title.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                                                '<div class="tf-node tf-node-' + id + '"><span class="tf-node-id" data-node-id="' + id + '">#' + id + '</span> <span class="tf-node-title">' + $titleHtml + '</span> ' + ($inputsHTML ? '(' + $inputsHTML + ')' : '()') + '</div>'
-                                            `
-                                        }
-                                    }
-                                }
-                            },
-                            {
-                                when: 'type = "turboshaft_graph"',
-                                content: {
-                                    view: 'list',
-                                    data: 'data.blocks',
-                                    item: [
-                                        { view: 'h5', content: 'text:`Block ${id}`' },
-                                        {
-                                            view: 'list',
-                                            data: '$blockId: id; #.tfPhase.data.nodes.[block_id = $blockId]',
-                                            item: [
-                                                { view: 'text', data: '`${id}: ${title} ${op_effects || ""}`' },
-                                                {
-                                                    view: 'list',
-                                                    data: `$nodeId: id;
-                                                        #.tfPhase.keys()
-                                                            .[#.tfPhase[$].type = "turboshaft_custom_data"]
-                                                            .({
-                                                                name: $,
-                                                                value: #.tfPhase[$].data.[key = $nodeId].value[0]
-                                                            })
-                                                            .[value]`,
-                                                    whenData: true,
-                                                    item: 'text:`${name}: ${value}`'
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
-                            },
-                            {
-                                when: 'type = "schedule" or type = "disassembly"',
-                                content: {
-                                    view: 'source',
-                                    data: '{ content: data, syntax: type = "disassembly" ? "x86asm" : "text", lineNum: false }'
-                                }
-                            },
-                            {
-                                when: 'type = "sequence" or type = "instructions"',
-                                content: {
-                                    view: 'list',
-                                    data: 'data.blocks',
-                                    item: [
-                                        { view: 'h5', content: 'text:`Block ${id}`' },
-                                        {
-                                            view: 'list',
-                                            data: 'instructions',
-                                            item: 'text:`${id}: ${opcode}`'
-                                        }
-                                    ]
-                                }
-                            },
-
-                            {
-                                content: {
-                                    view: 'block',
-                                    className: 'data-unavailable',
-                                    content: 'text:`Unsupported phase type: ${type}`'
-                                }
-                            }
+                            { view: 'h4', className: 'tf-pane-title', content: 'text:#.tfDiffPhase.name' },
+                            createGraphPane('#.tfDiffPhase', '#.tfPhase', true)
+                        ]
+                    },
+                    {
+                        view: 'block',
+                        className: 'tf-graph-pane tf-graph-main-pane',
+                        content: [
+                            { view: 'h4', className: 'tf-pane-title', content: 'text:#.tfPhase.name' },
+                            createGraphPane('#.tfPhase', '#.tfDiffPhase', false)
                         ]
                     }
                 ]
