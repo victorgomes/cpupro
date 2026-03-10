@@ -19,6 +19,9 @@
         "cpupro": "./bin/cpupro",
         "d8pro": "./bin/d8pro"
     },
+    "engines": {
+        "node": ">=22.0.0"
+    },
     "files": [
         "bin",
         "build/app.html",
@@ -32,6 +35,7 @@
     },
     "scripts": {
         "start": "discovery",
+        "format": "prettier --write \"{lib,app}/**/*.{js,ts}\"",
         "lint": "eslint lib app",
         "typecheck": "tsc --noEmit",
         "build": "npm run build-wasm && npm run build-app && npm run build-report-template",
@@ -50,10 +54,11 @@
         "@discoveryjs/cli": "^2.14.2",
         "@discoveryjs/discovery": "1.0.0-beta.98",
         "@types/node": "^22.7.5",
-        "@typescript-eslint/eslint-plugin": "^7.8.0",
-        "@typescript-eslint/parser": "^7.8.0",
-        "eslint": "^8.7.0",
+        "eslint": "^9.0.0",
+        "eslint-config-prettier": "^9.1.0",
+        "prettier": "^3.2.5",
         "typescript": "^5.8.3",
+        "typescript-eslint": "^8.0.0",
         "wabt": "^1.0.32"
     }
 }
