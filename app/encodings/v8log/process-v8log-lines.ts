@@ -365,20 +365,8 @@ export async function processV8logEvents(lineIterator: AsyncIterableIterator<str
             case 'LoadGlobalIC':
             case 'StoreGlobalIC':
             case 'StoreInArrayLiteralIC': {
-                const [
-                    address,
-                    tm,
-                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                    lineNumber,
-                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                    columnNumber,
-                    oldState,
-                    newState,
-                    mapId,
-                    key,
-                    modifier,
-                    slowReason
-                ] = readAllArgs(parsers[op], line, argsStart);
+                const [address, tm, lineNumber, columnNumber, oldState, newState, mapId, key, modifier, slowReason] =
+                    readAllArgs(parsers[op], line, argsStart);
                 const pc = parseAddress(address);
                 const codeEntry = codeMap.findByAddress(pc);
                 const icEntry: ICEntry = {
@@ -418,7 +406,7 @@ export async function processV8logEvents(lineIterator: AsyncIterableIterator<str
             case 'code-deopt': {
                 const [
                     tm,
-                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
                     codeSize, // ignore
                     address,
                     inliningId,

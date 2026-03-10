@@ -515,6 +515,7 @@ export class Dictionary {
                         path = url;
                         break;
                     }
+                    break;
 
                 default:
                     type = `protocol-${protocol}`;

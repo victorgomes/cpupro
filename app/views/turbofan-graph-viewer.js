@@ -4,36 +4,48 @@ discovery.view.define('turbofan-graph-viewer', {
             if (e.target.classList.contains('tf-node-input')) {
                 const nodeId = e.target.dataset.nodeId;
                 const nodeEl = el.querySelector(`.tf-node-${nodeId}`);
-                if (nodeEl) nodeEl.classList.add('tf-node-highlight');
+                if (nodeEl) {
+                    nodeEl.classList.add('tf-node-highlight');
+                }
             } else if (e.target.classList.contains('tf-node-id')) {
                 const nodeId = e.target.dataset.nodeId;
                 const uses = el.querySelectorAll(`.tf-node-input[data-node-id="${nodeId}"]`);
                 for (const use of uses) {
                     const parentNode = use.closest('.tf-node');
-                    if (parentNode) parentNode.classList.add('tf-node-highlight');
+                    if (parentNode) {
+                        parentNode.classList.add('tf-node-highlight');
+                    }
                 }
             } else if (e.target.classList.contains('tf-block-ref')) {
                 const targetBlockId = e.target.dataset.target;
                 const blockEl = el.querySelector(`.tf-block-${targetBlockId}`);
-                if (blockEl) blockEl.classList.add('tf-block-highlight');
+                if (blockEl) {
+                    blockEl.classList.add('tf-block-highlight');
+                }
             }
         });
         el.addEventListener('mouseout', e => {
             if (e.target.classList.contains('tf-node-input')) {
                 const nodeId = e.target.dataset.nodeId;
                 const nodeEl = el.querySelector(`.tf-node-${nodeId}`);
-                if (nodeEl) nodeEl.classList.remove('tf-node-highlight');
+                if (nodeEl) {
+                    nodeEl.classList.remove('tf-node-highlight');
+                }
             } else if (e.target.classList.contains('tf-node-id')) {
                 const nodeId = e.target.dataset.nodeId;
                 const uses = el.querySelectorAll(`.tf-node-input[data-node-id="${nodeId}"]`);
                 for (const use of uses) {
                     const parentNode = use.closest('.tf-node');
-                    if (parentNode) parentNode.classList.remove('tf-node-highlight');
+                    if (parentNode) {
+                        parentNode.classList.remove('tf-node-highlight');
+                    }
                 }
             } else if (e.target.classList.contains('tf-block-ref')) {
                 const targetBlockId = e.target.dataset.target;
                 const blockEl = el.querySelector(`.tf-block-${targetBlockId}`);
-                if (blockEl) blockEl.classList.remove('tf-block-highlight');
+                if (blockEl) {
+                    blockEl.classList.remove('tf-block-highlight');
+                }
             }
         });
 
@@ -61,12 +73,16 @@ discovery.view.define('turbofan-graph-viewer', {
                         content: {
                             view: 'list',
                             data: function (phase) {
-                                if (!phase || !phase.data || !phase.data.nodes) return [];
+                                if (!phase || !phase.data || !phase.data.nodes) {
+                                    return [];
+                                }
                                 const nodes = phase.data.nodes;
                                 const edges = phase.data.edges || [];
                                 const edgesByTarget = new Map();
                                 for (const edge of edges) {
-                                    if (!edgesByTarget.has(edge.target)) edgesByTarget.set(edge.target, []);
+                                    if (!edgesByTarget.has(edge.target)) {
+                                        edgesByTarget.set(edge.target, []);
+                                    }
                                     edgesByTarget.get(edge.target).push(edge);
                                 }
 
@@ -79,8 +95,12 @@ discovery.view.define('turbofan-graph-viewer', {
                                 }
 
                                 function visit(nodeId) {
-                                    if (visited.has(nodeId)) return;
-                                    if (tempMark.has(nodeId)) return;
+                                    if (visited.has(nodeId)) {
+                                        return;
+                                    }
+                                    if (tempMark.has(nodeId)) {
+                                        return;
+                                    }
                                     tempMark.add(nodeId);
                                     const nodeEdges = edgesByTarget.get(nodeId) || [];
                                     nodeEdges.sort((a, b) => a.index - b.index);

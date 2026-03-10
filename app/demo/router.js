@@ -1,5 +1,3 @@
-/* eslint-env node */
-
 module.exports = function repoHealthPath(app) {
     const path = require('path');
     const fs = require('fs');

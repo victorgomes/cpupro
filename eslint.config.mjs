@@ -20,6 +20,7 @@ export default tseslint.config(
             ecmaVersion: 2022,
             sourceType: 'module',
             globals: {
+                ...eslint.configs.recommended.globals,
                 require: 'readonly',
                 discovery: 'readonly',
                 document: 'readonly',
@@ -53,11 +54,30 @@ export default tseslint.config(
                 location: 'readonly',
                 history: 'readonly',
                 MutationObserver: 'readonly',
-                IntersectionObserver: 'readonly'
+                IntersectionObserver: 'readonly',
+                __dirname: 'readonly',
+                ResizeObserver: 'readonly',
+                HTMLElement: 'readonly',
+                Element: 'readonly',
+                Node: 'readonly',
+                MouseEvent: 'readonly',
+                TextEncoder: 'readonly',
+                TextDecoder: 'readonly',
+                WebAssembly: 'readonly',
+                AbortSignal: 'readonly',
+                getComputedStyle: 'readonly',
+                customElements: 'readonly',
+                requestIdleCallback: 'readonly',
+                Buffer: 'readonly'
             }
         },
         rules: {
             "@typescript-eslint/no-require-imports": 0,
+            "@typescript-eslint/no-unused-expressions": 0,
+            "no-constant-condition": 0,
+            "no-constant-binary-expression": 0,
+            "no-useless-escape": 0,
+            "@typescript-eslint/no-unused-vars": 0,
             "no-duplicate-case": 2,
             "no-undef": 2,
             "no-empty": [

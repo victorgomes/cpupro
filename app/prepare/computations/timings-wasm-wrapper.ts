@@ -1,4 +1,3 @@
-/* eslint-env browser */
 import {decodeBase64} from '../utils';
 import computeTimingsWasmSourceBase64 from './timings.wasm';
 import {CallTree} from './call-tree';

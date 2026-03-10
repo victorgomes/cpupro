@@ -1,4 +1,3 @@
-/* eslint-env node */
 const {supportedFormats} = require('../prepare/index.js');
 const {sessionExpandState} = require('./common.js');
 const experimentalFeatures = false;
