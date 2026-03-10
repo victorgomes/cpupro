@@ -49,9 +49,9 @@ Pass the `--log-code-disassemble` flag when running `d8pro`.
 d8pro --log-code-disassemble my-script.js
 ```
 
-### Scenario #3 - Debugging Compiler Graphs (Turbofan / Maglev / Turboshaft)
+### Scenario #3 - Debugging Compiler Graphs (Turbofan / Turboshaft)
 
-**Goal:** Render and explore the "Sea of Nodes" compiler graphs. This is extremely useful for debugging V8 optimizations, viewing phase changes, and exploring generated IR.
+**Goal:** Render and explore Turbofan/Turboshaft compiler graphs. This is extremely useful for debugging V8 optimizations, viewing phase changes, and exploring generated IR.
 
 Provide the `--trace-turbo` flag to generate `turbo-*.json` and `turbo.cfg` files.
 ```sh
@@ -68,7 +68,18 @@ Enable deoptimization tracking with the `--log-deopt` flag.
 d8pro --log-deopt my-script.js
 ```
 
-### Scenario #5 - Using `cpupro` CLI
+### Scenario #5 - Tracking Memory & Allocations
+
+**Goal:** Analyze memory allocation metrics and garbage collection behavior to identify excessive object creation.
+
+While detailed `allocationProfile` data is typically collected via Chromium/Edge DevTools enhanced traces, you can track minor and major garbage collection events in `d8` by providing GC-related flags along with your profiling.
+
+```sh
+d8pro --trace-gc my-script.js
+```
+The `--trace-gc` flag will log garbage collection events, and `cpupro` can display memory metrics and allocation samples if they are included in the generated trace.
+
+### Scenario #6 - Using `cpupro` CLI
 
 CLI allows to generate a report (a viewer with embedded data) from a profile file.
 
