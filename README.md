@@ -38,7 +38,7 @@ d8pro my-script.js
 d8pro --prof-sampling-interval=500 my-script.js
 ```
 
-<img width="800" alt="d8pro Demo" src="d8pro.png">
+<img width="800" alt="d8pro Demo" src="app/img/d8pro.png">
 
 ### Scenario #2 - Inspecting Bytecode & Assembly
 
@@ -48,6 +48,10 @@ Pass the `--log-code-disassemble` flag when running `d8pro`.
 ```sh
 d8pro --log-code-disassemble my-script.js
 ```
+
+<img width="800" alt="d8pro Demo" src="app/img/bytecode.png">
+
+<img width="800" alt="d8pro Demo" src="app/img/asm.png">
 
 ### Scenario #3 - Debugging Compiler Graphs (Turbofan / Turboshaft)
 
@@ -59,6 +63,8 @@ d8pro --trace-turbo my-script.js
 ```
 The `d8pro` wrapper automatically detects these trace files and passes them to the UI using the `cpupro --turbofan <path>` flag.
 
+<img width="800" alt="d8pro Demo" src="app/img/ts.png">
+
 ### Scenario #4 - Tracking Deoptimizations
 
 **Goal:** Highlight functions that were deoptimized by V8 and track the reasons/bailouts for the deoptimization.
@@ -68,16 +74,18 @@ Enable deoptimization tracking with the `--log-deopt` flag.
 d8pro --log-deopt my-script.js
 ```
 
+<img width="800" alt="d8pro Demo" src="app/img/deopt.png">
+
 ### Scenario #5 - Tracking Memory & Allocations
 
 **Goal:** Analyze memory allocation metrics and garbage collection behavior to identify excessive object creation.
 
-While detailed `allocationProfile` data is typically collected via Chromium/Edge DevTools enhanced traces, you can track minor and major garbage collection events in `d8` by providing GC-related flags along with your profiling.
-
 ```sh
-d8pro --trace-gc my-script.js
+d8pro my-script.js
 ```
-The `--trace-gc` flag will log garbage collection events, and `cpupro` can display memory metrics and allocation samples if they are included in the generated trace.
+
+<img width="800" alt="d8pro Demo" src="app/img/mem.png">
+
 
 ### Scenario #6 - Using `cpupro` CLI
 
