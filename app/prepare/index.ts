@@ -51,13 +51,14 @@ export function extractAndValidate(data: unknown, rejectData: (reason: string, v
     let extensions: V8CpuProfileCpuproExtensions = {};
     let inputProfiles: InputProfiles | null = null;
 
-    data = data || {};
+    const inputData = data || {};
+    let extractedData: unknown = inputData;
 
-    if (isDevToolsEnhancedTraces(data)) {
+    if (isDevToolsEnhancedTraces(inputData)) {
         const {traceEvents, allocationProfile, runtime, scripts, executionContexts} =
-            extractFromDevToolsEnhancedTraces(data);
+            extractFromDevToolsEnhancedTraces(inputData);
 
-        data = traceEvents || allocationProfile;
+        extractedData = traceEvents || allocationProfile;
         extensions = {
             _runtime: runtime,
             _scripts: scripts,
@@ -66,20 +67,20 @@ export function extractAndValidate(data: unknown, rejectData: (reason: string, v
     }
 
     // see https://docs.google.com/document/d/1CvAClvFfyA5R-PhYUmn5OOQtYMH4h6I0nSsKchNAySU/preview#heading=h.lc5airzennvk
-    if (isChromiumPerformanceProfile(data)) {
-        inputProfiles = extractFromChromiumPerformanceProfile(data);
-    } else if (Array.isArray(data)) {
+    if (isChromiumPerformanceProfile(extractedData)) {
+        inputProfiles = extractFromChromiumPerformanceProfile(extractedData);
+    } else if (Array.isArray(extractedData)) {
         // in case input is array of { profile } object
-        const profiles = data.map(entry => ('profile' in entry && entry.profile ? entry.profile : entry));
+        const profiles = extractedData.map(entry => ('profile' in entry && entry.profile ? entry.profile : entry));
 
         if (isV8LogProfile(profiles[0]) || isCPUProfile(profiles[0])) {
             inputProfiles = {
                 profiles
             };
         }
-    } else if (isV8LogProfile(data) || isCPUProfile(data)) {
+    } else if (isV8LogProfile(extractedData) || isCPUProfile(extractedData)) {
         inputProfiles = {
-            profiles: [data]
+            profiles: [extractedData as V8LogProfile | V8CpuProfile]
         };
     } else {
         rejectData('Unknown format');
