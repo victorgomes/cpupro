@@ -15,48 +15,82 @@ Supported formats:
 > The file extension can be arbitrary; the format is determined based on the file's content.  
 > The file content may be compressed using `gzip` or `deflate`.
 
-## Usage
+## Usage Scenarios
 
-### Scenario #1 - Using `d8pro` Wrapper
-
-This fork includes `d8pro` wrapper script designed for profilling using `d8`.
+This fork includes the `d8pro` wrapper script designed for seamless profiling using `d8`. It automatically injects `--prof` and handles trace processing for you.
 
 **Requirements:**
 - A local checkout of the V8 repository.
 - A macOS or Linux operating system.
 
-**Usage:**
+### Scenario #1 - Basic Profiling, Flamecharts & Call Trees
+
+**Goal:** Identify performance bottlenecks by exploring hierarchical views of function execution time (Self vs. Total), viewing flamecharts on a time ruler, and mapping execution back to the original JavaScript source code.
+
 Run `d8pro` followed by any standard `d8` arguments. The wrapper will inject `--prof`, run your target file, process the output `v8.log` automatically using the V8 tick processor to get JS JIT symbols, and open `cpupro`.
 
-```
+```sh
 d8pro my-script.js
+```
+
+*Optional:* Adjust sampling interval (default is 1000 microseconds):
+```sh
+d8pro --prof-sampling-interval=500 my-script.js
 ```
 
 <img width="800" alt="d8pro Demo" src="d8pro.png">
 
-### Scenario #2 – Using `cpupro` CLI
+### Scenario #2 - Inspecting Bytecode & Assembly
 
-CLI allows to generate a report (an viewer with embedded data) from a profile file.
+**Goal:** Perform deep inspection of the generated V8 bytecode and native assembly instructions for JIT-compiled functions.
+
+Pass the `--log-code-disassemble` flag when running `d8pro`.
+```sh
+d8pro --log-code-disassemble my-script.js
+```
+
+### Scenario #3 - Debugging Compiler Graphs (Turbofan / Maglev / Turboshaft)
+
+**Goal:** Render and explore the "Sea of Nodes" compiler graphs. This is extremely useful for debugging V8 optimizations, viewing phase changes, and exploring generated IR.
+
+Provide the `--trace-turbo` flag to generate `turbo-*.json` and `turbo.cfg` files.
+```sh
+d8pro --trace-turbo my-script.js
+```
+The `d8pro` wrapper automatically detects these trace files and passes them to the UI using the `cpupro --turbofan <path>` flag.
+
+### Scenario #4 - Tracking Deoptimizations
+
+**Goal:** Highlight functions that were deoptimized by V8 and track the reasons/bailouts for the deoptimization.
+
+Enable deoptimization tracking with the `--log-deopt` flag.
+```sh
+d8pro --log-deopt my-script.js
+```
+
+### Scenario #5 - Using `cpupro` CLI
+
+CLI allows to generate a report (a viewer with embedded data) from a profile file.
 
 To use CLI install `cpupro` globally using `npm install -g cpupro`, or use `npx cpupro`.
 
 - open viewer without embedded data in default browser:
-  ```
+  ```sh
   cpupro
   ```
 - open viewer with `test.cpuprofile` data embedded:
-  ```
+  ```sh
   cpupro test.cpuprofile
   ```
 - open viewer with data embedded from `stdin`:
-  ```
+  ```sh
   cpupro - <test.cpuprofile
   ```
-  ```
+  ```sh
   cat test.cpuprofile | cpupro -
   ```
 - get usage information:
-  ```
+  ```sh
   cpupro -h
   ```
   ```
@@ -73,7 +107,6 @@ To use CLI install `cpupro` globally using `npm install -g cpupro`, or use `npx 
       -o, --output-dir <path>      Specify an output path for a report (current working dir by default)
       -v, --version                Output version
   ```
-
 
 ## License
 
