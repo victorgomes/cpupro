@@ -1,5 +1,5 @@
-import type { V8LogProfile } from './types.js';
-import type { V8CpuProfileScript } from '../../types.js';
+import type {V8LogProfile} from './types.js';
+import type {V8CpuProfileScript} from '../../types.js';
 
 export function normalizeScriptUrl(url: string) {
     // treat <unknown> urls as empty strings which is better for futher processing
@@ -30,12 +30,12 @@ export function normalizeScriptUrl(url: string) {
 }
 
 export function processScripts(v8logScripts: V8LogProfile['scripts']): (V8CpuProfileScript | null)[] {
-    return v8logScripts.map((script) => {
+    return v8logScripts.map(script => {
         if (script === null) {
             return null;
         }
 
-        const { id, url, source } = script;
+        const {id, url, source} = script;
 
         return {
             id,

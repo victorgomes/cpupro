@@ -1,4 +1,4 @@
-import { CodeState, ICState } from './types.js';
+import {CodeState, ICState} from './types.js';
 
 // const useBigInt = false as const;
 export const parseAddress = parseInt; // useBigInt ? BigInt : parseInt;
@@ -12,13 +12,13 @@ export function parseCodeState(state: string) {
         case '^':
             return CodeState.SPARKPLUG;
         case '+':
-        case "+'":  // context specialized
-        case 'o+':  // OSR see https://chromium-review.googlesource.com/c/v8/v8/+/6913109
+        case "+'": // context specialized
+        case 'o+': // OSR see https://chromium-review.googlesource.com/c/v8/v8/+/6913109
         case "o+'": // OSR + context specialized
             return CodeState.MAGLEV;
         case '*':
-        case "*'":  // context specialized
-        case 'o*':  // OSR see https://chromium-review.googlesource.com/c/v8/v8/+/6913109
+        case "*'": // context specialized
+        case 'o*': // OSR see https://chromium-review.googlesource.com/c/v8/v8/+/6913109
         case "o*'": // OSR + context specialized
             return CodeState.TURBOFAN;
         default:
@@ -27,36 +27,44 @@ export function parseCodeState(state: string) {
 }
 
 export function isSpecialized(state: string) {
-    return (
-        state === "+'" ||
-        state === "o+'" ||
-        state === "*'" ||
-        state === "o*'"
-    );
+    return state === "+'" || state === "o+'" || state === "*'" || state === "o*'";
 }
 
 export function parseICState(state: string) {
     switch (state) {
-        case 'X': return ICState.NO_FEEDBACK;
-        case '0': return ICState.UNINITIALIZED;
-        case '1': return ICState.MONOMORPHIC;
-        case '^': return ICState.RECOMPUTE_HANDLER;
-        case 'P': return ICState.POLYMORPHIC;
-        case 'N': return ICState.MEGAMORPHIC;
-        case 'D': return ICState.MEGADOM;
-        case 'G': return ICState.GENERIC;
-        default:  return ICState.UNKNOWN;
+        case 'X':
+            return ICState.NO_FEEDBACK;
+        case '0':
+            return ICState.UNINITIALIZED;
+        case '1':
+            return ICState.MONOMORPHIC;
+        case '^':
+            return ICState.RECOMPUTE_HANDLER;
+        case 'P':
+            return ICState.POLYMORPHIC;
+        case 'N':
+            return ICState.MEGAMORPHIC;
+        case 'D':
+            return ICState.MEGADOM;
+        case 'G':
+            return ICState.GENERIC;
+        default:
+            return ICState.UNKNOWN;
     }
-
 }
 
 export function kindFromState(state: CodeState) {
     switch (state) {
-        case CodeState.COMPILED: return 'Builtin';
-        case CodeState.IGNITION: return 'Unopt';
-        case CodeState.SPARKPLUG: return 'Sparkplug';
-        case CodeState.MAGLEV: return 'Maglev';
-        case CodeState.TURBOFAN: return 'Opt';
+        case CodeState.COMPILED:
+            return 'Builtin';
+        case CodeState.IGNITION:
+            return 'Unopt';
+        case CodeState.SPARKPLUG:
+            return 'Sparkplug';
+        case CodeState.MAGLEV:
+            return 'Maglev';
+        case CodeState.TURBOFAN:
+            return 'Opt';
     }
 
     throw new Error(`Unknown code state: ${state}`);
@@ -106,19 +114,33 @@ export function parseString(value: string) {
         }
 
         if (i === valueEnd - 1) {
-            console.error('Invalid backslash', { inside: [i, i + 1] });
+            console.error('Invalid backslash', {inside: [i, i + 1]});
             break;
         }
 
         const next = value[++i];
         switch (next) {
-            case '0': result += '\0'; break;
-            case 'b': result += '\b'; break;
-            case 'n': result += '\n'; break;
-            case 'r': result += '\r'; break;
-            case 'f': result += '\f'; break;
-            case 't': result += '\t'; break;
-            case 'v': result += '\v'; break;
+            case '0':
+                result += '\0';
+                break;
+            case 'b':
+                result += '\b';
+                break;
+            case 'n':
+                result += '\n';
+                break;
+            case 'r':
+                result += '\r';
+                break;
+            case 'f':
+                result += '\f';
+                break;
+            case 't':
+                result += '\t';
+                break;
+            case 'v':
+                result += '\v';
+                break;
 
             case 'u': {
                 const [hex = ''] = value.slice(i + 1, i + 5).match(/^[0-9a-f]*/i) || [];

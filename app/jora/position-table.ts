@@ -1,5 +1,5 @@
-import { parsePositions } from '../prepare/formats/v8-log-processed/positions.js';
-import { CpuProCallFrame, CpuProCallFrameCode } from '../prepare/types.js';
+import {parsePositions} from '../prepare/formats/v8-log-processed/positions.js';
+import {CpuProCallFrame, CpuProCallFrameCode} from '../prepare/types.js';
 
 export type PositionTableEntry = {
     index: number;
@@ -22,7 +22,7 @@ export type InlinePathEntry = {
 };
 export type InlineMatrixTreeEntry = {
     id: number;
-    value: { offset: number; callFrame: CpuProCallFrame; code: CpuProCallFrameCode; };
+    value: {offset: number; callFrame: CpuProCallFrame; code: CpuProCallFrameCode};
     parent: InlineMatrixTreeEntry | null;
     children: InlineMatrixTreeEntry[];
     codePresence: number[];
@@ -30,7 +30,7 @@ export type InlineMatrixTreeEntry = {
 export type InlineMatrixEntry = {
     offset: number;
     tree: InlineMatrixTreeEntry;
-    linear: InlineMatrixTreeEntry['value'][],
+    linear: InlineMatrixTreeEntry['value'][];
     min: number;
     max: number;
     snapshots: InlineMatrixEntrySnapshot[];
@@ -38,7 +38,7 @@ export type InlineMatrixEntry = {
 export type InlineMatrixEntrySnapshot = {
     hash: string;
     presence: number[];
-    code: CpuProCallFrameCode
+    code: CpuProCallFrameCode;
 };
 
 export const methods = {
@@ -60,13 +60,15 @@ export const methods = {
                 last.size = code - last.code;
             }
 
-            result.push(last = {
-                index: result.length,
-                code,
-                offset,
-                inline: inline !== -1 ? inline : undefined,
-                size: -1
-            });
+            result.push(
+                (last = {
+                    index: result.length,
+                    code,
+                    offset,
+                    inline: inline !== -1 ? inline : undefined,
+                    size: -1
+                })
+            );
         }
 
         if (size > 0 && last !== null) {
@@ -105,13 +107,13 @@ export const methods = {
         return result;
     },
 
-    inlinedPath(path: { callFrame: CpuProCallFrame; offset: number }[], callFrame: CpuProCallFrame, offset: number) {
-        let cursor: InlinePathEntry = { callFrame, offset: -1, parent: null };
+    inlinedPath(path: {callFrame: CpuProCallFrame; offset: number}[], callFrame: CpuProCallFrame, offset: number) {
+        let cursor: InlinePathEntry = {callFrame, offset: -1, parent: null};
         const result = [cursor];
 
-        for (const { callFrame, offset } of path) {
+        for (const {callFrame, offset} of path) {
             cursor.offset = offset;
-            cursor = { callFrame, offset: -1, parent: cursor };
+            cursor = {callFrame, offset: -1, parent: cursor};
             result.push(cursor);
         }
 
@@ -133,19 +135,23 @@ export const methods = {
             for (const entry of parsed) {
                 const callFrame = code.fns[entry.fn];
                 const parentRecord = entry.parent === undefined ? null : records[entry.parent];
-                const ref = parentRecord !== null
-                    ? `${entry.offset}-${callFrame.id}-${parentRecord.id}`
-                    : `${entry.offset}-${callFrame.id}`;
+                const ref =
+                    parentRecord !== null
+                        ? `${entry.offset}-${callFrame.id}-${parentRecord.id}`
+                        : `${entry.offset}-${callFrame.id}`;
                 let record = recordByRef.get(ref);
 
                 if (record === undefined) {
-                    recordByRef.set(ref, record = {
-                        id: recordByRef.size,
-                        value: { offset: entry.offset, callFrame, code },
-                        parent: parentRecord,
-                        children: [],
-                        codePresence: Array.from(codes, () => 0)
-                    });
+                    recordByRef.set(
+                        ref,
+                        (record = {
+                            id: recordByRef.size,
+                            value: {offset: entry.offset, callFrame, code},
+                            parent: parentRecord,
+                            children: [],
+                            codePresence: Array.from(codes, () => 0)
+                        })
+                    );
 
                     if (parentRecord !== null) {
                         parentRecord.children.push(record);

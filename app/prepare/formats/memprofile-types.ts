@@ -6,9 +6,9 @@ export const ALLOCATION_SPACES = {
     2: 'old_space',
     3: 'code_space',
     4: 'shared_space',
-    5: 'new_lo_space',   // lo = large object
-    6: 'lo_space',       // lo = large object
-    7: 'code_lo_space',  // lo = large object
+    5: 'new_lo_space', // lo = large object
+    6: 'lo_space', // lo = large object
+    7: 'code_lo_space', // lo = large object
     8: 'shared_lo_space' // lo = large object
 };
 

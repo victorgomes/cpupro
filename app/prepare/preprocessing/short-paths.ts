@@ -1,4 +1,4 @@
-import { CpuProModule, CpuProPackage, PackageType } from '../types';
+import {CpuProModule, CpuProPackage, PackageType} from '../types';
 
 function getLongestCommonPath(longestCommonModulePath: string[] | null, modulePath: string) {
     let parts = modulePath.split(/\//);
@@ -6,9 +6,10 @@ function getLongestCommonPath(longestCommonModulePath: string[] | null, modulePa
     // drop filename
     parts.pop();
 
-    const result = longestCommonModulePath !== null
-        ? longestCommonModulePath.slice(0, Math.min(longestCommonModulePath.length, parts.length))
-        : parts;
+    const result =
+        longestCommonModulePath !== null
+            ? longestCommonModulePath.slice(0, Math.min(longestCommonModulePath.length, parts.length))
+            : parts;
     parts = parts.slice(0, result.length);
 
     for (let i = result.length - 1; i >= 0; i--) {
@@ -21,7 +22,7 @@ function getLongestCommonPath(longestCommonModulePath: string[] | null, modulePa
 }
 
 function groupByShortestDomain(pkgParts, packages, prefix) {
-    const groups = new Map<string, { packages: CpuProPackage[], paths: string[][] }>();
+    const groups = new Map<string, {packages: CpuProPackage[]; paths: string[][]}>();
 
     for (let i = 0; i < pkgParts.length; i++) {
         const parts = pkgParts[i];
@@ -41,7 +42,7 @@ function groupByShortestDomain(pkgParts, packages, prefix) {
 
     const result: [string, CpuProPackage[]][] = [];
 
-    for (const [key, { packages, paths }] of groups) {
+    for (const [key, {packages, paths}] of groups) {
         if (prefix && (packages.length === 1 || key === '')) {
             result.push([`${key ? key + '.' : key}${prefix}`, packages]);
         } else {
@@ -80,10 +81,7 @@ function shortenHttpPackageNames(packages: CpuProPackage[]) {
     }
 }
 
-export function processPaths(
-    packages: CpuProPackage[],
-    modules: CpuProModule[]
-) {
+export function processPaths(packages: CpuProPackage[], modules: CpuProModule[]) {
     shortenHttpPackageNames(packages);
 
     // shorthand paths
@@ -101,7 +99,12 @@ export function processPaths(
         if (modulePath) {
             const pkg = module.package;
 
-            if (shortPathPkgTypes.includes(pkg.type) && pkg.path && pkg.path.includes(':') && !/^https?:/.test(pkg.path)) {
+            if (
+                shortPathPkgTypes.includes(pkg.type) &&
+                pkg.path &&
+                pkg.path.includes(':') &&
+                !/^https?:/.test(pkg.path)
+            ) {
                 longestCommonModulePath[pkg.type][pkg.path] = getLongestCommonPath(
                     longestCommonModulePath[pkg.type][pkg.path] || null,
                     modulePath
@@ -128,9 +131,7 @@ export function processPaths(
         const modulePath = module.path || '';
 
         if (module.package.path && modulePath.startsWith(module.package.path)) {
-            module.packageRelPath = modulePath
-                .slice(module.package.path.length)
-                .replace(/^[\/\\]+/, '');
+            module.packageRelPath = modulePath.slice(module.package.path.length).replace(/^[\/\\]+/, '');
         }
     }
 }

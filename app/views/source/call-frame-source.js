@@ -1,13 +1,15 @@
-import { regexpSourceView, unavailableSourceView } from './common.js';
+import {regexpSourceView, unavailableSourceView} from './common.js';
 
 discovery.view.define('call-frame-source', {
     view: 'switch',
     content: [
-        { when: 'regexp', content: regexpSourceView },
-        { when: 'hasSource()', content: {
-            view: 'source',
-            className: 'cpupro-source',
-            data: `{
+        {when: 'regexp', content: regexpSourceView},
+        {
+            when: 'hasSource()',
+            content: {
+                view: 'source',
+                className: 'cpupro-source',
+                data: `{
                 $script;
                 $source: $script.source;
                 $sourceSliceStart: $source.lastIndexOf('\\n', start) + 1;
@@ -260,59 +262,71 @@ discovery.view.define('call-frame-source', {
                     tooltip: $callFrameTooltipView
                 })
             }`,
-            postRender(el) {
-                const contentEl = el.querySelector('.view-source__content');
+                postRender(el) {
+                    const contentEl = el.querySelector('.view-source__content');
 
-                contentEl.addEventListener('click', (event) => {
-                    const pseudoLinkEl = event.target.closest('.view-source .spotlight.function[data-marker]');
+                    contentEl.addEventListener(
+                        'click',
+                        event => {
+                            const pseudoLinkEl = event.target.closest('.view-source .spotlight.function[data-marker]');
 
-                    if (pseudoLinkEl && contentEl.contains(pseudoLinkEl)) {
-                        discovery.setPageHash(pseudoLinkEl.dataset.marker);
-                    }
-                }, true);
-            },
-            prelude: {
-                view: 'block',
-                content: [
-                    {
-                        view: 'inline-list',
-                        className: 'function-path',
-                        data: `
+                            if (pseudoLinkEl && contentEl.contains(pseudoLinkEl)) {
+                                discovery.setPageHash(pseudoLinkEl.dataset.marker);
+                            }
+                        },
+                        true
+                    );
+                },
+                prelude: {
+                    view: 'block',
+                    content: [
+                        {
+                            view: 'inline-list',
+                            className: 'function-path',
+                            data: `
                             callFrame 
                             | $start; $end; $target: $; .script.callFrames
                                 .[start <= $start and end >= $end]
                                 .sort(start asc)
                                 .({ $target, callFrame: $ })
                         `,
-                        whenData: true,
-                        item: { view: 'switch', content: [
-                            { when: 'callFrame = target', content: 'block{ className: "target", content: `text:callFrame | function or $ | name or "(anonymous function)"` }' },
-                            { when: 'callFrame.marker("call-frame")', content: 'auto-link:callFrame' },
-                            { content: 'text:callFrame | name or "(anonymous function)"' }
-                        ] }
-                    },
-                    {
-                        view: 'badge',
-                        className: 'missed-data-badge',
-                        when: '$callFrame; #.currentProfile.codesByCallFrame[=> callFrame = $callFrame].codes.[no positions]',
-                        text: 'Some attributes might have inaccurate locations',
-                        tooltip: {
-                            className: 'cpupro-hint-tooltip',
-                            content: {
-                                view: 'md',
-                                source: [
-                                    'Some attributes might have inaccurate locations because certain call frame codes in the V8 log lack position tables. This results in some markers and timings being placed in the function header instead of their actual locations.',
-                                    '',
-                                    'Due to a known issue, the V8 logger does not include position tables for Sparkplug and Maglev codes at the moment.',
-                                    '',
-                                    'If all the call frame codes have no position tables, make sure `--log-source-position` is enabled when capturing the V8 log (it\'s enabled by default in Node.js).'
+                            whenData: true,
+                            item: {
+                                view: 'switch',
+                                content: [
+                                    {
+                                        when: 'callFrame = target',
+                                        content:
+                                            'block{ className: "target", content: `text:callFrame | function or $ | name or "(anonymous function)"` }'
+                                    },
+                                    {when: 'callFrame.marker("call-frame")', content: 'auto-link:callFrame'},
+                                    {content: 'text:callFrame | name or "(anonymous function)"'}
                                 ]
                             }
+                        },
+                        {
+                            view: 'badge',
+                            className: 'missed-data-badge',
+                            when: '$callFrame; #.currentProfile.codesByCallFrame[=> callFrame = $callFrame].codes.[no positions]',
+                            text: 'Some attributes might have inaccurate locations',
+                            tooltip: {
+                                className: 'cpupro-hint-tooltip',
+                                content: {
+                                    view: 'md',
+                                    source: [
+                                        'Some attributes might have inaccurate locations because certain call frame codes in the V8 log lack position tables. This results in some markers and timings being placed in the function header instead of their actual locations.',
+                                        '',
+                                        'Due to a known issue, the V8 logger does not include position tables for Sparkplug and Maglev codes at the moment.',
+                                        '',
+                                        "If all the call frame codes have no position tables, make sure `--log-source-position` is enabled when capturing the V8 log (it's enabled by default in Node.js)."
+                                    ]
+                                }
+                            }
                         }
-                    }
-                ]
+                    ]
+                }
             }
-        } },
-        { content: unavailableSourceView }
+        },
+        {content: unavailableSourceView}
     ]
 });

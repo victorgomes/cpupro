@@ -3,22 +3,20 @@ discovery.view.define('code-disassemble-viewer', {
     name: 'mode',
     value: '=callFrame.hasSource() ? "getSessionSetting".callAction("cpupro-code-disassemble-viewer:mode", "code-blocks") : "raw"',
     onChange: '==> ? "setSessionSetting".callAction("cpupro-code-disassemble-viewer:mode", $)',
-    tabs: [
-        { value: 'code-blocks', text: 'Code blocks' },
-        { value: 'source-to-code', text: 'Source to blocks' },
-        'raw'
-    ],
+    tabs: [{value: 'code-blocks', text: 'Code blocks'}, {value: 'source-to-code', text: 'Source to blocks'}, 'raw'],
     content: {
         view: 'switch',
         content: [
-            { when: '#.mode="code-blocks"', content: 'code-disassemble-with-source' },
-            { when: '#.mode="source-to-code"', content: 'code-disassemble-source-to-blocks' },
-            { content: [
-                {
-                    view: 'source',
-                    source: '=disassemble.raw'
-                }
-            ] }
+            {when: '#.mode="code-blocks"', content: 'code-disassemble-with-source'},
+            {when: '#.mode="source-to-code"', content: 'code-disassemble-source-to-blocks'},
+            {
+                content: [
+                    {
+                        view: 'source',
+                        source: '=disassemble.raw'
+                    }
+                ]
+            }
         ]
     }
 });
@@ -32,7 +30,7 @@ discovery.view.define('code-disassemble-with-source', {
             className: 'view-code-disassemble-with-source__warning-list',
             data: 'warnings',
             whenData: true,
-            item: { view: 'alert-warning', content: 'markdown' }
+            item: {view: 'alert-warning', content: 'markdown'}
         },
         'code-disassemble-block-tree:blocks.disassembleBlockTree(blocks[].block.code, => block)'
     ]
@@ -56,47 +54,54 @@ blockListView.item = [
         content: [
             {
                 when: 'block.id or "" | $ = "" or $[0] = "B"',
-                content: 'call-frame-source-point:block ? (block | { callFrame: originCallFrame, offset: originOffset }) : location'
+                content:
+                    'call-frame-source-point:block ? (block | { callFrame: originCallFrame, offset: originOffset }) : location'
             },
-            { content: {
-                view: 'block',
-                className: 'special-block-header',
-                content: 'text:block.id'
-            } }
+            {
+                content: {
+                    view: 'block',
+                    className: 'special-block-header',
+                    content: 'text:block.id'
+                }
+            }
         ]
     },
     {
         view: 'switch',
         content: [
-            { when: 'inline', content: {
-                view: 'block',
-                className: 'view-code-disassemble-with-source__block-list__inlined-blocks',
+            {
+                when: 'inline',
+                content: {
+                    view: 'block',
+                    className: 'view-code-disassemble-with-source__block-list__inlined-blocks',
+                    content: [
+                        {
+                            view: 'block',
+                            className: 'inlined-header',
+                            content: {
+                                view: 'block',
+                                className: 'inlined-header__content',
+                                content: [
+                                    'call-frame-badge:inline.callFrame'
+                                    // 'badge{ text: inline.callFrame.name, href: inline.callFrame.marker().href }',
+                                    // 'text:" from "',
+                                    // 'module-badge:inline.callFrame'
+                                ]
+                            }
+                        },
+                        blockListView
+                    ]
+                }
+            },
+            {
                 content: [
                     {
-                        view: 'block',
-                        className: 'inlined-header',
-                        content: {
-                            view: 'block',
-                            className: 'inlined-header__content',
-                            content: [
-                                'call-frame-badge:inline.callFrame'
-                                // 'badge{ text: inline.callFrame.name, href: inline.callFrame.marker().href }',
-                                // 'text:" from "',
-                                // 'module-badge:inline.callFrame'
-                            ]
-                        }
-                    },
-                    blockListView
-                ]
-            } },
-            { content: [
-                {
-                    view: 'source',
-                    className: 'call-frame-code-instructions',
-                    source: '=block.instructions',
-                    lineNum: false,
-                    actionCopySource: false,
-                    ranges: `=ranges.({
+                        view: 'source',
+                        className: 'call-frame-code-instructions',
+                        source: '=block.instructions',
+                        lineNum: false,
+                        actionCopySource: false,
+                        ranges: `=ranges.({
                         className: type + (type = 'command' ? (command ? ' def' : ' error') : ''),
                         source,
                         range,
@@ -125,16 +130,18 @@ blockListView.item = [
                             },
                         command
                     })`
-                }
-            ] }
+                    }
+                ]
+            }
         ]
     }
 ];
 
 discovery.view.define('code-disassemble-block-tree', blockListView);
 
-discovery.view.define('code-disassemble-source-to-blocks', function(el, props, data, context) {
-    const renderData = discovery.query(`{
+discovery.view.define('code-disassemble-source-to-blocks', function (el, props, data, context) {
+    const renderData = discovery.query(
+        `{
         $blockAndRanges: disassembleBlocksAndRanges();
 
         code: $,
@@ -143,20 +150,25 @@ discovery.view.define('code-disassemble-source-to-blocks', function(el, props, d
             .({ offset: key, blocks: value })
             .[offset is number and offset >= 0]
             .sort(offset asc)
-    }`, data, context);
+    }`,
+        data,
+        context
+    );
     let blocksEl = null;
 
-    this.render(el, [
-        {
-            view: 'list',
-            className: 'view-code-disassemble-with-source__warning-list',
-            data: 'warnings',
-            whenData: true,
-            item: { view: 'alert-warning', content: 'markdown' }
-        },
-        {
-            view: 'source',
-            data: `code.callFrame | {
+    this.render(
+        el,
+        [
+            {
+                view: 'list',
+                className: 'view-code-disassemble-with-source__warning-list',
+                data: 'warnings',
+                whenData: true,
+                item: {view: 'alert-warning', content: 'markdown'}
+            },
+            {
+                view: 'source',
+                data: `code.callFrame | {
                 $source: script.source;
                 $sourceSliceStart: $source.lastIndexOf('\\n', start) + 1;
                 $sourceSliceEnd: $source.indexOf('\\n', end) | $ != -1 ?: $source.size();
@@ -199,34 +211,47 @@ discovery.view.define('code-disassemble-source-to-blocks', function(el, props, d
                     $tooltip
                 })
             }`,
-            postRender: el => el.addEventListener('click', (e) => {
-                const markerEl = e.target.closest('[data-marker^="blocks-offset:"]');
+                postRender: el =>
+                    el.addEventListener(
+                        'click',
+                        e => {
+                            const markerEl = e.target.closest('[data-marker^="blocks-offset:"]');
 
-                if (markerEl) {
-                    blocksEl.replaceChildren();
-                    el.querySelector('.selected[data-marker]')?.classList?.remove?.('selected');
-                    markerEl.classList.add('selected');
-                    this.render(blocksEl, {
-                        view: 'code-disassemble-block-tree',
-                        data: 'blockByOffset[=>offset=@.offset].blocks.disassembleBlockTree(blocks[].block.code, => block)',
-                        postRender: () => blocksEl.scrollTop = 0
-                    }, {
-                        ...renderData,
-                        offset: Number(markerEl.dataset.marker.split(':').pop())
-                    }, context);
-                }
-            }, true)
-        },
-        {
-            view: 'block',
-            className: 'blocks-list',
-            content: {
-                view: 'block',
-                content: 'text:"Select a location to view the related code blocks"'
+                            if (markerEl) {
+                                blocksEl.replaceChildren();
+                                el.querySelector('.selected[data-marker]')?.classList?.remove?.('selected');
+                                markerEl.classList.add('selected');
+                                this.render(
+                                    blocksEl,
+                                    {
+                                        view: 'code-disassemble-block-tree',
+                                        data: 'blockByOffset[=>offset=@.offset].blocks.disassembleBlockTree(blocks[].block.code, => block)',
+                                        postRender: () => (blocksEl.scrollTop = 0)
+                                    },
+                                    {
+                                        ...renderData,
+                                        offset: Number(markerEl.dataset.marker.split(':').pop())
+                                    },
+                                    context
+                                );
+                            }
+                        },
+                        true
+                    )
             },
-            postRender(el) {
-                blocksEl = el;
+            {
+                view: 'block',
+                className: 'blocks-list',
+                content: {
+                    view: 'block',
+                    content: 'text:"Select a location to view the related code blocks"'
+                },
+                postRender(el) {
+                    blocksEl = el;
+                }
             }
-        }
-    ], renderData, context);
+        ],
+        renderData,
+        context
+    );
 });

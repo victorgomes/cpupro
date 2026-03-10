@@ -1,11 +1,10 @@
-import { timingCols } from './common.js';
+import {timingCols} from './common.js';
 
 discovery.page.define('locations', {
     view: 'context',
     context: '{ ...#, currentProfile }',
     data: 'currentProfile.callFramePositionsTimingsFiltered.entries.sort(selfTime desc, totalTime desc)',
-    modifiers: [
-    ],
+    modifiers: [],
     content: {
         view: 'table',
         cols: [
@@ -16,13 +15,16 @@ discovery.page.define('locations', {
             },
             {
                 header: '',
-                context: '{ ...#, locationLine: entry.callFrame.script.source[entry.callFrame.start:entry.scriptOffset].split(/\\r\\n?|\\n/).size() }',
+                context:
+                    '{ ...#, locationLine: entry.callFrame.script.source[entry.callFrame.start:entry.scriptOffset].split(/\\r\\n?|\\n/).size() }',
                 data: 'entry.callFrame',
                 contentWhen: 'hasSource()',
                 details: {
                     view: 'call-frame-source',
                     postRender(el, _, data, context) {
-                        const numEl = el.querySelector(`:scope .view-source__lines span:nth-child(${context.locationLine})`);
+                        const numEl = el.querySelector(
+                            `:scope .view-source__lines span:nth-child(${context.locationLine})`
+                        );
                         if (numEl) {
                             numEl.classList.add('selected');
                         }

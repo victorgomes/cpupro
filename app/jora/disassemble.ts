@@ -1,10 +1,12 @@
-import type { CpuProCallFrame, CpuProCallFrameCode } from '../prepare/types.js';
-import { InlineTreeEntry, PositionTableEntry, methods as positionTableMethods } from './position-table.js';
-import { bytecodeHandlersDict } from '../dicts/bytecode-handlers.js';
-import { hasOwn } from '@discoveryjs/discovery/utils';
+import type {CpuProCallFrame, CpuProCallFrameCode} from '../prepare/types.js';
+import {InlineTreeEntry, PositionTableEntry, methods as positionTableMethods} from './position-table.js';
+import {bytecodeHandlersDict} from '../dicts/bytecode-handlers.js';
+import {hasOwn} from '@discoveryjs/discovery/utils';
 
-const bytecodeLineRx = /^(\s*\d+\s+[SE]>)?(\s+0[x0][a-f0-9]+\s+)(@\s*\d+\s*:)((?:\s+[a-f0-9]{2})+\s+)(\S+)((?:\s+[\[#<a-z]\S+\s*,)*\s*[\[#<a-z]\S+)?(\s*\([^)]+\))?(\s*;;;.+)?/i;
-const machineCodeLineRx = /^(\s*0[x0][a-f0-9]+\s+)([a-f0-9]+\s+)([a-f0-9]+\s+)(REX\.\S+\s+)?(\S+(?: pool begin)?)((?:\s+(?:[#<a-z\d]\S+(?:\s+#[a-f0-9]+)?|\[[^\]]+(?:,\s*\S+)?\]!?)\s*,)*\s*(?:[#<a-z\d]\S+(?:\s+#[a-f0-9]+)?|\[[^\]]+(?:,\s*\S+)?\]!?))?(\s*\(addr [^)]+\))?(\s*(?:\(root \([^)]+\)\)|\([^)]+\)|<\S+>))?(\s*;;.+)?/i;
+const bytecodeLineRx =
+    /^(\s*\d+\s+[SE]>)?(\s+0[x0][a-f0-9]+\s+)(@\s*\d+\s*:)((?:\s+[a-f0-9]{2})+\s+)(\S+)((?:\s+[\[#<a-z]\S+\s*,)*\s*[\[#<a-z]\S+)?(\s*\([^)]+\))?(\s*;;;.+)?/i;
+const machineCodeLineRx =
+    /^(\s*0[x0][a-f0-9]+\s+)([a-f0-9]+\s+)([a-f0-9]+\s+)(REX\.\S+\s+)?(\S+(?: pool begin)?)((?:\s+(?:[#<a-z\d]\S+(?:\s+#[a-f0-9]+)?|\[[^\]]+(?:,\s*\S+)?\]!?)\s*,)*\s*(?:[#<a-z\d]\S+(?:\s+#[a-f0-9]+)?|\[[^\]]+(?:,\s*\S+)?\]!?))?(\s*\(addr [^)]+\))?(\s*(?:\(root \([^)]+\)\)|\([^)]+\)|<\S+>))?(\s*;;.+)?/i;
 
 export type DisassembleBlock = {
     id: `B${number}` | 'constants' | 'deopts';
@@ -62,7 +64,7 @@ function nonWsRange(s: string, start = 0, end = s.length) {
         }
     }
 
-    return { start, end };
+    return {start, end};
 }
 
 function getCodeInlinedTables(code: CpuProCallFrameCode) {
@@ -74,7 +76,7 @@ function getCodeInlinedTables(code: CpuProCallFrameCode) {
         callFrames.push(code.fns[entry.fn]);
     }
 
-    return { offsets, callFrames };
+    return {offsets, callFrames};
 }
 
 export const methods = {
@@ -169,7 +171,7 @@ export const methods = {
                 return;
             }
 
-            const { start, end } = nonWsRange(m, mStart, mEnd);
+            const {start, end} = nonWsRange(m, mStart, mEnd);
             const range: DisassembleBlockRange = {
                 type,
                 source: disassemble,
@@ -254,7 +256,7 @@ export const methods = {
                             let param = paramList[i];
 
                             if (i !== paramList.length - 1) {
-                                const { start, end } = nonWsRange(param);
+                                const {start, end} = nonWsRange(param);
 
                                 if (param[start] === '[' && param[end - 1] !== ']') {
                                     const nextParam = paramList[i + 1];
@@ -297,16 +299,17 @@ export const methods = {
             offset = originOffset,
             inlineId = -1,
             id: DisassembleBlock['id'] = `B${blocks.length}`
-        ) => blocks.push({
-            id,
-            code,
-            compiler: code.tier,
-            originCallFrame,
-            originOffset,
-            offset,
-            inlineId,
-            instructions
-        });
+        ) =>
+            blocks.push({
+                id,
+                code,
+                compiler: code.tier,
+                originCallFrame,
+                originOffset,
+                offset,
+                inlineId,
+                instructions
+            });
 
         if (code.tier === 'Ignition') {
             for (const instructions of code.disassemble.instructions.split(/\n(?=\s*\d+\s+[SE]>)/)) {
@@ -320,10 +323,7 @@ export const methods = {
             const lines = code.disassemble.instructions.split(/\r\n?|\n/);
             const blockStartPositions = positionTableMethods
                 .parsePositions(code.positions)
-                .reduce(
-                    (map, entry) => map.set(entry.code, entry),
-                    new Map<number, PositionTableEntry>()
-                );
+                .reduce((map, entry) => map.set(entry.code, entry), new Map<number, PositionTableEntry>());
             const codeInlined = getCodeInlinedTables(code);
             let buffer: string[] = [];
             let originCallFrame = code.callFrame;
@@ -352,16 +352,13 @@ export const methods = {
                     flushBlock();
                     blockOffset = positionTableEntry.offset;
                     inlineId = positionTableEntry.inline ?? -1;
-                    originCallFrame = inlineId !== -1
-                        ? codeInlined.callFrames[inlineId]
-                        : code.callFrame;
+                    originCallFrame = inlineId !== -1 ? codeInlined.callFrames[inlineId] : code.callFrame;
                 } else {
-                    const isConstantPoolBound = (
+                    const isConstantPoolBound =
                         (blockId === undefined && line.indexOf('constant pool begin') !== -1) ||
-                        (blockId === 'constants' && line.indexOf('constant') === -1)
-                    );
-                    const isDeoptsBound = !isConstantPoolBound &&
-                        (blockId !== 'deopts' && line.indexOf(';; debug: deopt position') !== -1);
+                        (blockId === 'constants' && line.indexOf('constant') === -1);
+                    const isDeoptsBound =
+                        !isConstantPoolBound && blockId !== 'deopts' && line.indexOf(';; debug: deopt position') !== -1;
 
                     if (isConstantPoolBound || isDeoptsBound) {
                         flushBlock();
@@ -386,11 +383,11 @@ export const methods = {
         return blocks;
     },
 
-    disassemblePcToBlockMap(blockRanges: { block: DisassembleBlock, ranges: DisassembleBlockRange[] }[]) {
+    disassemblePcToBlockMap(blockRanges: {block: DisassembleBlock; ranges: DisassembleBlockRange[]}[]) {
         const map = {};
 
         for (let i = 0; i < blockRanges.length; i++) {
-            const { block, ranges } = blockRanges[i];
+            const {block, ranges} = blockRanges[i];
 
             for (const range of ranges) {
                 if (range.type === 'pc') {
@@ -404,10 +401,10 @@ export const methods = {
         return map;
     },
 
-    disassembleBlockTree<T>(array: T[], code: CpuProCallFrameCode, fn: ((entry: T) => DisassembleBlock)) {
+    disassembleBlockTree<T>(array: T[], code: CpuProCallFrameCode, fn: (entry: T) => DisassembleBlock) {
         type BlockTreeEntry = T | InlineGroup;
         type InlineGroup = {
-            location: { callFrame: CpuProCallFrame; offset: number; };
+            location: {callFrame: CpuProCallFrame; offset: number};
             inline: InlineTreeEntry;
             children: BlockTreeEntry[];
         };
@@ -433,26 +430,28 @@ export const methods = {
             let inlineCursor: InlineTreeEntry | null = inlineTable[block.inlineId] ?? null;
             while (inlineCursor != null) {
                 inlineTreePath.unshift(inlineCursor);
-                inlineCursor = inlineCursor.parent !== undefined
-                    ? inlineTable[inlineCursor.parent]
-                    : null;
+                inlineCursor = inlineCursor.parent !== undefined ? inlineTable[inlineCursor.parent] : null;
             }
 
             for (let i = 0, prev = result, currentCallFrame = code.callFrame; i < inlineTreePath.length; i++) {
                 const inlineTreePathEntry = inlineTreePath[i];
-                let inlinePathEntry = i < prevInlinePath.length && prevInlinePath[i].inline === inlineTreePathEntry
-                    ? prevInlinePath[i]
-                    : undefined;
+                let inlinePathEntry =
+                    i < prevInlinePath.length && prevInlinePath[i].inline === inlineTreePathEntry
+                        ? prevInlinePath[i]
+                        : undefined;
 
                 if (inlinePathEntry === undefined) {
-                    prev.push(inlinePathEntry = prevInlinePath[i] = {
-                        location: {
-                            callFrame: currentCallFrame,
-                            offset: inlineTreePathEntry.offset
-                        },
-                        inline: inlineTreePathEntry,
-                        children: []
-                    });
+                    prev.push(
+                        (inlinePathEntry = prevInlinePath[i] =
+                            {
+                                location: {
+                                    callFrame: currentCallFrame,
+                                    offset: inlineTreePathEntry.offset
+                                },
+                                inline: inlineTreePathEntry,
+                                children: []
+                            })
+                    );
 
                     if (i < prevInlinePath.length - 1) {
                         prevInlinePath.splice(i + 1);

@@ -29,19 +29,19 @@ function countSamples(n, values, total, continues = false) {
 
 export const methods = {
     countSamples(n = 500, profile = this.context.currentProfile) {
-        const { timeDeltas, totalTime } = profile;
+        const {timeDeltas, totalTime} = profile;
 
         return countSamples(n, timeDeltas, totalTime, true);
     },
 
     countSamplesDiscrete(n = 500, profile = this.context.currentProfile) {
-        const { timeDeltas, totalTime } = profile;
+        const {timeDeltas, totalTime} = profile;
 
         return countSamples(n, timeDeltas, totalTime);
     },
 
     sampleXBins(n = 500, profile = this.context.currentProfile) {
-        const { timeDeltas } = profile;
+        const {timeDeltas} = profile;
         let max = 1500; // Math.min(timeDeltas.reduce((m, i) => i > m ? i : m, 0), 2000);
         const step = max / n;
         const bins = new Uint32Array(n);

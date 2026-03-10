@@ -1,5 +1,5 @@
-import type { V8CpuProfile, V8CpuProfileNode, V8CpuProfileScript } from '../types.js';
-import { ALLOCATION_SPACES, ALLOCATION_TIMESPANS, ALLOCATION_INSTANCE_TYPES } from './memprofile-types.js';
+import type {V8CpuProfile, V8CpuProfileNode, V8CpuProfileScript} from '../types.js';
+import {ALLOCATION_SPACES, ALLOCATION_TIMESPANS, ALLOCATION_INSTANCE_TYPES} from './memprofile-types.js';
 
 type SizeSample = {
     size: number;
@@ -45,9 +45,7 @@ function isArrayOfIntegers(value: unknown): value is number[] {
         return false;
     }
 
-    return value.length > 0
-        ? Number.isInteger(value[0]) && (value.length === 1 || Number.isInteger(value[1]))
-        : true;
+    return value.length > 0 ? Number.isInteger(value[0]) && (value.length === 1 || Number.isInteger(value[1])) : true;
 }
 
 function isArrayLike(value: unknown, check: (value: unknown) => boolean): boolean {
@@ -55,17 +53,13 @@ function isArrayLike(value: unknown, check: (value: unknown) => boolean): boolea
         return false;
     }
 
-    return value.length > 0
-        ? check(value[0]) && (value.length === 1 || check(value[1]))
-        : true;
+    return value.length > 0 ? check(value[0]) && (value.length === 1 || check(value[1])) : true;
 }
 
 function isSizeSamples(value: unknown): value is SizeSample[] {
-    return isArrayLike(value, (item) =>
-        typeof item === 'object' &&
-        item !== null &&
-        'size' in item &&
-        typeof item.size === 'number'
+    return isArrayLike(
+        value,
+        item => typeof item === 'object' && item !== null && 'size' in item && typeof item.size === 'number'
     );
 }
 
@@ -106,7 +100,7 @@ export function normalizeCpuProfile(data: V8CpuProfile) {
 // nodes may missing children field but have parent field, rebuild children arrays then;
 // avoid updating children when nodes have parent and children fields
 export function convertParentIntoChildrenIfNeeded(data: V8CpuProfile) {
-    const nodes: (V8CpuProfileNode<unknown> & { parent?: number })[] = data.nodes;
+    const nodes: (V8CpuProfileNode<unknown> & {parent?: number})[] = data.nodes;
 
     // no action when just one node or both first nodes has no parent (since only root node can has no parent)
     if (nodes.length < 2 || (typeof nodes[0].parent !== 'number' && typeof nodes[1].parent !== 'number')) {
@@ -141,7 +135,7 @@ export function convertParentIntoChildrenIfNeeded(data: V8CpuProfile) {
 }
 
 function linearCallTree(node: V8CpuProfileNode, nodes: V8CpuProfileNode[] = []) {
-    const children = node.children as (V8CpuProfileNode[] | undefined);
+    const children = node.children as V8CpuProfileNode[] | undefined;
 
     if (Array.isArray(children)) {
         nodes.push({
@@ -157,7 +151,7 @@ function linearCallTree(node: V8CpuProfileNode, nodes: V8CpuProfileNode[] = []) 
     return nodes;
 }
 
-export function unrollHeadToNodesIfNeeded(profile: V8CpuProfile & { head?: V8CpuProfileNode }) {
+export function unrollHeadToNodesIfNeeded(profile: V8CpuProfile & {head?: V8CpuProfileNode}) {
     const head = profile.head;
 
     if (!head) {
@@ -176,7 +170,12 @@ function extractVectorIfExists(samples: SizeSample[], property: keyof SizeSample
     }
 }
 
-function extractRemapVectorIfExists(samples: SizeSample[], vectorName: keyof SizeSample, nameMap: Record<number, string>, useId = false) {
+function extractRemapVectorIfExists(
+    samples: SizeSample[],
+    vectorName: keyof SizeSample,
+    nameMap: Record<number, string>,
+    useId = false
+) {
     let vector = extractVectorIfExists(samples, vectorName);
     let names: string[] = [];
 
@@ -184,19 +183,20 @@ function extractRemapVectorIfExists(samples: SizeSample[], vectorName: keyof Siz
         const map = new Map([...new Set(vector)].map((type, idx) => [type, idx]));
 
         vector = vector.map(origType => map.get(origType) || 0);
-        names = [...map.keys()].map(k => useId || !Object.hasOwn(nameMap, k)
-            ? `(${k}) ${nameMap[k] || 'unknown'}`
-            : nameMap[k] || 'unknown'
+        names = [...map.keys()].map(k =>
+            useId || !Object.hasOwn(nameMap, k) ? `(${k}) ${nameMap[k] || 'unknown'}` : nameMap[k] || 'unknown'
         );
     }
 
-    return { vector, names };
+    return {vector, names};
 }
 
-export function unwrapSamplesIfNeeded(profile: V8CpuProfile & {
-    samples: number[] | SizeSample[];
-    scripts?: V8CpuProfileScript[];
-}): V8CpuProfile {
+export function unwrapSamplesIfNeeded(
+    profile: V8CpuProfile & {
+        samples: number[] | SizeSample[];
+        scripts?: V8CpuProfileScript[];
+    }
+): V8CpuProfile {
     if (isArrayOfIntegers(profile.samples)) {
         return profile;
     }
@@ -207,9 +207,14 @@ export function unwrapSamplesIfNeeded(profile: V8CpuProfile & {
     // Note: used slice() to avoid mutation of an input array
     source = source.slice().sort((a, b) => a.ordinal - b.ordinal);
 
-    const { vector: typeVector, names: typeNames } = extractRemapVectorIfExists(source, 'type', ALLOCATION_INSTANCE_TYPES, true);
-    const { vector: spaceVector, names: spaceNames } = extractRemapVectorIfExists(source, 'space', ALLOCATION_SPACES);
-    const { vector: gcVector, names: gcNames } = extractRemapVectorIfExists(source, 'gc', ALLOCATION_TIMESPANS);
+    const {vector: typeVector, names: typeNames} = extractRemapVectorIfExists(
+        source,
+        'type',
+        ALLOCATION_INSTANCE_TYPES,
+        true
+    );
+    const {vector: spaceVector, names: spaceNames} = extractRemapVectorIfExists(source, 'space', ALLOCATION_SPACES);
+    const {vector: gcVector, names: gcNames} = extractRemapVectorIfExists(source, 'gc', ALLOCATION_TIMESPANS);
 
     return {
         ...profile,

@@ -1,6 +1,6 @@
 /* eslint-env node */
-const { supportedFormats } = require('../prepare/index.js');
-const { sessionExpandState } = require('./common.js');
+const {supportedFormats} = require('../prepare/index.js');
+const {sessionExpandState} = require('./common.js');
 const experimentalFeatures = false;
 
 discovery.nav.primary.append({
@@ -11,7 +11,7 @@ discovery.nav.primary.append({
 });
 
 function toggleFullPageFlamechart(fullpageMode) {
-    const params = { ...discovery.pageParams };
+    const params = {...discovery.pageParams};
 
     if (fullpageMode) {
         params.flamechartFullpage = true;
@@ -194,7 +194,7 @@ const heapTotalView = [
             {
                 view: 'block',
                 className: 'label',
-                postRender: (el) => el.style.setProperty('--color', '#5b88c6'),
+                postRender: el => el.style.setProperty('--color', '#5b88c6'),
                 content: 'text:"Total size"'
             },
             {
@@ -226,7 +226,7 @@ const heapTotalView = [
                 view: 'block',
                 className: 'label',
                 content: 'text:"Allocations"',
-                postRender: (el) => el.style.setProperty('--color', '#bf8354')
+                postRender: el => el.style.setProperty('--color', '#bf8354')
             },
             {
                 view: 'block',
@@ -251,7 +251,7 @@ const heapTotalView = [
                 view: 'block',
                 className: 'label',
                 content: 'text:"Releases"',
-                postRender: (el) => el.style.setProperty('--color', '#80a556')
+                postRender: el => el.style.setProperty('--color', '#80a556')
             },
             {
                 view: 'block',
@@ -283,10 +283,7 @@ const categoriesFractionBars = {
     },
     segment: {
         formatValue: '==> unit()',
-        tooltip: [
-            'text:text',
-            'duration:{ time: duration, total: #.data.totalTime }'
-        ]
+        tooltip: ['text:text', 'duration:{ time: duration, total: #.data.totalTime }']
     }
 };
 
@@ -390,9 +387,22 @@ const categoriesTimeline = {
                     className: 'timeline-segment-info',
                     data: 'samples',
                     content: [
-                        { view: 'block', content: 'text:`Range: ${#.timeStart.formatMicrosecondsTime(totalTime)} – ${#.timeEnd.formatMicrosecondsTime(totalTime)}`' },
-                        { view: 'block', content: ['text:`Duration: `', 'duration:{ time: #.timeEnd - #.timeStart, total: totalTime }'] },
-                        { view: 'block', content: 'text:`Samples: ${$[].binSamples[#.segmentStart:#.segmentEnd + 1].sum()}`' }
+                        {
+                            view: 'block',
+                            content:
+                                'text:`Range: ${#.timeStart.formatMicrosecondsTime(totalTime)} – ${#.timeEnd.formatMicrosecondsTime(totalTime)}`'
+                        },
+                        {
+                            view: 'block',
+                            content: [
+                                'text:`Duration: `',
+                                'duration:{ time: #.timeEnd - #.timeStart, total: totalTime }'
+                            ]
+                        },
+                        {
+                            view: 'block',
+                            content: 'text:`Samples: ${$[].binSamples[#.segmentStart:#.segmentEnd + 1].sum()}`'
+                        }
                     ]
                 },
                 {
@@ -456,14 +466,19 @@ const categoriesTimeline = {
                                             `,
                                             itemConfig: {
                                                 className: '=value = 0 ? "no-value"',
-                                                postRender: (el, _, data) => el.style.setProperty('--color', data.color),
+                                                postRender: (el, _, data) =>
+                                                    el.style.setProperty('--color', data.color),
                                                 content: [
                                                     'block{ className: "category-name", content: "text:name" }',
                                                     {
                                                         view: 'block',
                                                         className: 'value-with-from',
                                                         content: [
-                                                            { view: 'text-numeric', when: 'from != value and from is number', text: '=`${from} → `' },
+                                                            {
+                                                                view: 'text-numeric',
+                                                                when: 'from != value and from is number',
+                                                                text: '=`${from} → `'
+                                                            },
                                                             'value-fraction{ value, total: maxTotal }'
                                                         ]
                                                     }
@@ -492,14 +507,19 @@ const categoriesTimeline = {
                                             ]`,
                                             itemConfig: {
                                                 className: '=value = 0 ? "no-value"',
-                                                postRender: (el, _, data) => el.style.setProperty('--color', data.color),
+                                                postRender: (el, _, data) =>
+                                                    el.style.setProperty('--color', data.color),
                                                 content: [
                                                     'block{ content: "text:name" }',
                                                     {
                                                         view: 'block',
                                                         className: 'value-with-from',
                                                         content: [
-                                                            { view: 'text-numeric', when: 'from is number', text: '=`${from.bytes(false)} … `' },
+                                                            {
+                                                                view: 'text-numeric',
+                                                                when: 'from is number',
+                                                                text: '=`${from.bytes(false)} … `'
+                                                            },
                                                             'value-fraction{ value: value.bytes(false), fraction: value / total  }'
                                                         ]
                                                     }
@@ -559,48 +579,61 @@ const categoriesTimeline = {
                 {
                     view: 'switch',
                     content: [
-                        { when: 'no $', content: 'html:` <span style=\"color: #888\">(unavailable)</span>`' },
-                        { content: [
-                            { view: 'block', className: 'labeled-value-groups', content: [
-                                { view: 'block', className: 'labeled-value-group', content: [
-                                    {
-                                        view: 'labeled-value',
-                                        color: '=codesTotalColor',
-                                        text: 'Codes',
-                                        value: 'text-numeric:compilations.size()'
-                                    },
-                                    {
-                                        view: 'labeled-value',
-                                        color: '=totalColor',
-                                        text: 'Functions',
-                                        value: 'text-numeric:compilations.callFrame.size()'
-                                    }
-                                ] },
+                        {when: 'no $', content: 'html:` <span style=\"color: #888\">(unavailable)</span>`'},
+                        {
+                            content: [
                                 {
-                                    view: 'inline-list',
-                                    className: 'labeled-value-group',
-                                    data: 'byTier',
-                                    itemConfig: {
-                                        view: 'labeled-value',
-                                        color: '=color',
-                                        text: '=name',
-                                        value: 'text:100 * maxTier / maxTotal | `${toFixed(2)}%`'
-                                    }
+                                    view: 'block',
+                                    className: 'labeled-value-groups',
+                                    content: [
+                                        {
+                                            view: 'block',
+                                            className: 'labeled-value-group',
+                                            content: [
+                                                {
+                                                    view: 'labeled-value',
+                                                    color: '=codesTotalColor',
+                                                    text: 'Codes',
+                                                    value: 'text-numeric:compilations.size()'
+                                                },
+                                                {
+                                                    view: 'labeled-value',
+                                                    color: '=totalColor',
+                                                    text: 'Functions',
+                                                    value: 'text-numeric:compilations.callFrame.size()'
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            view: 'inline-list',
+                                            className: 'labeled-value-group',
+                                            data: 'byTier',
+                                            itemConfig: {
+                                                view: 'labeled-value',
+                                                color: '=color',
+                                                text: '=name',
+                                                value: 'text:100 * maxTier / maxTotal | `${toFixed(2)}%`'
+                                            }
+                                        }
+                                    ]
                                 }
-                            ] }
-                        ] }
+                            ]
+                        }
                     ]
                 }
             ],
             content: {
                 view: 'switch',
                 content: [
-                    { when: '$', content: functionCodesView },
-                    { content: {
-                        view: 'block',
-                        className: 'data-unavailable',
-                        content: 'md:"The profile does not contain the necessary data. Use [V8 log](https://v8.dev/docs/profile) (raw or [preprocessed](https://v8.dev/docs/profile#web-ui-for---prof)) to enable the feature."'
-                    } }
+                    {when: '$', content: functionCodesView},
+                    {
+                        content: {
+                            view: 'block',
+                            className: 'data-unavailable',
+                            content:
+                                'md:"The profile does not contain the necessary data. Use [V8 log](https://v8.dev/docs/profile) (raw or [preprocessed](https://v8.dev/docs/profile#web-ui-for---prof)) to enable the feature."'
+                        }
+                    }
                 ]
             }
         },
@@ -619,61 +652,75 @@ const categoriesTimeline = {
                 {
                     view: 'switch',
                     content: [
-                        { when: 'no $', content: 'html:` <span style=\"color: #888\">(unavailable)</span>`' },
-                        { content: [
-                            { view: 'block', className: 'labeled-value-groups', content: [
-                                { view: 'block', className: 'labeled-value-group', content: [
-                                    {
-                                        view: 'labeled-value',
-                                        color: '#5b88c6',
-                                        text: 'Total size',
-                                        value: [
-                                            'text-numeric:minTotal.bytes()',
-                                            {
-                                                view: 'context',
-                                                when: 'minTotal != maxTotal',
-                                                content: [
-                                                    'text:" … "',
-                                                    'text-numeric:maxTotal.bytes()'
-                                                ]
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        view: 'labeled-value',
-                                        when: 'available',
-                                        text: 'Limit',
-                                        value: 'text-numeric:available.bytes(false, 1024)'
-                                    }
-                                ] },
-                                { view: 'block', className: 'labeled-value-group', content: [
-                                    {
-                                        view: 'labeled-value',
-                                        color: '#bf8354',
-                                        text: 'Allocated',
-                                        value: 'text-numeric:newTotal.bytes()'
-                                    },
-                                    {
-                                        view: 'labeled-value',
-                                        color: '#80a556',
-                                        text: 'Released',
-                                        value: 'text-numeric:deleteTotal.bytes()'
-                                    }
-                                ] }
-                            ] }
-                        ] }
+                        {when: 'no $', content: 'html:` <span style=\"color: #888\">(unavailable)</span>`'},
+                        {
+                            content: [
+                                {
+                                    view: 'block',
+                                    className: 'labeled-value-groups',
+                                    content: [
+                                        {
+                                            view: 'block',
+                                            className: 'labeled-value-group',
+                                            content: [
+                                                {
+                                                    view: 'labeled-value',
+                                                    color: '#5b88c6',
+                                                    text: 'Total size',
+                                                    value: [
+                                                        'text-numeric:minTotal.bytes()',
+                                                        {
+                                                            view: 'context',
+                                                            when: 'minTotal != maxTotal',
+                                                            content: ['text:" … "', 'text-numeric:maxTotal.bytes()']
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    view: 'labeled-value',
+                                                    when: 'available',
+                                                    text: 'Limit',
+                                                    value: 'text-numeric:available.bytes(false, 1024)'
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            view: 'block',
+                                            className: 'labeled-value-group',
+                                            content: [
+                                                {
+                                                    view: 'labeled-value',
+                                                    color: '#bf8354',
+                                                    text: 'Allocated',
+                                                    value: 'text-numeric:newTotal.bytes()'
+                                                },
+                                                {
+                                                    view: 'labeled-value',
+                                                    color: '#80a556',
+                                                    text: 'Released',
+                                                    value: 'text-numeric:deleteTotal.bytes()'
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
                     ]
                 }
             ],
             content: {
                 view: 'switch',
                 content: [
-                    { when: '$', content: heapTotalView },
-                    { content: {
-                        view: 'block',
-                        className: 'data-unavailable',
-                        content: 'md:"The profile does not contain the necessary data. Use [V8 log](https://v8.dev/docs/profile) (raw) to enable the feature."'
-                    } }
+                    {when: '$', content: heapTotalView},
+                    {
+                        content: {
+                            view: 'block',
+                            className: 'data-unavailable',
+                            content:
+                                'md:"The profile does not contain the necessary data. Use [V8 log](https://v8.dev/docs/profile) (raw) to enable the feature."'
+                        }
+                    }
                 ]
             }
         },
@@ -691,22 +738,28 @@ const categoriesTimeline = {
                 {
                     view: 'switch',
                     content: [
-                        { when: 'no $', content: 'html:` <span style=\"color: #888\">(unavailable)</span>`' },
-                        { content: [
-                            { view: 'block', className: 'labeled-value-groups', content: [
+                        {when: 'no $', content: 'html:` <span style=\"color: #888\">(unavailable)</span>`'},
+                        {
+                            content: [
                                 {
-                                    view: 'inline-list',
-                                    className: 'labeled-value-group',
-                                    limit: false,
-                                    itemConfig: {
-                                        view: 'labeled-value',
-                                        color: '=color',
-                                        text: '=name',
-                                        value: 'text:100 * value / total | `${toFixed(2)}%`'
-                                    }
+                                    view: 'block',
+                                    className: 'labeled-value-groups',
+                                    content: [
+                                        {
+                                            view: 'inline-list',
+                                            className: 'labeled-value-group',
+                                            limit: false,
+                                            itemConfig: {
+                                                view: 'labeled-value',
+                                                color: '=color',
+                                                text: '=name',
+                                                value: 'text:100 * value / total | `${toFixed(2)}%`'
+                                            }
+                                        }
+                                    ]
                                 }
-                            ] }
-                        ] }
+                            ]
+                        }
                     ]
                 }
             ],
@@ -760,21 +813,27 @@ const categoriesTimeline = {
                 {
                     view: 'switch',
                     content: [
-                        { when: 'no $', content: 'html:` <span style=\"color: #888\">(unavailable)</span>`' },
-                        { content: [
-                            { view: 'block', className: 'labeled-value-groups', content: [
+                        {when: 'no $', content: 'html:` <span style=\"color: #888\">(unavailable)</span>`'},
+                        {
+                            content: [
                                 {
-                                    view: 'inline-list',
-                                    className: 'labeled-value-group',
-                                    itemConfig: {
-                                        view: 'labeled-value',
-                                        color: '=color',
-                                        text: '=name',
-                                        value: 'text:100 * value / total | `${toFixed(2)}%`'
-                                    }
+                                    view: 'block',
+                                    className: 'labeled-value-groups',
+                                    content: [
+                                        {
+                                            view: 'inline-list',
+                                            className: 'labeled-value-group',
+                                            itemConfig: {
+                                                view: 'labeled-value',
+                                                color: '=color',
+                                                text: '=name',
+                                                value: 'text:100 * value / total | `${toFixed(2)}%`'
+                                            }
+                                        }
+                                    ]
                                 }
-                            ] }
-                        ] }
+                            ]
+                        }
                     ]
                 }
             ],
@@ -821,21 +880,27 @@ const categoriesTimeline = {
                 {
                     view: 'switch',
                     content: [
-                        { when: 'no $', content: 'html:` <span style=\"color: #888\">(unavailable)</span>`' },
-                        { content: [
-                            { view: 'block', className: 'labeled-value-groups', content: [
+                        {when: 'no $', content: 'html:` <span style=\"color: #888\">(unavailable)</span>`'},
+                        {
+                            content: [
                                 {
-                                    view: 'inline-list',
-                                    className: 'labeled-value-group',
-                                    itemConfig: {
-                                        view: 'labeled-value',
-                                        color: '=color',
-                                        text: '=name',
-                                        value: 'text:100 * value / total | `${toFixed(2)}%`'
-                                    }
+                                    view: 'block',
+                                    className: 'labeled-value-groups',
+                                    content: [
+                                        {
+                                            view: 'inline-list',
+                                            className: 'labeled-value-group',
+                                            itemConfig: {
+                                                view: 'labeled-value',
+                                                color: '=color',
+                                                text: '=name',
+                                                value: 'text:100 * value / total | `${toFixed(2)}%`'
+                                            }
+                                        }
+                                    ]
                                 }
-                            ] }
-                        ] }
+                            ]
+                        }
                     ]
                 }
             ],
@@ -885,9 +950,17 @@ const packagesList = {
                 data: 'entries.[totalTime and entry.name ~= #.filter].sort(selfTime desc, totalTime desc)',
                 limit: 15,
                 cols: [
-                    { header: 'Self time', sorting: 'selfTime desc, totalTime desc', content: 'duration:{ time: selfTime, total: #.data.totalTime }' },
-                    { header: 'Total time', sorting: 'totalTime desc, selfTime desc', content: 'duration:{ time: totalTime, total: #.data.totalTime }' },
-                    { header: 'Package', className: 'main', sorting: 'entry.name asc', content: 'package-badge:entry' }
+                    {
+                        header: 'Self time',
+                        sorting: 'selfTime desc, totalTime desc',
+                        content: 'duration:{ time: selfTime, total: #.data.totalTime }'
+                    },
+                    {
+                        header: 'Total time',
+                        sorting: 'totalTime desc, selfTime desc',
+                        content: 'duration:{ time: totalTime, total: #.data.totalTime }'
+                    },
+                    {header: 'Package', className: 'main', sorting: 'entry.name asc', content: 'package-badge:entry'}
                 ]
             }
         }
@@ -911,9 +984,17 @@ const modulesList = {
                 `,
                 limit: 15,
                 cols: [
-                    { header: 'Self time', sorting: 'selfTime desc, totalTime desc', content: 'duration:{ time: selfTime, total: #.data.totalTime }' },
-                    { header: 'Total time', sorting: 'totalTime desc, selfTime desc', content: 'duration:{ time: totalTime, total: #.data.totalTime }' },
-                    { header: 'Module', className: 'main', sorting: 'entry.name ascN', content: 'module-badge:entry' }
+                    {
+                        header: 'Self time',
+                        sorting: 'selfTime desc, totalTime desc',
+                        content: 'duration:{ time: selfTime, total: #.data.totalTime }'
+                    },
+                    {
+                        header: 'Total time',
+                        sorting: 'totalTime desc, selfTime desc',
+                        content: 'duration:{ time: totalTime, total: #.data.totalTime }'
+                    },
+                    {header: 'Module', className: 'main', sorting: 'entry.name ascN', content: 'module-badge:entry'}
                 ]
             }
         }
@@ -938,8 +1019,16 @@ const callFrameList = {
                 `,
                 limit: 15,
                 cols: [
-                    { header: 'Self time', sorting: 'left.selfTime desc, left.totalTime desc', content: 'duration:{ time: left.selfTime, total: #.data.totalTime }' },
-                    { header: 'Total time', sorting: 'left.totalTime desc, left.selfTime desc', content: 'duration:{ time: left.totalTime, total: #.data.totalTime }' },
+                    {
+                        header: 'Self time',
+                        sorting: 'left.selfTime desc, left.totalTime desc',
+                        content: 'duration:{ time: left.selfTime, total: #.data.totalTime }'
+                    },
+                    {
+                        header: 'Total time',
+                        sorting: 'left.totalTime desc, left.selfTime desc',
+                        content: 'duration:{ time: left.totalTime, total: #.data.totalTime }'
+                    },
                     {
                         header: '',
                         colWhen: '$[=>right]',
@@ -948,7 +1037,12 @@ const callFrameList = {
                         contentWhen: 'hotness = "hot" or hotness = "warm"',
                         content: 'code-hotness-icon:topTier'
                     },
-                    { header: 'Call frame', className: 'main', sorting: 'left.entry.name ascN', content: 'call-frame-badge:left.entry' }
+                    {
+                        header: 'Call frame',
+                        className: 'main',
+                        sorting: 'left.entry.name ascN',
+                        content: 'call-frame-badge:left.entry'
+                    }
                 ]
             }
         }
@@ -965,10 +1059,10 @@ const flamecharts = {
                 view: 'toggle-group',
                 name: 'dataset',
                 data: [
-                    { text: 'Categories', value: 'categoriesTree' },
-                    { text: 'Packages', value: 'packagesTree', active: true },
-                    { text: 'Modules', value: 'modulesTree' },
-                    { text: 'Call frames', value: 'callFramesTree' }
+                    {text: 'Categories', value: 'categoriesTree'},
+                    {text: 'Packages', value: 'packagesTree', active: true},
+                    {text: 'Modules', value: 'modulesTree'},
+                    {text: 'Call frames', value: 'callFramesTree'}
                 ]
             },
             {
@@ -1044,7 +1138,8 @@ const noDataPageContent = {
                 {
                     view: 'block',
                     className: 'upload-notes',
-                    content: 'html:"CPUpro is a server-less application that processes profiles locally without transmitting data elsewhere,<br>it securely opens and analyzes your profiles directly on your device."'
+                    content:
+                        'html:"CPUpro is a server-less application that processes profiles locally without transmitting data elsewhere,<br>it securely opens and analyzes your profiles directly on your device."'
                 }
             ]
         },
@@ -1054,10 +1149,7 @@ const noDataPageContent = {
             content: [
                 {
                     view: 'markdown',
-                    source: [
-                        'Supported formats:',
-                        ...supportedFormats
-                    ]
+                    source: ['Supported formats:', ...supportedFormats]
                 },
 
                 {
@@ -1065,7 +1157,7 @@ const noDataPageContent = {
                     className: 'supported-formats-tips',
                     source: [
                         '> [!TIP]',
-                        '> - The file extension can be arbitrary; the format is determined based on the file\'s content.',
+                        "> - The file extension can be arbitrary; the format is determined based on the file's content.",
                         '> - The file content may be compressed using `gzip` or `deflate`.'
                     ]
                 }
@@ -1104,7 +1196,7 @@ const pageContent = [
             {
                 view: 'h2',
                 content: [
-                    { view: 'block', className: 'logo' },
+                    {view: 'block', className: 'logo'},
                     'text:#.datasets[].resource | type = "file" ? name : "Untitled profile"'
                 ]
             }
@@ -1135,42 +1227,47 @@ const pageContent = [
         postRender: (el, config, data, context) =>
             el.style.setProperty('--total-time-digits', String(context.data.totalTime).replace(/\D/g, '').length - 2),
         header: [
-            { view: 'block', content: [
-                'text:"Packages "',
-                {
-                    view: 'update-on-timings-change',
-                    data: 'packagesTimingsFiltered',
-                    content: 'text-numeric:entries.[totalTime].size()'
-                },
-                { view: 'text-numeric', className: 'total-number', data: '` ⁄ ${packages.size()}`' },
-                { view: 'badge', href: '#packages', text: 'all packages →' }
-            ] },
-            { view: 'block', content: [
-                'text:"Modules "',
-                {
-                    view: 'update-on-timings-change',
-                    data: 'modulesTimingsFiltered',
-                    content: 'text-numeric:entries.[totalTime].size()'
-                },
-                { view: 'text-numeric', className: 'total-number', data: '` ⁄ ${modules.size()}`' },
-                { view: 'badge', href: '#modules', text: 'all modules →' }
-            ] },
-            { view: 'block', content: [
-                'text:"Call frames "',
-                {
-                    view: 'update-on-timings-change',
-                    data: 'callFramesTimingsFiltered',
-                    content: 'text-numeric:entries.[totalTime].size()'
-                },
-                { view: 'text-numeric', className: 'total-number', data: '` ⁄ ${callFrames.size()}`' },
-                { view: 'badge', href: '#call-frames', text: 'all call frames →' }
-            ] }
+            {
+                view: 'block',
+                content: [
+                    'text:"Packages "',
+                    {
+                        view: 'update-on-timings-change',
+                        data: 'packagesTimingsFiltered',
+                        content: 'text-numeric:entries.[totalTime].size()'
+                    },
+                    {view: 'text-numeric', className: 'total-number', data: '` ⁄ ${packages.size()}`'},
+                    {view: 'badge', href: '#packages', text: 'all packages →'}
+                ]
+            },
+            {
+                view: 'block',
+                content: [
+                    'text:"Modules "',
+                    {
+                        view: 'update-on-timings-change',
+                        data: 'modulesTimingsFiltered',
+                        content: 'text-numeric:entries.[totalTime].size()'
+                    },
+                    {view: 'text-numeric', className: 'total-number', data: '` ⁄ ${modules.size()}`'},
+                    {view: 'badge', href: '#modules', text: 'all modules →'}
+                ]
+            },
+            {
+                view: 'block',
+                content: [
+                    'text:"Call frames "',
+                    {
+                        view: 'update-on-timings-change',
+                        data: 'callFramesTimingsFiltered',
+                        content: 'text-numeric:entries.[totalTime].size()'
+                    },
+                    {view: 'text-numeric', className: 'total-number', data: '` ⁄ ${callFrames.size()}`'},
+                    {view: 'badge', href: '#call-frames', text: 'all call frames →'}
+                ]
+            }
         ],
-        content: [
-            packagesList,
-            modulesList,
-            callFrameList
-        ]
+        content: [packagesList, modulesList, callFrameList]
     },
 
     {
@@ -1182,22 +1279,28 @@ const pageContent = [
     }
 ];
 
-discovery.page.define('default', {
-    view: 'switch',
-    content: [
-        {
-            when: 'no profiles',
-            content: noDataPageContent
-        },
-        { content: {
-            view: 'context',
-            context: '{ ...#, currentProfile }',
-            data: 'currentProfile',
-            content: pageContent
-        } }
-    ]
-}, {
-    init(pageEl) {
-        pageEl.classList.toggle('flamecharts-fullpage', Boolean(discovery.pageParams.flamechartFullpage));
+discovery.page.define(
+    'default',
+    {
+        view: 'switch',
+        content: [
+            {
+                when: 'no profiles',
+                content: noDataPageContent
+            },
+            {
+                content: {
+                    view: 'context',
+                    context: '{ ...#, currentProfile }',
+                    data: 'currentProfile',
+                    content: pageContent
+                }
+            }
+        ]
+    },
+    {
+        init(pageEl) {
+            pageEl.classList.toggle('flamecharts-fullpage', Boolean(discovery.pageParams.flamechartFullpage));
+        }
     }
-});
+);

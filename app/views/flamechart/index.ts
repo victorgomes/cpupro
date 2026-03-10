@@ -1,6 +1,6 @@
-import { CallTree } from '../../prepare/computations/call-tree';
-import { generateColorVector, calculateColor } from './color-utils';
-import { EventEmitter } from './event-emmiter';
+import {CallTree} from '../../prepare/computations/call-tree';
+import {generateColorVector, calculateColor} from './color-utils';
+import {EventEmitter} from './event-emmiter';
 
 type FrameElement = HTMLElement;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -12,7 +12,7 @@ type SetDataOptions = {
     offset?(data: FrameData, parentData: FrameData): number;
     children?(data: FrameData): FrameData[] | null | undefined;
     childrenSort?: true | 'name' | 'value' | ((a: number, b: number) => number);
-}
+};
 type Events = {
     render<T>(rootEl: Element | null, rootFrame: Frame<T> | null, rootValue: number): void;
     select(nodeIndex: number, prevNodeIndex: number): void;
@@ -21,7 +21,7 @@ type Events = {
     'frame:enter'(nodeIndex: number, element: FrameElement): void;
     'frame:leave'(): void;
     destroy(): void;
-}
+};
 
 type Frame<T> = {
     nodeIndex: number;
@@ -41,7 +41,7 @@ function ensureFunction<T, U>(value: T, fallback: U) {
 }
 
 function defaultColorMapper(frame: FrameData, colorHue: string | null = null) {
-    const { name } = frame;
+    const {name} = frame;
     const vector = generateColorVector(name);
     const libtype = undefined;
 
@@ -119,23 +119,35 @@ export class FlameChart<T> extends EventEmitter<Events> {
         const chartEl = document.createElement('div');
 
         chartEl.className = 'flamechart';
-        chartEl.addEventListener('click', event => {
-            const result = chart.findFrameByEl(event.target as Node);
+        chartEl.addEventListener(
+            'click',
+            event => {
+                const result = chart.findFrameByEl(event.target as Node);
 
-            if (result !== null) {
-                chart.emit('frame:click', result.frame.nodeIndex, result.element as FrameElement, event);
-            }
-        }, true);
-        chartEl.addEventListener('pointerenter', event => {
-            const result = chart.findFrameByEl(event.target as Node);
+                if (result !== null) {
+                    chart.emit('frame:click', result.frame.nodeIndex, result.element as FrameElement, event);
+                }
+            },
+            true
+        );
+        chartEl.addEventListener(
+            'pointerenter',
+            event => {
+                const result = chart.findFrameByEl(event.target as Node);
 
-            if (result !== null) {
-                chart.emit('frame:enter', result.frame.nodeIndex, result.element as FrameElement);
-            }
-        }, true);
-        chartEl.addEventListener('pointerleave', () => {
-            chart.emit('frame:leave');
-        }, true);
+                if (result !== null) {
+                    chart.emit('frame:enter', result.frame.nodeIndex, result.element as FrameElement);
+                }
+            },
+            true
+        );
+        chartEl.addEventListener(
+            'pointerleave',
+            () => {
+                chart.emit('frame:leave');
+            },
+            true
+        );
         // chartEl.addEventListener('mousewheel', (e) => {
         //     const deltaY = (e as WheelEvent).deltaY;
         //     const scale = Math.sign(deltaY) < 0 ? 0.99 : 1.01;
@@ -234,13 +246,13 @@ export class FlameChart<T> extends EventEmitter<Events> {
             options.childrenSort === true || options.childrenSort === 'value'
                 ? (a: number, b: number) => values[b] - values[a]
                 : options.childrenSort === 'name'
-                    ? (a: number, b: number) => {
+                  ? (a: number, b: number) => {
                         const nameA = names[a];
                         const nameB = names[b];
 
                         return nameA > nameB ? 1 : nameA < nameB ? -1 : 0;
                     }
-                    : ensureFunction(options.childrenSort, null);
+                  : ensureFunction(options.childrenSort, null);
 
         const nodes = tree.nodes;
         const parent = tree.parent;
@@ -301,8 +313,8 @@ export class FlameChart<T> extends EventEmitter<Events> {
     }
 
     #computeChildren(nodeIdx: number, nodeX: number) {
-        const { nodesX, nodesValue, children, childrenOffset, childrenComputed } = this;
-        const { subtreeSize } = this.tree;
+        const {nodesX, nodesValue, children, childrenOffset, childrenComputed} = this;
+        const {subtreeSize} = this.tree;
         const getValue = this.#getValue;
 
         // if children is not computed before, then sort them and calculate x and width
@@ -367,17 +379,13 @@ export class FlameChart<T> extends EventEmitter<Events> {
         }
     }
 
-    getVisibleFrames(
-        start = this.zoomStart,
-        end = this.zoomEnd,
-        minScale = 0
-    ) {
+    getVisibleFrames(start = this.zoomStart, end = this.zoomEnd, minScale = 0) {
         if (this.tree === null) {
             return [];
         }
 
-        const { nodesX, nodesValue, nodesDepth } = this;
-        const { dictionary, nodes, subtreeSize } = this.tree;
+        const {nodesX, nodesValue, nodesDepth} = this;
+        const {dictionary, nodes, subtreeSize} = this.tree;
 
         this.#syncChildrenComputations();
 
@@ -443,11 +451,7 @@ export class FlameChart<T> extends EventEmitter<Events> {
         const xOffset = this.zoomStart * xScale;
         const firstEnter = !this.frameEls.size;
         const removeFrameNodeIndecies = new Set(this.frameEls.keys());
-        const visibleFrames = this.getVisibleFrames(
-            this.zoomStart,
-            this.zoomEnd,
-            this.#minFrameWidth * widthScale
-        );
+        const visibleFrames = this.getVisibleFrames(this.zoomStart, this.zoomEnd, this.#minFrameWidth * widthScale);
 
         const enterFramesBuffer = document.createDocumentFragment();
         const nodes = this.tree.nodes;
@@ -457,15 +461,12 @@ export class FlameChart<T> extends EventEmitter<Events> {
         // add / update frame elements
         for (const frame of visibleFrames) {
             const nodeIndex = frame.nodeIndex;
-            const className = nodeIndex === 0
-                ? 'frame'
-                : `frame${
-                    nodeIndex < this.zoomedNode ? ' fade' : ''
-                }${
-                    this.zoomedNode === nodeIndex ? ' zoomed' : ''
-                }${
-                    nodes[nodeIndex] === selectedId ? ' similar' : ''
-                }`;
+            const className =
+                nodeIndex === 0
+                    ? 'frame'
+                    : `frame${nodeIndex < this.zoomedNode ? ' fade' : ''}${
+                          this.zoomedNode === nodeIndex ? ' zoomed' : ''
+                      }${nodes[nodeIndex] === selectedId ? ' similar' : ''}`;
             const x0 = Math.max(0, frame.x0 * xScale - xOffset);
             const x1 = Math.max(0, frame.x1 * xScale - xOffset);
             let frameEl = this.frameEls.get(frame.nodeIndex);
@@ -514,9 +515,7 @@ export class FlameChart<T> extends EventEmitter<Events> {
 
         // finalize enter frames group element
         if (enterFramesBuffer.firstChild !== null) {
-            const enterFramesGroupEl =
-                this.el.querySelector('.frames-group:empty') ||
-                document.createElement('div');
+            const enterFramesGroupEl = this.el.querySelector('.frames-group:empty') || document.createElement('div');
 
             enterFramesGroupEl.append(enterFramesBuffer);
             enterFramesGroupEl.className = 'frames-group frames-group_init-enter-state';
@@ -525,7 +524,8 @@ export class FlameChart<T> extends EventEmitter<Events> {
         }
 
         // emit render event
-        this.emit('render',
+        this.emit(
+            'render',
             this.frameEls.get(0)?.firstElementChild || null,
             this.frameByEl.get(this.frameEls.get(0) as Node) || null,
             this.nodesValue[0]
@@ -541,8 +541,7 @@ export class FlameChart<T> extends EventEmitter<Events> {
 
         if (this.zoomedNode !== nodeIndex && nodeIndex !== 0) {
             if (this.zoomedNode !== 0) {
-                this.zoomedNodesStack = this.zoomedNodesStack
-                    .filter(item => nodesDepth[item] < nodesDepth[nodeIndex]);
+                this.zoomedNodesStack = this.zoomedNodesStack.filter(item => nodesDepth[item] < nodesDepth[nodeIndex]);
 
                 if (nodesDepth[this.zoomedNode] < nodesDepth[nodeIndex]) {
                     this.zoomedNodesStack.push(this.zoomedNode);
@@ -558,7 +557,11 @@ export class FlameChart<T> extends EventEmitter<Events> {
                     this.zoomedNode = this.zoomedNodesStack.pop() as number;
                 }
             } else {
-                while (this.zoomedNode !== 0 && this.nodesValue[this.zoomedNode] === 0 && this.zoomedNodesStack.length > 0) {
+                while (
+                    this.zoomedNode !== 0 &&
+                    this.nodesValue[this.zoomedNode] === 0 &&
+                    this.zoomedNodesStack.length > 0
+                ) {
                     this.zoomedNode = this.zoomedNodesStack.pop() as number;
                 }
 
@@ -575,9 +578,7 @@ export class FlameChart<T> extends EventEmitter<Events> {
         this.zoomEnd = this.zoomStart + this.nodesValue[this.zoomedNode] / rootValue;
 
         // emit event
-        if (prevZoomedNode !== this.zoomedNode ||
-            prevZoomStart !== this.zoomStart ||
-            prevZoomEnd !== this.zoomEnd) {
+        if (prevZoomedNode !== this.zoomedNode || prevZoomStart !== this.zoomStart || prevZoomEnd !== this.zoomEnd) {
             this.emit('zoom', this.zoomedNode, this.zoomStart, this.zoomEnd);
         }
 

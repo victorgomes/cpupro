@@ -1,5 +1,5 @@
-import { GeneratedNodes, WellKnownType } from '../types.js';
-import { sum } from '../utils.js';
+import {GeneratedNodes, WellKnownType} from '../types.js';
+import {sum} from '../utils.js';
 
 const NoSamplesType: WellKnownType = 'no-samples';
 
@@ -31,7 +31,7 @@ export function processTimeDeltas(
     }
 
     const startNoSamplesTime = timeDeltas[0]; // time before first sample
-    const maybeTotalTime = (endTime - startTime) - startNoSamplesTime; // compute potential total time excluding start no samples period
+    const maybeTotalTime = endTime - startTime - startNoSamplesTime; // compute potential total time excluding start no samples period
 
     // shift deltas 1 index left and compute sum of deltas to compute last delta
     // [1, 2, 3, 4, ...] -> [2, 3, 4, ..., x]
@@ -41,9 +41,7 @@ export function processTimeDeltas(
 
     // compute last delta
     const maybeLastDelta = Math.max(0, maybeTotalTime - deltasSum);
-    const lastDelta = maybeLastDelta > 2.5 * samplesInterval
-        ? samplesInterval
-        : maybeLastDelta;
+    const lastDelta = maybeLastDelta > 2.5 * samplesInterval ? samplesInterval : maybeLastDelta;
 
     timeDeltas[timeDeltas.length - 1] = lastDelta;
     deltasSum += lastDelta;

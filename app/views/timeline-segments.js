@@ -1,9 +1,9 @@
-const { utils } = require('@discoveryjs/discovery');
+const {utils} = require('@discoveryjs/discovery');
 
 function generateSmoothPath(points, height) {
     const chartWidth = points.length;
     const maxValue = Math.max(...points) || 1;
-    const normalizedY = points.map((point) => height - (point / maxValue) * height);
+    const normalizedY = points.map(point => height - (point / maxValue) * height);
     const stepX = chartWidth / (points.length - 1);
 
     const pathData = [];
@@ -30,15 +30,7 @@ function generateSmoothPath(points, height) {
         const t0 = tangents[i];
         const t1 = tangents[i + 1];
 
-        pathData.push(
-            'C',
-            x0 + dx,
-            y0 + dx * t0,
-            x1 - dx,
-            y1 - dx * t1,
-            x1,
-            y1
-        );
+        pathData.push('C', x0 + dx, y0 + dx * t0, x1 - dx, y1 - dx * t1, x1, y1);
     }
 
     pathData.push('L', chartWidth, height);
@@ -52,19 +44,23 @@ function generateSquarePath(points, height, maxValue, presence) {
     const stepX = chartWidth / points.length;
     const pathData = [];
     const gap = 0.1;
-    const minNonZeroHeight = .8;
+    const minNonZeroHeight = 0.8;
 
     pathData.push('M', 0, height);
 
     for (let i = 0; i < points.length; ++i) {
-        const y = (points[i] || (presence?.[i] || 0)) / maxValue;
+        const y = (points[i] || presence?.[i] || 0) / maxValue;
 
         if (y > 0) {
             pathData.push(
-                'V', height - Math.max((points[i] / maxValue) * height, minNonZeroHeight),
-                'h', stepX - gap,
-                'V', height,
-                'h', gap
+                'V',
+                height - Math.max((points[i] / maxValue) * height, minNonZeroHeight),
+                'h',
+                stepX - gap,
+                'V',
+                height,
+                'h',
+                gap
             );
         } else {
             pathData.push('h', stepX);
@@ -77,7 +73,7 @@ function generateSquarePath(points, height, maxValue, presence) {
     return pathData.join(' ');
 }
 
-discovery.view.define('timeline-segments', function(el, config, data, context) {
+discovery.view.define('timeline-segments', function (el, config, data, context) {
     data = ensureArray(data);
 
     const count = 500;
@@ -85,8 +81,8 @@ discovery.view.define('timeline-segments', function(el, config, data, context) {
     const step = totalTime / count;
     const stat = new Uint32Array(count);
     for (const [segStart, segEnd] of data) {
-        let start = Math.floor(segStart * count / totalTime);
-        let end = Math.floor(segEnd * count / totalTime);
+        let start = Math.floor((segStart * count) / totalTime);
+        let end = Math.floor((segEnd * count) / totalTime);
 
         // console.log('segment', [segStart, segEnd], [segStart, segEnd], [start, end]);
 
@@ -122,7 +118,7 @@ function ensureArray(value) {
     return utils.isArray(value) ? value : [];
 }
 
-discovery.view.define('timeline-segments-bin', function(el, config, data) {
+discovery.view.define('timeline-segments-bin', function (el, config, data) {
     const presence = config.presence;
     const bins = ensureArray(config.bins || data);
     const height = config.height || 20;

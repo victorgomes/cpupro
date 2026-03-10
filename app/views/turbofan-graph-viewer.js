@@ -1,6 +1,6 @@
 discovery.view.define('turbofan-graph-viewer', {
     render(el, config, data, context) {
-        el.addEventListener('mouseover', (e) => {
+        el.addEventListener('mouseover', e => {
             if (e.target.classList.contains('tf-node-input')) {
                 const nodeId = e.target.dataset.nodeId;
                 const nodeEl = el.querySelector(`.tf-node-${nodeId}`);
@@ -18,7 +18,7 @@ discovery.view.define('turbofan-graph-viewer', {
                 if (blockEl) blockEl.classList.add('tf-block-highlight');
             }
         });
-        el.addEventListener('mouseout', (e) => {
+        el.addEventListener('mouseout', e => {
             if (e.target.classList.contains('tf-node-input')) {
                 const nodeId = e.target.dataset.nodeId;
                 const nodeEl = el.querySelector(`.tf-node-${nodeId}`);
@@ -37,12 +37,12 @@ discovery.view.define('turbofan-graph-viewer', {
             }
         });
 
-        el.addEventListener('click', (e) => {
+        el.addEventListener('click', e => {
             if (e.target.classList.contains('tf-block-ref')) {
                 const targetBlockId = e.target.dataset.target;
                 const blockEl = el.querySelector(`.tf-block-${targetBlockId}`);
                 if (blockEl) {
-                    blockEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    blockEl.scrollIntoView({behavior: 'smooth', block: 'center'});
                     blockEl.classList.add('tf-block-flash');
                     setTimeout(() => blockEl.classList.remove('tf-block-flash'), 1000);
                 }
@@ -60,7 +60,7 @@ discovery.view.define('turbofan-graph-viewer', {
                         className: 'source tf-graph',
                         content: {
                             view: 'list',
-                            data: function(phase) {
+                            data: function (phase) {
                                 if (!phase || !phase.data || !phase.data.nodes) return [];
                                 const nodes = phase.data.nodes;
                                 const edges = phase.data.edges || [];
@@ -69,7 +69,7 @@ discovery.view.define('turbofan-graph-viewer', {
                                     if (!edgesByTarget.has(edge.target)) edgesByTarget.set(edge.target, []);
                                     edgesByTarget.get(edge.target).push(edge);
                                 }
-                                
+
                                 const visited = new Set();
                                 const tempMark = new Set();
                                 const sorted = [];
@@ -77,7 +77,7 @@ discovery.view.define('turbofan-graph-viewer', {
                                 for (const node of nodes) {
                                     nodeById.set(node.id, node);
                                 }
-                                
+
                                 function visit(nodeId) {
                                     if (visited.has(nodeId)) return;
                                     if (tempMark.has(nodeId)) return;
@@ -93,7 +93,7 @@ discovery.view.define('turbofan-graph-viewer', {
                                         sorted.push(nodeById.get(nodeId));
                                     }
                                 }
-                                
+
                                 const sortedNodes = nodes.slice().sort((a, b) => a.id - b.id);
                                 for (const node of sortedNodes) {
                                     visit(node.id);
@@ -140,9 +140,11 @@ discovery.view.define('turbofan-graph-viewer', {
                         data: 'data.blocks',
                         item: {
                             view: 'block',
-                            className: function(data) { return 'tf-block tf-block-' + data.id; },
+                            className: function (data) {
+                                return 'tf-block tf-block-' + data.id;
+                            },
                             content: [
-                                { view: 'h5', className: 'tf-block-title', content: 'text:`B${id}`' },
+                                {view: 'h5', className: 'tf-block-title', content: 'text:`B${id}`'},
                                 {
                                     view: 'list',
                                     data: `$blockId: id; ${phasePath}.data.nodes.[block_id = $blockId]`,
@@ -212,7 +214,7 @@ discovery.view.define('turbofan-graph-viewer', {
                         view: 'list',
                         data: 'data.blocks',
                         item: [
-                            { view: 'h5', className: 'tf-block-title', content: 'text:`B${id}`' },
+                            {view: 'h5', className: 'tf-block-title', content: 'text:`B${id}`'},
                             {
                                 view: 'list',
                                 data: 'instructions',
@@ -231,55 +233,60 @@ discovery.view.define('turbofan-graph-viewer', {
             ]
         });
 
-        return this.render(el, {
-            view: 'context',
-            modifiers: [
-                {
+        return this.render(
+            el,
+            {
+                view: 'context',
+                modifiers: [
+                    {
+                        view: 'block',
+                        className: 'tf-toolbar',
+                        content: [
+                            {view: 'text', data: '"Phase: "'},
+                            {
+                                view: 'select',
+                                name: 'tfPhase',
+                                data: 'phases',
+                                text: 'name',
+                                value: '$[name="V8.TFBytecodeGraphBuilder"] or $[0]'
+                            },
+                            {view: 'text', data: '" Compare with: "'},
+                            {
+                                view: 'select',
+                                name: 'tfDiffPhase',
+                                data: '[{ name: "---", value: null }] + phases',
+                                text: 'name',
+                                value: '$[0]'
+                            }
+                        ]
+                    }
+                ],
+                content: {
                     view: 'block',
-                    className: 'tf-toolbar',
+                    className: 'tf-graph-container',
                     content: [
-                        { view: 'text', data: '"Phase: "' },
                         {
-                            view: 'select',
-                            name: 'tfPhase',
-                            data: 'phases',
-                            text: 'name',
-                            value: '$[name="V8.TFBytecodeGraphBuilder"] or $[0]'
+                            view: 'block',
+                            className: 'tf-graph-pane tf-graph-main-pane',
+                            content: [
+                                {view: 'h4', className: 'tf-pane-title', content: 'text:#.tfPhase.name'},
+                                createGraphPane('#.tfPhase', '#.tfDiffPhase', false)
+                            ]
                         },
-                        { view: 'text', data: '" Compare with: "' },
                         {
-                            view: 'select',
-                            name: 'tfDiffPhase',
-                            data: '[{ name: "---", value: null }] + phases',
-                            text: 'name',
-                            value: '$[0]'
+                            view: 'block',
+                            className: 'tf-graph-pane tf-graph-diff-pane',
+                            when: '#.tfDiffPhase.name != "---"',
+                            content: [
+                                {view: 'h4', className: 'tf-pane-title', content: 'text:#.tfDiffPhase.name'},
+                                createGraphPane('#.tfDiffPhase', '#.tfPhase', true)
+                            ]
                         }
                     ]
                 }
-            ],
-            content: {
-                view: 'block',
-                className: 'tf-graph-container',
-                content: [
-                    {
-                        view: 'block',
-                        className: 'tf-graph-pane tf-graph-main-pane',
-                        content: [
-                            { view: 'h4', className: 'tf-pane-title', content: 'text:#.tfPhase.name' },
-                            createGraphPane('#.tfPhase', '#.tfDiffPhase', false)
-                        ]
-                    },
-                    {
-                        view: 'block',
-                        className: 'tf-graph-pane tf-graph-diff-pane',
-                        when: '#.tfDiffPhase.name != "---"',
-                        content: [
-                            { view: 'h4', className: 'tf-pane-title', content: 'text:#.tfDiffPhase.name' },
-                            createGraphPane('#.tfDiffPhase', '#.tfPhase', true)
-                        ]
-                    }
-                ]
-            }
-        }, data, context);
+            },
+            data,
+            context
+        );
     }
 });

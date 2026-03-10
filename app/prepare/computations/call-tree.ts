@@ -1,5 +1,5 @@
-import type { CpuProNode } from '../types.js';
-import { buildCallTreeArrays } from './build-trees.js';
+import type {CpuProNode} from '../types.js';
+import {buildCallTreeArrays} from './build-trees.js';
 
 type Entry<T> = {
     nodeIndex: number;
@@ -13,7 +13,7 @@ type NumericArray =
     // | number[]
     // | Uint8Array
     // | Uint16Array
-    | Uint32Array;
+    Uint32Array;
 
 type TestFunction<T> = (entry: T) => boolean;
 type TestFunctionOrEntry<T> = T | TestFunction<T>;
@@ -33,10 +33,8 @@ type SampleConvolutionNode<T> = {
 const NULL_ARRAY = new Uint32Array();
 
 function makeDictMask<T>(tree: CallTree<T>, test: TestFunctionOrEntry<T>) {
-    const { dictionary } = tree;
-    const accept = typeof test === 'function'
-        ? test as TestFunction<T>
-        : (entry: T) => entry === test;
+    const {dictionary} = tree;
+    const accept = typeof test === 'function' ? (test as TestFunction<T>) : (entry: T) => entry === test;
     const mask = new Uint8Array(dictionary.length);
 
     for (let i = 0; i < mask.length; i++) {
@@ -49,15 +47,15 @@ function makeDictMask<T>(tree: CallTree<T>, test: TestFunctionOrEntry<T>) {
 }
 
 export class CallTree<T> {
-    dictionary: T[];              // entries
-    sourceIdToNode: Int32Array;   // sourceNodeId -> index of nodes
+    dictionary: T[]; // entries
+    sourceIdToNode: Int32Array; // sourceNodeId -> index of nodes
     sampleIdToNode: Uint32Array; // sampleId  -> index of nodes
     #sampleIdToNode: Uint32Array;
     sampleIdToNodeChanged: boolean; // FIXME: temporary solution to avoid unnecessary dict recalculations
-    nodes: NumericArray;          // nodeIndex -> index of dictionary
-    parent: NumericArray;         // nodeIndex -> index of nodes
-    subtreeSize: NumericArray;    // nodeIndex -> number of nodes in subtree, 0 when no children
-    nested: NumericArray;         // nodeIndex -> index of nodes
+    nodes: NumericArray; // nodeIndex -> index of dictionary
+    parent: NumericArray; // nodeIndex -> index of nodes
+    subtreeSize: NumericArray; // nodeIndex -> number of nodes in subtree, 0 when no children
+    nested: NumericArray; // nodeIndex -> index of nodes
 
     // The following arrays are used for fast selection of nodes that refer to a specific entry in the dictionary.
     // Generally, nodes are rearranged to ensure that all of an entry's nodes follow one continuous sequence. This allows
@@ -67,9 +65,9 @@ export class CallTree<T> {
     //   const end = start + tree.entryNodesCount[entryIndex];
     //   entryNodes.slice(start, end)
     //
-    entryNodes: NumericArray;       // node indices
+    entryNodes: NumericArray; // node indices
     entryNodesOffset: NumericArray; // start offset for a sequence of entry's node indices: entry index -> offset in entryNodes
-    entryNodesCount: NumericArray;  // length of sequence for entry's node indices, or the number of nodes per entry
+    entryNodesCount: NumericArray; // length of sequence for entry's node indices, or the number of nodes per entry
 
     root: Entry<T>;
     #entryRefMap: Map<number, WeakRef<Entry<T>>>;
@@ -124,7 +122,7 @@ export class CallTree<T> {
     }
 
     #computeEntryNodes() {
-        const { nodes, dictionary } = this;
+        const {nodes, dictionary} = this;
         const entryNodes = new Uint32Array(nodes.length);
         const entryNodesOffset = new Uint32Array(dictionary.length);
         const entryNodesCount = new Uint32Array(dictionary.length);
@@ -195,10 +193,7 @@ export class CallTree<T> {
         let entry: Entry<T> | undefined;
 
         if (entryRef === undefined || (entry = entryRef.deref()) === undefined) {
-            this.#entryRefMap.set(
-                nodeIndex,
-                new WeakRef(entry = this.createEntry(nodeIndex))
-            );
+            this.#entryRefMap.set(nodeIndex, new WeakRef((entry = this.createEntry(nodeIndex))));
         }
 
         return entry;
@@ -208,16 +203,13 @@ export class CallTree<T> {
         let children: Entry<T>[] | undefined;
 
         if (childrenRef === undefined || (children = childrenRef.deref()) === undefined) {
-            this.#childrenRefMap.set(
-                nodeIndex,
-                new WeakRef(children = [...this.map(this.children(nodeIndex))])
-            );
+            this.#childrenRefMap.set(nodeIndex, new WeakRef((children = [...this.map(this.children(nodeIndex))])));
         }
 
         return children;
     }
     getValueSubtreesSize(value: number | T, includeSelf = true) {
-        const { dictionary, nodes, subtreeSize } = this;
+        const {dictionary, nodes, subtreeSize} = this;
         let result = 0;
         let count = 0;
 
@@ -240,16 +232,19 @@ export class CallTree<T> {
         return includeSelf ? result + count : result;
     }
 
-    setSamplesConvolutionRule(rule: SampleConvolutionRule<T>, {
-        treeSamplesCount,
-        dictSamplesCount,
-        profilePresence
-    }:{
-        treeSamplesCount: Uint32Array,
-        dictSamplesCount: Uint32Array,
-        profilePresence: Float32Array
-    }) {
-        const { parent, nodes, sampleIdToNode } = this;
+    setSamplesConvolutionRule(
+        rule: SampleConvolutionRule<T>,
+        {
+            treeSamplesCount,
+            dictSamplesCount,
+            profilePresence
+        }: {
+            treeSamplesCount: Uint32Array;
+            dictSamplesCount: Uint32Array;
+            profilePresence: Float32Array;
+        }
+    ) {
+        const {parent, nodes, sampleIdToNode} = this;
         const nodesRemap = nodes.slice();
         let origSampleIdToNode = this.#sampleIdToNode;
         const createEntry = (index: number) => ({
@@ -264,9 +259,7 @@ export class CallTree<T> {
             const rootNode = nodesRemap[parentNode];
             const selfEntry = createEntry(i);
             const parentEntry = createEntry(parentNode);
-            const rootEntry = rootNode === parentNode
-                ? parentEntry
-                : createEntry(rootNode);
+            const rootEntry = rootNode === parentNode ? parentEntry : createEntry(rootNode);
 
             nodesRemap[i] = rule(selfEntry, parentEntry, rootEntry) === true ? rootNode : i;
         }
@@ -290,7 +283,7 @@ export class CallTree<T> {
     }
 
     *selectNodes(value: number | T, includeNested = false) {
-        const { dictionary, nested, entryNodes, entryNodesOffset, entryNodesCount } = this;
+        const {dictionary, nested, entryNodes, entryNodesOffset, entryNodesCount} = this;
 
         if (typeof value !== 'number') {
             value = dictionary.indexOf(value);
@@ -308,7 +301,7 @@ export class CallTree<T> {
         }
     }
     *selectBy(test: TestFunctionOrEntry<T>, includeNested = false) {
-        const { nodes, nested } = this;
+        const {nodes, nested} = this;
         const mask = makeDictMask(this, test);
         const result = [];
 
@@ -322,7 +315,7 @@ export class CallTree<T> {
     }
 
     *ancestors(nodeIndex: number, depth = Infinity) {
-        const { parent } = this;
+        const {parent} = this;
         let parentIndex = parent[nodeIndex];
 
         while (parentIndex !== nodeIndex) {
@@ -337,7 +330,7 @@ export class CallTree<T> {
         }
     }
     *children(nodeIndex: number) {
-        const { subtreeSize } = this;
+        const {subtreeSize} = this;
         const end = nodeIndex + subtreeSize[nodeIndex];
 
         while (nodeIndex < end) {
@@ -359,7 +352,7 @@ export class SubsetCallTree<T extends CpuProNode> extends CallTree<T> {
     timingsMap: Uint32Array;
 
     constructor(tree: CallTree<T>, value: number | T) {
-        const { dictionary } = tree;
+        const {dictionary} = tree;
         const outputTreeSize = tree.getValueSubtreesSize(value) + 1; // +1 for new root node
         const timingsMap = new Uint32Array(outputTreeSize); // nodes[nodeIndex] -> tree.nodes[nodeIndex]
         const sourceNodeMap = new Int32Array(tree.nodes.length).fill(-1);
@@ -414,10 +407,6 @@ export class SubsetCallTree<T extends CpuProNode> extends CallTree<T> {
 
         super(dictionary, sourceNodeMap, nodes, parent, subtreeSize, nested);
 
-        this.sampleIdToNode = tree.sampleIdToNode.map(i =>
-            sourceNodeMap[i] !== -1
-                ? sourceNodeMap[i]
-                : nodes.length
-        );
+        this.sampleIdToNode = tree.sampleIdToNode.map(i => (sourceNodeMap[i] !== -1 ? sourceNodeMap[i] : nodes.length));
     }
 }

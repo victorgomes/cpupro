@@ -1,13 +1,13 @@
-import type { V8LogProfile, V8LogScript, V8LogScripts } from './types.js';
-import type { V8CpuProfileFunction } from '../../types.js';
-import { processScripts } from './scripts.js';
+import type {V8LogProfile, V8LogScript, V8LogScripts} from './types.js';
+import type {V8CpuProfileFunction} from '../../types.js';
+import {processScripts} from './scripts.js';
 
 export type ParseJsNameResult = {
     functionName: string;
     scriptUrl: string;
     line: number;
     column: number;
-}
+};
 
 function parseLoc(url: string) {
     const locMatch = url.match(/\:(\d+)\:(\d+)$/);
@@ -19,7 +19,7 @@ function parseLoc(url: string) {
     const line = locMatch !== null ? (locMatch[1] === '0' ? 0 : Number(locMatch[1]) - 1) : -1;
     const column = locMatch !== null ? Number(locMatch[2]) - 1 : -1;
 
-    return { loc, line, column };
+    return {loc, line, column};
 }
 
 // A function name could contain surrounding whitespaces
@@ -35,7 +35,7 @@ export function parseJsName(name: string, scriptUrl: string | null = null): Pars
     }
 
     if (scriptUrl === '' || scriptUrl === '<unknown>') {
-        const { loc, line, column } = parseLoc(name);
+        const {loc, line, column} = parseLoc(name);
 
         return {
             functionName: cleanupFunctionName(loc !== null ? name.slice(0, -loc.length) : name),
@@ -48,7 +48,7 @@ export function parseJsName(name: string, scriptUrl: string | null = null): Pars
     // robust way since name and url could contain white spaces
     if (scriptUrl !== null) {
         const [prefix, loc = ''] = name.split(scriptUrl);
-        const { line, column } = parseLoc(loc);
+        const {line, column} = parseLoc(loc);
 
         return {
             functionName: cleanupFunctionName(prefix),
@@ -61,10 +61,8 @@ export function parseJsName(name: string, scriptUrl: string | null = null): Pars
     // fallback when no script
     const nameMatch = name.match(/^((?:get |set )?[#.<>\[\]_$a-zA-Z\xA0-\uFFFF][#.<>\[\]\-_$a-zA-Z0-9\xA0-\uFFFF]*) /);
     const functionName = nameMatch !== null ? nameMatch[1] : '';
-    const url = nameMatch !== null
-        ? name.slice(nameMatch[0].length)
-        : name[0] === ' ' ? name.slice(1) : name;
-    const { loc, line, column } = parseLoc(url);
+    const url = nameMatch !== null ? name.slice(nameMatch[0].length) : name[0] === ' ' ? name.slice(1) : name;
+    const {loc, line, column} = parseLoc(url);
 
     return {
         functionName,
@@ -100,12 +98,11 @@ export function processFunctions(
                 };
 
                 if (scripts.length <= id) {
-                    scripts.push(...Array.from({ length: id - scripts.length + 1 }, () => null));
+                    scripts.push(...Array.from({length: id - scripts.length + 1}, () => null));
                 }
 
                 scripts[id] = script;
             }
-
 
             missedScriptsByUrl.set(scriptUrl, script);
         }
@@ -122,7 +119,7 @@ export function processFunctions(
         const fn = v8logFunctions[i];
         const source = v8logCodes[fn.codes[0]].source; // all the function codes have the same reference to script source
         const v8logScript = (source && v8logScripts[source.script]) ?? null;
-        const { functionName, scriptUrl, line, column } = parseJsName(fn.name, v8logScript?.url);
+        const {functionName, scriptUrl, line, column} = parseJsName(fn.name, v8logScript?.url);
 
         // wasm functions and some other has no source/script;
         // create a script by scriptUrl in that case
@@ -139,14 +136,15 @@ export function processFunctions(
         let scriptFunctionIndex = isScriptFunction ? scriptFunctionIndexByScript.get(script) || -1 : -1;
 
         if (scriptFunctionIndex === -1) {
-            scriptFunctionIndex = functions.push({
-                scriptId: script?.id || 0,
-                name: functionName,
-                start: source?.start ?? -1,
-                end: source?.end ?? -1,
-                line,
-                column
-            }) - 1;
+            scriptFunctionIndex =
+                functions.push({
+                    scriptId: script?.id || 0,
+                    name: functionName,
+                    start: source?.start ?? -1,
+                    end: source?.end ?? -1,
+                    line,
+                    column
+                }) - 1;
 
             if (isScriptFunction) {
                 scriptFunctionIndexByScript.set(script, scriptFunctionIndex);

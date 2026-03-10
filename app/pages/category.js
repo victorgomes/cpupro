@@ -1,11 +1,9 @@
-import { callFramesCol, sessionExpandState, timingCols } from './common.js';
+import {callFramesCol, sessionExpandState, timingCols} from './common.js';
 
 const pageContent = [
     {
         view: 'page-header',
-        prelude: [
-            'badge{ className: "type-badge", text: "Category" }'
-        ],
+        prelude: ['badge{ className: "type-badge", text: "Category" }'],
         content: 'h1:name'
     },
 
@@ -29,7 +27,7 @@ const pageContent = [
         className: 'trigger-outside',
         header: [
             'text:"Nested time distribution"',
-            { view: 'block', className: 'text-divider' },
+            {view: 'block', className: 'text-divider'},
             {
                 view: 'update-on-timings-change',
                 timings: '=#.currentProfile.categoriesTimingsFiltered',
@@ -99,7 +97,8 @@ const pageContent = [
                                 header: 'Modules',
                                 className: 'number sampled-numbers',
                                 data: 'modules.sort(module.selfTime desc, module.totalTime desc)',
-                                content: 'sampled-count-total{ hideZeroCount: true, count: module.count(=> totalTime?), total: size() }',
+                                content:
+                                    'sampled-count-total{ hideZeroCount: true, count: module.count(=> totalTime?), total: size() }',
                                 details: [
                                     {
                                         view: 'table',
@@ -194,10 +193,13 @@ discovery.page.define('category', {
     context: '{ ...#, currentProfile }',
     data: 'currentProfile.categories[=>name = #.id]',
     content: [
-        { when: 'no $', content: {
-            view: 'alert-warning',
-            content: 'md:"No category with id \\"{{#.id}}\\" is found\\n\\n[Back to index page](#)"'
-        } },
-        { content: pageContent }
+        {
+            when: 'no $',
+            content: {
+                view: 'alert-warning',
+                content: 'md:"No category with id \\"{{#.id}}\\" is found\\n\\n[Back to index page](#)"'
+            }
+        },
+        {content: pageContent}
     ]
 });

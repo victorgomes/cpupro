@@ -59,17 +59,42 @@ discovery.view.define('subject-with-nested-timeline', {
                     view: 'block',
                     className: 'timeline-segment-info',
                     content: [
-                        { view: 'block', content: 'text:`Range: ${#.timeStart.formatMicrosecondsTime(totalTime)} – ${#.timeEnd.formatMicrosecondsTime(totalTime)}`' },
-                        { view: 'block', content: 'text:`Samples: ${binSamples[#.segmentStart:#.segmentEnd + 1].sum()}`' },
-                        { view: 'block', content: ['text:"Duration: "', 'duration:{ time: #.timeEnd - #.timeStart, total: totalTime }'] }
+                        {
+                            view: 'block',
+                            content:
+                                'text:`Range: ${#.timeStart.formatMicrosecondsTime(totalTime)} – ${#.timeEnd.formatMicrosecondsTime(totalTime)}`'
+                        },
+                        {
+                            view: 'block',
+                            content: 'text:`Samples: ${binSamples[#.segmentStart:#.segmentEnd + 1].sum()}`'
+                        },
+                        {
+                            view: 'block',
+                            content: [
+                                'text:"Duration: "',
+                                'duration:{ time: #.timeEnd - #.timeStart, total: totalTime }'
+                            ]
+                        }
                     ]
                 },
                 {
                     view: 'block',
                     className: 'timeline-segment-info',
                     content: [
-                        { view: 'block', content: ['text:"Self time: "', 'duration:{ time: bins[#.segmentStart:#.segmentEnd + 1].sum(), total: totalTime }'] },
-                        { view: 'block', content: ['text:"Nested time: "', 'duration:{ time: totalTimeBins[#.segmentStart:#.segmentEnd + 1].sum(), total: totalTime }'] }
+                        {
+                            view: 'block',
+                            content: [
+                                'text:"Self time: "',
+                                'duration:{ time: bins[#.segmentStart:#.segmentEnd + 1].sum(), total: totalTime }'
+                            ]
+                        },
+                        {
+                            view: 'block',
+                            content: [
+                                'text:"Nested time: "',
+                                'duration:{ time: totalTimeBins[#.segmentStart:#.segmentEnd + 1].sum(), total: totalTime }'
+                            ]
+                        }
                     ]
                 },
                 {
@@ -123,15 +148,19 @@ discovery.view.define('subject-with-nested-timeline', {
                         'code-tier-badge:code.tier',
                         'html:code | `<span style=\"color:${tier.color()[:-2]+`d0`}\">${tier}</span><br>`',
                         'text:`Duration: ${duration.ms()}`',
-                        { view: 'block', when: 'code.segments.size() > 1', content: [
-                            'text:`Segment ${code.segments.indexOf(segment) + 1} of ${code.segments.size()}`',
-                            'html:"<br>"',
-                            'text:`All segments duration: ${code.segments.sum(=> duration).ms()}`'
-                        ] }
+                        {
+                            view: 'block',
+                            when: 'code.segments.size() > 1',
+                            content: [
+                                'text:`Segment ${code.segments.indexOf(segment) + 1} of ${code.segments.size()}`',
+                                'html:"<br>"',
+                                'text:`All segments duration: ${code.segments.sum(=> duration).ms()}`'
+                            ]
+                        }
                     ]
                 },
                 postRender(el, _, data, ctx) {
-                    const { tm, duration, color } = data;
+                    const {tm, duration, color} = data;
                     const totalTime = ctx.currentProfile.totalTime;
 
                     el.style.setProperty('--pos', tm / totalTime);

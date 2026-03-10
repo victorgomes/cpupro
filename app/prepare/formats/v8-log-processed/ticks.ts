@@ -1,6 +1,6 @@
-import type { CallNode, CodePositionTable, V8LogTick } from './types.js';
-import { findPositionsCodeIndex } from './positions.js';
-import { VM_STATE_GC, VM_STATE_IDLE, VM_STATE_OTHER } from './const.js';
+import type {CallNode, CodePositionTable, V8LogTick} from './types.js';
+import {findPositionsCodeIndex} from './positions.js';
+import {VM_STATE_GC, VM_STATE_IDLE, VM_STATE_OTHER} from './const.js';
 
 const parentOffsetBase = 0x0010_0000;
 const useMapForChildren = 8;
@@ -18,7 +18,7 @@ function ensureSortedTicks(v8logTicks: V8LogTick[]) {
     if (v8logTicks.length > 1) {
         // check ticks are sorted by tm
         for (let i = 1, prevTm = v8logTicks[0].tm; i < v8logTicks.length; i++) {
-            const { tm } = v8logTicks[i];
+            const {tm} = v8logTicks[i];
 
             if (prevTm > tm) {
                 // make a copy before sorting to avoid mutation of input data
@@ -140,7 +140,7 @@ export function processTicks(
     };
 
     function getNextNodeRef(callFrameIndex: number, parentScriptOffset: number) {
-        return callFrameIndex + (parentScriptOffset * parentOffsetBase);
+        return callFrameIndex + parentScriptOffset * parentOffsetBase;
     }
 
     function getNextNode(currentNode: CallNode<number>, callFrameIndex: number, parentScriptOffset: number) {
@@ -164,8 +164,9 @@ export function processTicks(
 
         // cast to CallNodeMap because the map is guaranteed to be defined, but TypeScript can't be sure of that
         return (
-            (nodeTransitionMaps.get(currentNode) as CallNodeMap).get(getNextNodeRef(callFrameIndex, parentScriptOffset)) ||
-            createNextNode(currentNode, callFrameIndex, parentScriptOffset)
+            (nodeTransitionMaps.get(currentNode) as CallNodeMap).get(
+                getNextNodeRef(callFrameIndex, parentScriptOffset)
+            ) || createNextNode(currentNode, callFrameIndex, parentScriptOffset)
         );
     }
 
@@ -177,14 +178,16 @@ export function processTicks(
 
         if (newChildrenLength >= useMapForChildren) {
             if (newChildrenLength === useMapForChildren) {
-                nodeTransitionMaps.set(currentNode, new Map(currentNode.children.map(childId => {
-                    const childNode = nodes[childId - 1];
+                nodeTransitionMaps.set(
+                    currentNode,
+                    new Map(
+                        currentNode.children.map(childId => {
+                            const childNode = nodes[childId - 1];
 
-                    return [
-                        getNextNodeRef(childNode.callFrame, childNode.parentScriptOffset),
-                        childNode
-                    ];
-                })));
+                            return [getNextNodeRef(childNode.callFrame, childNode.parentScriptOffset), childNode];
+                        })
+                    )
+                );
             } else {
                 // cast to CallNodeMap because the map is guaranteed to be defined, but TypeScript can't be sure of that
                 (nodeTransitionMaps.get(currentNode) as CallNodeMap).set(
@@ -201,9 +204,8 @@ export function processTicks(
         const callFrameIndex = inlined[i * 3];
         const codeOffset = inlined[i * 3 + 1];
         const nextInlinedIndex = inlined[i * 3 + 2];
-        const fromNode: CallNode<number> = nextInlinedIndex !== -1
-            ? getNodeFromInline(currentNode, inlined, nextInlinedIndex)
-            : currentNode;
+        const fromNode: CallNode<number> =
+            nextInlinedIndex !== -1 ? getNodeFromInline(currentNode, inlined, nextInlinedIndex) : currentNode;
 
         return getNextNode(fromNode, callFrameIndex, codeOffset);
     }

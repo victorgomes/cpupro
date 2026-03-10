@@ -3,7 +3,7 @@
 
 const CodeMirror = discovery.view.QueryEditor.CodeMirror;
 
-CodeMirror.defineMode('regexp', function() {
+CodeMirror.defineMode('regexp', function () {
     // Default settings:
     var options = {
         extended: false
@@ -17,333 +17,333 @@ CodeMirror.defineMode('regexp', function() {
     };
     // Behaviour of alphanumeric characters after a backslash character (normal context):
     var backslash_in_normal_context = {
-        '0': 'non-printing-character',
-        '1': 'backreference',
-        '2': 'backreference',
-        '3': 'backreference',
-        '4': 'backreference',
-        '5': 'backreference',
-        '6': 'backreference',
-        '7': 'backreference',
-        '8': 'backreference',
-        '9': 'backreference',
-        'A': 'anchor', // \A  start of subject
-        'B': 'anchor', // \B  not a word boundary
-        'C': 'generic-character-type', // \C  one data unit, even in UTF mode (best avoided)
-        'D': 'generic-character-type', // \D  any character that is not a decimal digit
-        'E': 'err no-error-message', // \E ends \Q but never matches 'E' -- PCRE does not emit any error message
-        'F': '', // \F matches F
-        'G': 'anchor', // \G  first matching position in subject
-        'H': 'generic-character-type', // \H  any character that is not a horizontal white space character
-        'I': '', // \I matches I
-        'J': '', // \J matches J
-        'K': 'anchor', // \K  reset start of match (neither an anchor nor a simple assertion)
-        'L': 'err unsupported-escape-sequence', // PCRE does not support \L, \l, \N{name}, \U, or \u
-        'M': '', // \M matches M
-        'N': 'generic-character-type', // \N  a character that is not a newline
-        'O': '', // \O matches O
-        'P': 'err malformed-backslash-p-sequence', // malformed \P or \p sequence
-        'Q': 'escaped-sequence-start', // \Q starts \Q...\E escape sequences.
-        'R': 'generic-character-type', // \R  a newline sequence
-        'S': 'generic-character-type', // \S  any character that is not a white space character
-        'T': '', // \T matches T
-        'U': 'unsupported-escape-sequence', // PCRE does not support \L, \l, \N{name}, \U, or \u
-        'V': 'generic-character-type', // \V  any character that is not a vertical white space character
-        'W': 'generic-character-type', // \W  any "non-word" character
-        'X': 'generic-character-type', // \X  a Unicode extended grapheme cluster
-        'Y': '', // \Y matches Y
-        'Z': 'anchor', // \Z  matches at the end of the subject; also matches before a newline at the end of the subject
-        'a': 'non-printing-character', // \a  alarm, that is, the BEL character (hex 07)
-        'b': 'anchor', // \b  word boundary
-        'c': 'err backslash-c-at-end-of-pattern', // \cx "control-x", where x is any ASCII character
-        'd': 'generic-character-type', // \d  any decimal digi
-        'e': 'non-printing-character', // \e  escape (hex 1B)
-        'f': 'non-printing-character', // \f  form feed (hex 0C)
-        'g': 'err a-number-reference-must-not-be-zero', // a numbered reference must not be zero
-        'h': 'generic-character-type', // \h  any horizontal white space character
-        'i': '', // \i matches i
-        'j': '', // \j matches j
-        'k': 'err backslash-k-is-not-followed-by-a-name', // \k is not followed by a [...] name
-        'l': 'unsupported-espace-sequence', // PCRE does not support \L, \l, \N{name}, \U, or \u
-        'm': '', // \m matches m
-        'n': 'non-printing-character', // \n  linefeed (hex 0A)
-        'o': '', // \o matches o
-        'p': 'err malformed-backslash-p-sequence', // malformed \P or \p sequence
-        'q': '', // \q matches q
-        'r': 'non-printing-character', // \r  carriage return (hex 0D)
-        's': 'generic-character-type', // \s  any white space character
-        't': 'non-printing-character', // \t  tab (hex 09)
-        'u': 'err unsupported-escape-sequence', // PCRE does not support \L, \l, \N{name}, \U, or \u
-        'v': 'generic-character-type', // \v  any vertical white space character
-        'w': 'generic-character-type', // any "word" character
-        'x': 'non-printing-character', // binary zero (or x if PCRE_JAVASCRIPT_COMPAT)
-        'y': '', // \y matches y
-        'z': 'anchor', // \z  end of subject
+        0: 'non-printing-character',
+        1: 'backreference',
+        2: 'backreference',
+        3: 'backreference',
+        4: 'backreference',
+        5: 'backreference',
+        6: 'backreference',
+        7: 'backreference',
+        8: 'backreference',
+        9: 'backreference',
+        A: 'anchor', // \A  start of subject
+        B: 'anchor', // \B  not a word boundary
+        C: 'generic-character-type', // \C  one data unit, even in UTF mode (best avoided)
+        D: 'generic-character-type', // \D  any character that is not a decimal digit
+        E: 'err no-error-message', // \E ends \Q but never matches 'E' -- PCRE does not emit any error message
+        F: '', // \F matches F
+        G: 'anchor', // \G  first matching position in subject
+        H: 'generic-character-type', // \H  any character that is not a horizontal white space character
+        I: '', // \I matches I
+        J: '', // \J matches J
+        K: 'anchor', // \K  reset start of match (neither an anchor nor a simple assertion)
+        L: 'err unsupported-escape-sequence', // PCRE does not support \L, \l, \N{name}, \U, or \u
+        M: '', // \M matches M
+        N: 'generic-character-type', // \N  a character that is not a newline
+        O: '', // \O matches O
+        P: 'err malformed-backslash-p-sequence', // malformed \P or \p sequence
+        Q: 'escaped-sequence-start', // \Q starts \Q...\E escape sequences.
+        R: 'generic-character-type', // \R  a newline sequence
+        S: 'generic-character-type', // \S  any character that is not a white space character
+        T: '', // \T matches T
+        U: 'unsupported-escape-sequence', // PCRE does not support \L, \l, \N{name}, \U, or \u
+        V: 'generic-character-type', // \V  any character that is not a vertical white space character
+        W: 'generic-character-type', // \W  any "non-word" character
+        X: 'generic-character-type', // \X  a Unicode extended grapheme cluster
+        Y: '', // \Y matches Y
+        Z: 'anchor', // \Z  matches at the end of the subject; also matches before a newline at the end of the subject
+        a: 'non-printing-character', // \a  alarm, that is, the BEL character (hex 07)
+        b: 'anchor', // \b  word boundary
+        c: 'err backslash-c-at-end-of-pattern', // \cx "control-x", where x is any ASCII character
+        d: 'generic-character-type', // \d  any decimal digi
+        e: 'non-printing-character', // \e  escape (hex 1B)
+        f: 'non-printing-character', // \f  form feed (hex 0C)
+        g: 'err a-number-reference-must-not-be-zero', // a numbered reference must not be zero
+        h: 'generic-character-type', // \h  any horizontal white space character
+        i: '', // \i matches i
+        j: '', // \j matches j
+        k: 'err backslash-k-is-not-followed-by-a-name', // \k is not followed by a [...] name
+        l: 'unsupported-espace-sequence', // PCRE does not support \L, \l, \N{name}, \U, or \u
+        m: '', // \m matches m
+        n: 'non-printing-character', // \n  linefeed (hex 0A)
+        o: '', // \o matches o
+        p: 'err malformed-backslash-p-sequence', // malformed \P or \p sequence
+        q: '', // \q matches q
+        r: 'non-printing-character', // \r  carriage return (hex 0D)
+        s: 'generic-character-type', // \s  any white space character
+        t: 'non-printing-character', // \t  tab (hex 09)
+        u: 'err unsupported-escape-sequence', // PCRE does not support \L, \l, \N{name}, \U, or \u
+        v: 'generic-character-type', // \v  any vertical white space character
+        w: 'generic-character-type', // any "word" character
+        x: 'non-printing-character', // binary zero (or x if PCRE_JAVASCRIPT_COMPAT)
+        y: '', // \y matches y
+        z: 'anchor' // \z  end of subject
     };
     // Behaviour of alphanumeric characters after a backslash character (character class context, i.e. [...]):
     var backslash_in_character_class = {
-        '0': 'non-printing-character', // octal code
-        '1': 'non-printing-character', // octal code
-        '2': 'non-printing-character', // octal code
-        '3': 'non-printing-character', // octal code
-        '4': 'non-printing-character', // octal code
-        '5': 'non-printing-character', // octal code
-        '6': 'non-printing-character', // octal code
-        '7': 'non-printing-character', // octal code
-        '8': '', // \8 matches 8
-        '9': '', // \9 matches 9
-        'A': '', // \A matches A
-        'B': '', // \B matches B -- \B, \R, and \X are not special inside a character class.
-        'C': '', // \C matches C
-        'D': 'generic-character-type', // \D  any character that is not a decimal digit
-        'E': 'err no-error-message', // \E ends \Q but never matches 'E' -- PCRE does not emit any error message
-        'F': '', // \F matches F
-        'G': '', // \G matches G
-        'H': 'generic-character-type', // \H  any character that is not a horizontal white space character
-        'I': '', // \I matches I
-        'J': '', // \J matches J
-        'K': '', // \K matches K
-        'L': 'err unsupported-escape-sequence', // PCRE does not support \L, \l, \N{name}, \U, or \u
-        'M': '', // \M matches M
-        'N': 'err backslash-n-is-not-supported-in-a-class', // \N is not allowed in a character class.
-        'O': '', // \O matches O
-        'P': 'err malformed-backslash-p-sequence', // malformed \P or \p sequence
-        'Q': 'escaped-sequence-start', // \Q starts \Q...\E escape sequences.
-        'R': '', // \R matches R -- \B, \R, and \X are not special inside a character class.
-        'S': 'generic-character-type', // \S  any character that is not a white space character
-        'T': '', // \T matches T
-        'U': 'unsupported-escape-sequence', // PCRE does not support \L, \l, \N{name}, \U, or \u
-        'V': 'generic-character-type', // \V  any character that is not a vertical white space character
-        'W': 'generic-character-type', // \W  any "non-word" character
-        'X': '', // \X matches X -- \B, \R, and \X are not special inside a character class.
-        'Y': '', // \Y matches Y
-        'Z': '', // \Z matches Z
-        'a': 'non-printing-character', // \a  alarm, that is, the BEL character (hex 07)
-        'b': 'non-printing-character', // inside a character class, \b is interpreted as the backspace character (hex 08)
-        'c': 'err backslash-c-at-end-of-pattern', // \cx "control-x", where x is any ASCII character
-        'd': 'generic-character-type', // \d  any decimal digi
-        'e': 'non-printing-character', // \e  escape (hex 1B)
-        'f': 'non-printing-character', // \f  form feed (hex 0C)
-        'g': '', // \g matches g
-        'h': 'generic-character-type', // \h  any horizontal white space character
-        'i': '', // \i matches i
-        'j': '', // \j matches j
-        'k': '', // \k matches k
-        'l': 'unsupported-espace-sequence', // PCRE does not support \L, \l, \N{name}, \U, or \u
-        'm': '', // \m matches m
-        'n': 'non-printing-character', // \n  linefeed (hex 0A)
-        'o': '', // \o matches o
-        'p': 'err malformed-backslash-p-sequence', // malformed \P or \p sequence
-        'q': '', // \q matches q
-        'r': 'non-printing-character', // \r  carriage return (hex 0D)
-        's': 'generic-character-type', // \s  any white space character
-        't': 'non-printing-character', // \t  tab (hex 09)
-        'u': 'err unsupported-escape-sequence', // PCRE does not support \L, \l, \N{name}, \U, or \u
-        'v': 'generic-character-type', // \v  any vertical white space character
-        'w': 'generic-character-type', // any "word" character
-        'x': 'non-printing-character', // binary zero (or x if PCRE_JAVASCRIPT_COMPAT)
-        'y': '', // \y matches y
-        'z': '', // \z matches z
+        0: 'non-printing-character', // octal code
+        1: 'non-printing-character', // octal code
+        2: 'non-printing-character', // octal code
+        3: 'non-printing-character', // octal code
+        4: 'non-printing-character', // octal code
+        5: 'non-printing-character', // octal code
+        6: 'non-printing-character', // octal code
+        7: 'non-printing-character', // octal code
+        8: '', // \8 matches 8
+        9: '', // \9 matches 9
+        A: '', // \A matches A
+        B: '', // \B matches B -- \B, \R, and \X are not special inside a character class.
+        C: '', // \C matches C
+        D: 'generic-character-type', // \D  any character that is not a decimal digit
+        E: 'err no-error-message', // \E ends \Q but never matches 'E' -- PCRE does not emit any error message
+        F: '', // \F matches F
+        G: '', // \G matches G
+        H: 'generic-character-type', // \H  any character that is not a horizontal white space character
+        I: '', // \I matches I
+        J: '', // \J matches J
+        K: '', // \K matches K
+        L: 'err unsupported-escape-sequence', // PCRE does not support \L, \l, \N{name}, \U, or \u
+        M: '', // \M matches M
+        N: 'err backslash-n-is-not-supported-in-a-class', // \N is not allowed in a character class.
+        O: '', // \O matches O
+        P: 'err malformed-backslash-p-sequence', // malformed \P or \p sequence
+        Q: 'escaped-sequence-start', // \Q starts \Q...\E escape sequences.
+        R: '', // \R matches R -- \B, \R, and \X are not special inside a character class.
+        S: 'generic-character-type', // \S  any character that is not a white space character
+        T: '', // \T matches T
+        U: 'unsupported-escape-sequence', // PCRE does not support \L, \l, \N{name}, \U, or \u
+        V: 'generic-character-type', // \V  any character that is not a vertical white space character
+        W: 'generic-character-type', // \W  any "non-word" character
+        X: '', // \X matches X -- \B, \R, and \X are not special inside a character class.
+        Y: '', // \Y matches Y
+        Z: '', // \Z matches Z
+        a: 'non-printing-character', // \a  alarm, that is, the BEL character (hex 07)
+        b: 'non-printing-character', // inside a character class, \b is interpreted as the backspace character (hex 08)
+        c: 'err backslash-c-at-end-of-pattern', // \cx "control-x", where x is any ASCII character
+        d: 'generic-character-type', // \d  any decimal digi
+        e: 'non-printing-character', // \e  escape (hex 1B)
+        f: 'non-printing-character', // \f  form feed (hex 0C)
+        g: '', // \g matches g
+        h: 'generic-character-type', // \h  any horizontal white space character
+        i: '', // \i matches i
+        j: '', // \j matches j
+        k: '', // \k matches k
+        l: 'unsupported-espace-sequence', // PCRE does not support \L, \l, \N{name}, \U, or \u
+        m: '', // \m matches m
+        n: 'non-printing-character', // \n  linefeed (hex 0A)
+        o: '', // \o matches o
+        p: 'err malformed-backslash-p-sequence', // malformed \P or \p sequence
+        q: '', // \q matches q
+        r: 'non-printing-character', // \r  carriage return (hex 0D)
+        s: 'generic-character-type', // \s  any white space character
+        t: 'non-printing-character', // \t  tab (hex 09)
+        u: 'err unsupported-escape-sequence', // PCRE does not support \L, \l, \N{name}, \U, or \u
+        v: 'generic-character-type', // \v  any vertical white space character
+        w: 'generic-character-type', // any "word" character
+        x: 'non-printing-character', // binary zero (or x if PCRE_JAVASCRIPT_COMPAT)
+        y: '', // \y matches y
+        z: '' // \z matches z
     };
     var backslask_p_properties = {
         // GENERAL CATEGORY PROPERTIES FOR \p and \P
-        'C': 'Other',
-        'Cc': 'Control',
-        'Cf': 'Format',
-        'Cn': 'Unassigned',
-        'Co': 'Private use',
-        'Cs': 'Surrogate',
+        C: 'Other',
+        Cc: 'Control',
+        Cf: 'Format',
+        Cn: 'Unassigned',
+        Co: 'Private use',
+        Cs: 'Surrogate',
 
-        'L': 'Letter',
-        'Ll': 'Lower case letter',
-        'Lm': 'Modifier letter',
-        'Lo': 'Other letter',
-        'Lt': 'Title case letter',
-        'Lu': 'Upper case letter',
+        L: 'Letter',
+        Ll: 'Lower case letter',
+        Lm: 'Modifier letter',
+        Lo: 'Other letter',
+        Lt: 'Title case letter',
+        Lu: 'Upper case letter',
         'L&': 'Ll, Lu, or Lt',
 
-        'M': 'Mark',
-        'Mc': 'Spacing mark',
-        'Me': 'Enclosing mark',
-        'Mn': 'Non-spacing mark',
+        M: 'Mark',
+        Mc: 'Spacing mark',
+        Me: 'Enclosing mark',
+        Mn: 'Non-spacing mark',
 
-        'N': 'Number',
-        'Nd': 'Decimal number',
-        'Nl': 'Letter number',
-        'No': 'Other number',
+        N: 'Number',
+        Nd: 'Decimal number',
+        Nl: 'Letter number',
+        No: 'Other number',
 
-        'P': 'Punctuation',
-        'Pc': 'Connector punctuation',
-        'Pd': 'Dash punctuation',
-        'Pe': 'Close punctuation',
-        'Pf': 'Final punctuation',
-        'Pi': 'Initial punctuation',
-        'Po': 'Other punctuation',
-        'Ps': 'Open punctuation',
+        P: 'Punctuation',
+        Pc: 'Connector punctuation',
+        Pd: 'Dash punctuation',
+        Pe: 'Close punctuation',
+        Pf: 'Final punctuation',
+        Pi: 'Initial punctuation',
+        Po: 'Other punctuation',
+        Ps: 'Open punctuation',
 
-        'S': 'Symbol',
-        'Sc': 'Currency symbol',
-        'Sk': 'Modifier symbol',
-        'Sm': 'Mathematical symbol',
-        'So': 'Other symbol',
+        S: 'Symbol',
+        Sc: 'Currency symbol',
+        Sk: 'Modifier symbol',
+        Sm: 'Mathematical symbol',
+        So: 'Other symbol',
 
-        'Z': 'Separator',
-        'Zl': 'Line separator',
-        'Zp': 'Paragraph separator',
-        'Zs': 'Space separator',
+        Z: 'Separator',
+        Zl: 'Line separator',
+        Zp: 'Paragraph separator',
+        Zs: 'Space separator',
 
         // PCRE SPECIAL CATEGORY PROPERTIES FOR \p and \P
-        'Xan': 'Alphanumeric: union of properties L and N',
-        'Xps': 'POSIX space: property Z or tab, NL, VT, FF, CR',
-        'Xsp': 'Perl space: property Z or tab, NL, VT, FF, CR',
-        'Xuc': 'Univerally-named character: one that can be represented by a Universal Character Name',
-        'Xwd': 'Perl word: property Xan or underscore',
+        Xan: 'Alphanumeric: union of properties L and N',
+        Xps: 'POSIX space: property Z or tab, NL, VT, FF, CR',
+        Xsp: 'Perl space: property Z or tab, NL, VT, FF, CR',
+        Xuc: 'Univerally-named character: one that can be represented by a Universal Character Name',
+        Xwd: 'Perl word: property Xan or underscore',
 
         // SCRIPT NAMES FOR \p AND \P
-        'Arabic': true,
-        'Armenian': true,
-        'Avestan': true,
-        'Balinese': true,
-        'Bamum': true,
-        'Bassa_Vah': true,
-        'Batak': true,
-        'Bengali': true,
-        'Bopomofo': true,
-        'Brahmi': true,
-        'Braille': true,
-        'Buginese': true,
-        'Buhid': true,
-        'Canadian_Aboriginal': true,
-        'Carian': true,
-        'Caucasian_Albanian': true,
-        'Chakma': true,
-        'Cham': true,
-        'Cherokee': true,
-        'Common': true,
-        'Coptic': true,
-        'Cuneiform': true,
-        'Cypriot': true,
-        'Cyrillic': true,
-        'Deseret': true,
-        'Devanagari': true,
-        'Duployan': true,
-        'Egyptian_Hieroglyphs': true,
-        'Elbasan': true,
-        'Ethiopic': true,
-        'Georgian': true,
-        'Glagolitic': true,
-        'Gothic': true,
-        'Grantha': true,
-        'Greek': true,
-        'Gujarati': true,
-        'Gurmukhi': true,
-        'Han': true,
-        'Hangul': true,
-        'Hanunoo': true,
-        'Hebrew': true,
-        'Hiragana': true,
-        'Imperial_Aramaic': true,
-        'Inherited': true,
-        'Inscriptional_Pahlavi': true,
-        'Inscriptional_Parthian': true,
-        'Javanese': true,
-        'Kaithi': true,
-        'Kannada': true,
-        'Katakana': true,
-        'Kayah_Li': true,
-        'Kharoshthi': true,
-        'Khmer': true,
-        'Khojki': true,
-        'Khudawadi': true,
-        'Lao': true,
-        'Latin': true,
-        'Lepcha': true,
-        'Limbu': true,
-        'Linear_A': true,
-        'Linear_B': true,
-        'Lisu': true,
-        'Lycian': true,
-        'Lydian': true,
-        'Mahajani': true,
-        'Malayalam': true,
-        'Mandaic': true,
-        'Manichaean': true,
-        'Meetei_Mayek': true,
-        'Mende_Kikakui': true,
-        'Meroitic_Cursive': true,
-        'Meroitic_Hieroglyphs': true,
-        'Miao': true,
-        'Modi': true,
-        'Mongolian': true,
-        'Mro': true,
-        'Myanmar': true,
-        'Nabataean': true,
-        'New_Tai_Lue': true,
-        'Nko': true,
-        'Ogham': true,
-        'Ol_Chiki': true,
-        'Old_Italic': true,
-        'Old_North_Arabian': true,
-        'Old_Permic': true,
-        'Old_Persian': true,
-        'Old_South_Arabian': true,
-        'Old_Turkic': true,
-        'Oriya': true,
-        'Osmanya': true,
-        'Pahawh_Hmong': true,
-        'Palmyrene': true,
-        'Pau_Cin_Hau': true,
-        'Phags_Pa': true,
-        'Phoenician': true,
-        'Psalter_Pahlavi': true,
-        'Rejang': true,
-        'Runic': true,
-        'Samaritan': true,
-        'Saurashtra': true,
-        'Sharada': true,
-        'Shavian': true,
-        'Siddham': true,
-        'Sinhala': true,
-        'Sora_Sompeng': true,
-        'Sundanese': true,
-        'Syloti_Nagri': true,
-        'Syriac': true,
-        'Tagalog': true,
-        'Tagbanwa': true,
-        'Tai_Le': true,
-        'Tai_Tham': true,
-        'Tai_Viet': true,
-        'Takri': true,
-        'Tamil': true,
-        'Telugu': true,
-        'Thaana': true,
-        'Thai': true,
-        'Tibetan': true,
-        'Tifinagh': true,
-        'Tirhuta': true,
-        'Ugaritic': true,
-        'Vai': true,
-        'Warang_Citi': true,
-        'Yi': true,
+        Arabic: true,
+        Armenian: true,
+        Avestan: true,
+        Balinese: true,
+        Bamum: true,
+        Bassa_Vah: true,
+        Batak: true,
+        Bengali: true,
+        Bopomofo: true,
+        Brahmi: true,
+        Braille: true,
+        Buginese: true,
+        Buhid: true,
+        Canadian_Aboriginal: true,
+        Carian: true,
+        Caucasian_Albanian: true,
+        Chakma: true,
+        Cham: true,
+        Cherokee: true,
+        Common: true,
+        Coptic: true,
+        Cuneiform: true,
+        Cypriot: true,
+        Cyrillic: true,
+        Deseret: true,
+        Devanagari: true,
+        Duployan: true,
+        Egyptian_Hieroglyphs: true,
+        Elbasan: true,
+        Ethiopic: true,
+        Georgian: true,
+        Glagolitic: true,
+        Gothic: true,
+        Grantha: true,
+        Greek: true,
+        Gujarati: true,
+        Gurmukhi: true,
+        Han: true,
+        Hangul: true,
+        Hanunoo: true,
+        Hebrew: true,
+        Hiragana: true,
+        Imperial_Aramaic: true,
+        Inherited: true,
+        Inscriptional_Pahlavi: true,
+        Inscriptional_Parthian: true,
+        Javanese: true,
+        Kaithi: true,
+        Kannada: true,
+        Katakana: true,
+        Kayah_Li: true,
+        Kharoshthi: true,
+        Khmer: true,
+        Khojki: true,
+        Khudawadi: true,
+        Lao: true,
+        Latin: true,
+        Lepcha: true,
+        Limbu: true,
+        Linear_A: true,
+        Linear_B: true,
+        Lisu: true,
+        Lycian: true,
+        Lydian: true,
+        Mahajani: true,
+        Malayalam: true,
+        Mandaic: true,
+        Manichaean: true,
+        Meetei_Mayek: true,
+        Mende_Kikakui: true,
+        Meroitic_Cursive: true,
+        Meroitic_Hieroglyphs: true,
+        Miao: true,
+        Modi: true,
+        Mongolian: true,
+        Mro: true,
+        Myanmar: true,
+        Nabataean: true,
+        New_Tai_Lue: true,
+        Nko: true,
+        Ogham: true,
+        Ol_Chiki: true,
+        Old_Italic: true,
+        Old_North_Arabian: true,
+        Old_Permic: true,
+        Old_Persian: true,
+        Old_South_Arabian: true,
+        Old_Turkic: true,
+        Oriya: true,
+        Osmanya: true,
+        Pahawh_Hmong: true,
+        Palmyrene: true,
+        Pau_Cin_Hau: true,
+        Phags_Pa: true,
+        Phoenician: true,
+        Psalter_Pahlavi: true,
+        Rejang: true,
+        Runic: true,
+        Samaritan: true,
+        Saurashtra: true,
+        Sharada: true,
+        Shavian: true,
+        Siddham: true,
+        Sinhala: true,
+        Sora_Sompeng: true,
+        Sundanese: true,
+        Syloti_Nagri: true,
+        Syriac: true,
+        Tagalog: true,
+        Tagbanwa: true,
+        Tai_Le: true,
+        Tai_Tham: true,
+        Tai_Viet: true,
+        Takri: true,
+        Tamil: true,
+        Telugu: true,
+        Thaana: true,
+        Thai: true,
+        Tibetan: true,
+        Tifinagh: true,
+        Tirhuta: true,
+        Ugaritic: true,
+        Vai: true,
+        Warang_Citi: true,
+        Yi: true
     };
     var backslash_p_regex_string = '[pP]\\{\\^?([\\w&]+)\\}';
     var backslash_p_regex = new RegExp(backslash_p_regex_string);
 
     var posix_named_sets = {
-        'alnum': 'alphanumeric',
-        'alpha': 'alphabetic',
-        'ascii': '0-127',
-        'blank': 'space or tab',
-        'cntrl': 'control character',
-        'digit': 'decimal digit',
-        'graph': 'printing, excluding space',
-        'lower': 'lower case letter',
-        'print': 'printing, including space',
-        'punct': 'printing, excluding alphanumeric',
-        'space': 'white space',
-        'upper': 'upper case letter',
-        'word': 'same as \\w',
-        'xdigit': 'hexadecimal digit',
+        alnum: 'alphanumeric',
+        alpha: 'alphabetic',
+        ascii: '0-127',
+        blank: 'space or tab',
+        cntrl: 'control character',
+        digit: 'decimal digit',
+        graph: 'printing, excluding space',
+        lower: 'lower case letter',
+        print: 'printing, including space',
+        punct: 'printing, excluding alphanumeric',
+        space: 'white space',
+        upper: 'upper case letter',
+        word: 'same as \\w',
+        xdigit: 'hexadecimal digit'
     };
     // Include '<' and '>' to spot errors such as [a[:<:]b]
     var posix_named_sets_regex_string = '\\[:\\^?([\\w<>]+):]';
@@ -378,7 +378,7 @@ CodeMirror.defineMode('regexp', function() {
 
     // Helper functions:
     function delimiter(ch) {
-        return (ch in delimiters) ? delimiters[ch] : ch;
+        return ch in delimiters ? delimiters[ch] : ch;
     }
     function current(state) {
         if (!state.context.length) return false;
@@ -420,7 +420,7 @@ CodeMirror.defineMode('regexp', function() {
     function expect_end(state, end_string) {
         var context_state = current_context_state(state);
         var end_string_array = [];
-        for (var i = 0; i < end_string.length; ++ i) end_string_array.push(end_string[i]);
+        for (var i = 0; i < end_string.length; ++i) end_string_array.push(end_string[i]);
         context_state.expected = end_string_array;
         return context_state;
     }
@@ -438,8 +438,7 @@ CodeMirror.defineMode('regexp', function() {
             }
             // console.log('erroneous end:', ch, 'expected:', expected_ch, 'context', current(state));
             return all_tokens(state, 'err erroneous-end-of-token');
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -466,7 +465,7 @@ CodeMirror.defineMode('regexp', function() {
             else return 'err unknown-property-name-after-p';
         }
 
-        var in_character_class = (current(state) === 'character-class');
+        var in_character_class = current(state) === 'character-class';
         // Nothing in this condition can be found in a character class:
         if (!in_character_class) {
             // \k<name>  reference by name
@@ -497,11 +496,12 @@ CodeMirror.defineMode('regexp', function() {
         } else consume_limit = 32 - state.name_value.length - 1;
         state.name_value += ch;
         if (consume_limit < 0) {
-            if (rem = stream.match(/^\w+/)) state.name_value += rem[0];
-        } else while (consume_limit --) {
-            if (rem = stream.match(/^\w/)) state.name_value += rem[0];
-            else break;
-        }
+            if ((rem = stream.match(/^\w+/))) state.name_value += rem[0];
+        } else
+            while (consume_limit--) {
+                if ((rem = stream.match(/^\w/))) state.name_value += rem[0];
+                else break;
+            }
         var next_char = stream.peek();
         if (!next_char || !next_char.match(/\w/)) return pop(state, ret);
         return all_tokens(state, ret);
@@ -570,8 +570,8 @@ CodeMirror.defineMode('regexp', function() {
         if (stream.match(/\?<?[=!]/)) {
             condition_state.ok = true; // the "group" state will handle everything for us
             // Ensure "group" leaves the closing parenthesis untouched so "start-group" can consume it:
-            var group_options = {'leave_closing_parenthesis': true};
-            return push(state, 'group' + (++ state.groupLevel), group_options, 'start-group');
+            var group_options = {leave_closing_parenthesis: true};
+            return push(state, 'group' + ++state.groupLevel, group_options, 'start-group');
         }
         stream.next();
         return all_tokens(state, 'err erroneous-condition');
@@ -623,7 +623,7 @@ CodeMirror.defineMode('regexp', function() {
         // "(?(" typically marks the start of a condition: (?(condition)yes-pattern|no-pattern)
         if (stream.match('(?') && stream.peek() === '(') {
             // An explicit callout may be set just before an assertion condition: (?(?C7)(?<!abc)def|ghi)
-            start_group_state.condition_callout = (stream.match(condition_callout_regex, false)) ? 1 : 2;
+            start_group_state.condition_callout = stream.match(condition_callout_regex, false) ? 1 : 2;
             return all_tokens(state);
         }
         stream.next();
@@ -663,7 +663,10 @@ CodeMirror.defineMode('regexp', function() {
 
     function update_options(state, options) {
         // We are only interested in x (extended mode).
-        var enable = true, new_state = null, i = 0, c = null;
+        var enable = true,
+            new_state = null,
+            i = 0,
+            c = null;
         for (; i < options.length; ++i) {
             c = options[i];
             if (c === '-') enable = false;
@@ -819,7 +822,8 @@ CodeMirror.defineMode('regexp', function() {
         };
     }
 
-    function copyState(o) { // o = original
+    function copyState(o) {
+        // o = original
         const c = startState(); // c = copy, oo = original object, oc = object copy
         for (let i = 0; i < o.context_state.length; ++i) {
             const oo = o.context_state[i];

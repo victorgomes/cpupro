@@ -1,6 +1,6 @@
-import { USE_WASM } from '../const.js';
-import { CpuProNode } from '../types.js';
-import { CallTree } from './call-tree.js';
+import {USE_WASM} from '../const.js';
+import {CpuProNode} from '../types.js';
+import {CallTree} from './call-tree.js';
 import {
     BufferDictionaryTimingsMap,
     BufferMap,
@@ -12,7 +12,7 @@ import {
 } from './timings-wasm-wrapper.js';
 
 const computeTimingsJavaScriptApi = createJavaScriptApi();
-const { computeTreeTimings } = computeTimingsJavaScriptApi;
+const {computeTreeTimings} = computeTimingsJavaScriptApi;
 
 function binarySearch(array: Uint32Array, value: number): number {
     let left = 0;
@@ -54,12 +54,12 @@ function computeAll<T extends CpuProNode>(api: ComputeTimingsApi, bufferMap: Buf
     }
 }
 
-export type Listener = { fn: () => void };
+export type Listener = {fn: () => void};
 export class TimingsObserver {
     #subscriptions: Listener[] = [];
 
     subscribe(fn: () => void) {
-        let listener: Listener | null = { fn };
+        let listener: Listener | null = {fn};
         this.#subscriptions.push(listener);
 
         return () => {
@@ -71,7 +71,7 @@ export class TimingsObserver {
     }
 
     notify() {
-        for (const { fn } of this.#subscriptions) {
+        for (const {fn} of this.#subscriptions) {
             fn();
         }
     }
@@ -116,13 +116,7 @@ export class SamplesTimingsFiltered extends SamplesTimings {
         samplesCount: Uint32Array,
         samplesTimes: Uint32Array
     ) {
-        super(
-            samples,
-            timeDeltas,
-            timestamps,
-            samplesCount,
-            samplesTimes
-        );
+        super(samples, timeDeltas, timestamps, samplesCount, samplesTimes);
 
         this.samplesMask = samplesMask;
         this.originalTimeDeltas = timeDeltas;
@@ -139,8 +133,8 @@ export class SamplesTimingsFiltered extends SamplesTimings {
         }
     }
     setRange(start: number, end: number) {
-        const { timeDeltas, timestamps } = this;
-        let { originalTimeDeltas } = this;
+        const {timeDeltas, timestamps} = this;
+        let {originalTimeDeltas} = this;
 
         if (timeDeltas === originalTimeDeltas) {
             // Store the state of timeDeltas before the first changes to be able to fill it according
@@ -180,12 +174,7 @@ export class TreeTimings<T extends CpuProNode> extends TimingsObserver {
     selfTimes: Uint32Array;
     nestedTimes: Uint32Array;
 
-    constructor(
-        tree: CallTree<T>,
-        samplesCount: Uint32Array,
-        selfTimes: Uint32Array,
-        nestedTimes: Uint32Array
-    ) {
+    constructor(tree: CallTree<T>, samplesCount: Uint32Array, selfTimes: Uint32Array, nestedTimes: Uint32Array) {
         super();
 
         this.tree = tree;
@@ -209,8 +198,8 @@ export class TreeTimings<T extends CpuProNode> extends TimingsObserver {
     }
 
     getValueTimings(valueIndex: number) {
-        const { tree, samplesCount, selfTimes, nestedTimes } = this;
-        const { nested } = tree;
+        const {tree, samplesCount, selfTimes, nestedTimes} = this;
+        const {nested} = tree;
         let samples = 0;
         let selfTime = 0;
         let nestedTime = 0;
@@ -242,12 +231,7 @@ export class SubsetTreeTimings<T extends CpuProNode> extends TreeTimings<T> {
     constructor(tree: CallTree<T>, samplesTimings: SamplesTimings) {
         const size = tree.nodes.length + 1; // add extra element for excluded timings
 
-        super(
-            tree,
-            new Uint32Array(size),
-            new Uint32Array(size),
-            new Uint32Array(size)
-        );
+        super(tree, new Uint32Array(size), new Uint32Array(size), new Uint32Array(size));
 
         this.samplesTimings = samplesTimings;
         this.subscribe = samplesTimings.subscribe.bind(samplesTimings);
@@ -255,7 +239,7 @@ export class SubsetTreeTimings<T extends CpuProNode> extends TreeTimings<T> {
     }
 
     get excludedTimings() {
-        const { samplesCount, selfTimes, nestedTimes } = this;
+        const {samplesCount, selfTimes, nestedTimes} = this;
         const lastIndex = samplesCount.length - 1;
 
         return {
@@ -267,16 +251,19 @@ export class SubsetTreeTimings<T extends CpuProNode> extends TreeTimings<T> {
     }
 
     recompute(clear = true) {
-        computeTreeTimings({
-            tree: this.tree,
-            sourceSamplesCount: this.samplesTimings.samplesCount,
-            sourceSamplesTimes: this.samplesTimings.samplesTimes,
-            sampleIdToNode: this.tree.sampleIdToNode,
-            parent: this.tree.parent,
-            samplesCount: this.samplesCount,
-            selfTimes: this.selfTimes,
-            nestedTimes: this.nestedTimes
-        }, clear);
+        computeTreeTimings(
+            {
+                tree: this.tree,
+                sourceSamplesCount: this.samplesTimings.samplesCount,
+                sourceSamplesTimes: this.samplesTimings.samplesTimes,
+                sampleIdToNode: this.tree.sampleIdToNode,
+                parent: this.tree.parent,
+                samplesCount: this.samplesCount,
+                selfTimes: this.selfTimes,
+                nestedTimes: this.nestedTimes
+            },
+            clear
+        );
     }
 }
 
@@ -296,12 +283,7 @@ export class DictionaryTimings<T extends CpuProNode> extends TimingsObserver {
     selfTimes: Uint32Array;
     totalTimes: Uint32Array;
 
-    constructor(
-        dictionary: T[],
-        samplesCount: Uint32Array,
-        selfTimes: Uint32Array,
-        totalTimes: Uint32Array
-    ) {
+    constructor(dictionary: T[], samplesCount: Uint32Array, selfTimes: Uint32Array, totalTimes: Uint32Array) {
         super();
 
         this.samplesCount = samplesCount;
@@ -315,10 +297,7 @@ export class DictionaryTimings<T extends CpuProNode> extends TimingsObserver {
             nestedTime: totalTimes[entryIndex] - selfTimes[entryIndex],
             totalTime: totalTimes[entryIndex]
         }));
-        this.entriesMap = this.entries.reduce(
-            (map, element) => map.set(element.entry, element),
-            new Map()
-        );
+        this.entriesMap = this.entries.reduce((map, element) => map.set(element.entry, element), new Map());
     }
 
     getEntry(sourceEntry: T): DictionaryTiming<T> | null {
@@ -326,7 +305,7 @@ export class DictionaryTimings<T extends CpuProNode> extends TimingsObserver {
     }
 
     sync() {
-        const { entries, samplesCount, selfTimes, totalTimes } = this;
+        const {entries, samplesCount, selfTimes, totalTimes} = this;
 
         for (let i = 0; i < entries.length; i++) {
             const entry = entries[i];
@@ -355,7 +334,7 @@ export class TreeTimestamps<T extends CpuProNode> {
     lastSeen: Uint32Array;
 
     constructor(tree: CallTree<T>, timestamps: Uint32Array, samples: Uint32Array) {
-        const { dictionary, nodes, parent, sampleIdToNode } = tree;
+        const {dictionary, nodes, parent, sampleIdToNode} = tree;
         const firstSeen = new Uint32Array(nodes.length).fill(0xffffffff);
         const lastSeen = new Uint32Array(nodes.length);
         const firstSeenDict = new Uint32Array(dictionary.length).fill(0xffffffff);
@@ -406,15 +385,12 @@ export class TreeTimestamps<T extends CpuProNode> {
             firstSeen: firstSeenDict[entryIndex],
             lastSeen: lastSeenDict[entryIndex]
         }));
-        this.entriesMap = this.entries.reduce(
-            (map, element) => map.set(element.entry, element),
-            new Map()
-        );
+        this.entriesMap = this.entries.reduce((map, element) => map.set(element.entry, element), new Map());
     }
 }
 
 function createMapsFromTree<T>(tree: CallTree<T>) {
-    const { nodes, nested, sampleIdToNode } = tree;
+    const {nodes, nested, sampleIdToNode} = tree;
     const totalNodes = new Uint32Array(nodes.length);
     const totalNodeToDict = new Uint32Array(nodes.length);
     let k = 0;
@@ -456,7 +432,7 @@ export function createTreeComputeBuffer<T>(
         // samplesTime
         3 * samplesMapSize;
 
-    for (const { tree, sampleIdToDict, totalNodes, totalNodeToDict } of maps) {
+    for (const {tree, sampleIdToDict, totalNodes, totalNodeToDict} of maps) {
         // tree timings
         bufferSize +=
             // sampleIdToNode
@@ -480,7 +456,7 @@ export function createTreeComputeBuffer<T>(
     }
 
     const memory = useWasm
-        ? new WebAssembly.Memory({ initial: Math.ceil(4 * bufferSize / 0xffff) })
+        ? new WebAssembly.Memory({initial: Math.ceil((4 * bufferSize) / 0xffff)})
         : new Uint8Array(4 * bufferSize); // TODO: remove the allocation
     const buffer = memory ? new Uint32Array(memory.buffer) : null;
     let bufferOffset = 0;
@@ -501,12 +477,12 @@ export function createTreeComputeBuffer<T>(
 
     computeTimestamps(samplesMap.timestamps, samplesMap.timeDeltas);
 
-    for (const { tree, sampleIdToDict, totalNodes, totalNodeToDict } of maps) {
+    for (const {tree, sampleIdToDict, totalNodes, totalNodeToDict} of maps) {
         const treeMap: BufferTreeTimingsMap<T> = {
             tree,
             sourceSamplesCount: samplesMap.samplesCount,
             sourceSamplesTimes: samplesMap.samplesTimes,
-            sampleIdToNode: tree.sampleIdToNode = adopt(tree.sampleIdToNode),
+            sampleIdToNode: (tree.sampleIdToNode = adopt(tree.sampleIdToNode)),
             parent: adopt(tree.parent),
             samplesCount: alloc(tree.nodes.length),
             selfTimes: alloc(tree.nodes.length),
@@ -539,7 +515,7 @@ export function createTreeComputeBuffer<T>(
 
         buffer.set(array, bufferOffset);
 
-        return buffer.subarray(bufferOffset, bufferOffset += array.length);
+        return buffer.subarray(bufferOffset, (bufferOffset += array.length));
     }
 
     function alloc(size: number) {
@@ -547,26 +523,15 @@ export function createTreeComputeBuffer<T>(
             return new Uint32Array(size);
         }
 
-        return buffer.subarray(bufferOffset, bufferOffset += size);
+        return buffer.subarray(bufferOffset, (bufferOffset += size));
     }
 }
 
-export function createTreeCompute(
-    samples: Uint32Array,
-    timeDeltas: Uint32Array,
-    trees: CallTree<CpuProNode>[]
-) {
+export function createTreeCompute(samples: Uint32Array, timeDeltas: Uint32Array, trees: CallTree<CpuProNode>[]) {
     const useWasm = USE_WASM;
     const bufferMap = createTreeComputeBuffer(samples, timeDeltas, trees, useWasm);
-    const {
-        memory,
-        samples: samplesMap,
-        tree: treeMaps,
-        dict: dictMaps
-    } = bufferMap;
-    const computeTimingsApi = useWasm && memory
-        ? createWasmApi(memory)
-        : computeTimingsJavaScriptApi;
+    const {memory, samples: samplesMap, tree: treeMaps, dict: dictMaps} = bufferMap;
+    const computeTimingsApi = useWasm && memory ? createWasmApi(memory) : computeTimingsJavaScriptApi;
 
     computeAll(computeTimingsApi, bufferMap, false);
 
@@ -585,52 +550,48 @@ export function createTreeCompute(
         samplesMap.samplesCount,
         samplesMap.samplesTimes
     );
-    const treeTimings = treeMaps.map((treeMap) =>
-        new TreeTimings(
-            treeMap.tree,
-            treeMap.samplesCount.slice(),
-            treeMap.selfTimes.slice(),
-            treeMap.nestedTimes.slice()
-        ));
-    const treeTimingsFiltered = treeMaps.map((treeMap) =>
-        new TreeTimings(
-            treeMap.tree,
-            treeMap.samplesCount,
-            treeMap.selfTimes,
-            treeMap.nestedTimes
-        ));
-    const dictionaryTimings = dictMaps.map((dictMap) =>
-        new DictionaryTimings(
-            dictMap.dictionary,
-            dictMap.samplesCount.slice(),
-            dictMap.selfTimes.slice(),
-            dictMap.totalTimes.slice()
-        ));
-    const dictionaryTimingsFiltered = dictMaps.map((dictMap) =>
-        new DictionaryTimings(
-            dictMap.dictionary,
-            dictMap.samplesCount,
-            dictMap.selfTimes,
-            dictMap.totalTimes
-        ));
+    const treeTimings = treeMaps.map(
+        treeMap =>
+            new TreeTimings(
+                treeMap.tree,
+                treeMap.samplesCount.slice(),
+                treeMap.selfTimes.slice(),
+                treeMap.nestedTimes.slice()
+            )
+    );
+    const treeTimingsFiltered = treeMaps.map(
+        treeMap => new TreeTimings(treeMap.tree, treeMap.samplesCount, treeMap.selfTimes, treeMap.nestedTimes)
+    );
+    const dictionaryTimings = dictMaps.map(
+        dictMap =>
+            new DictionaryTimings(
+                dictMap.dictionary,
+                dictMap.samplesCount.slice(),
+                dictMap.selfTimes.slice(),
+                dictMap.totalTimes.slice()
+            )
+    );
+    const dictionaryTimingsFiltered = dictMaps.map(
+        dictMap =>
+            new DictionaryTimings(dictMap.dictionary, dictMap.samplesCount, dictMap.selfTimes, dictMap.totalTimes)
+    );
 
     // const t = Date.now();
-    const treeTimestamps = treeMaps.map((treeMap) =>
-        new TreeTimestamps(
-            treeMap.tree,
-            samplesMap.timestamps,
-            samplesMap.samples
-        )
+    const treeTimestamps = treeMaps.map(
+        treeMap => new TreeTimestamps(treeMap.tree, samplesMap.timestamps, samplesMap.samples)
     );
     // console.log(Date.now() - t, treeTimestamps);
 
     // temporary solution
-    const { setRange, resetRange } = samplesTimingsFiltered;
+    const {setRange, resetRange} = samplesTimingsFiltered;
     const notifySubjects = [samplesTimingsFiltered, ...treeTimingsFiltered, ...dictionaryTimingsFiltered];
     const recomputeTimings = () => {
         for (let i = 0; i < dictMaps.length; i++) {
-            const { sampleIdToNode: sampleIdToNode, tree: { nodes, sampleIdToNodeChanged } } = treeMaps[i];
-            const { sampleIdToDict: sampleIdToDict } = dictMaps[i];
+            const {
+                sampleIdToNode: sampleIdToNode,
+                tree: {nodes, sampleIdToNodeChanged}
+            } = treeMaps[i];
+            const {sampleIdToDict: sampleIdToDict} = dictMaps[i];
 
             if (sampleIdToNodeChanged) {
                 for (let j = 0; j < sampleIdToNode.length; j++) {
@@ -646,11 +607,11 @@ export function createTreeCompute(
         dictionaryTimingsFiltered.forEach(timings => timings.sync());
         notifySubjects.forEach(timings => timings.notify());
     };
-    samplesTimingsFiltered.setRange = function(...args) {
+    samplesTimingsFiltered.setRange = function (...args) {
         setRange.call(this, ...args);
         recomputeTimings();
     };
-    samplesTimingsFiltered.resetRange = function(...args) {
+    samplesTimingsFiltered.resetRange = function (...args) {
         resetRange.call(this, ...args);
         recomputeTimings();
     };

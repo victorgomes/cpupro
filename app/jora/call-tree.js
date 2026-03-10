@@ -1,9 +1,9 @@
-import { CallTree } from '../prepare/computations/call-tree.js';
-import { TreeTimings } from '../prepare/computations/timings.js';
+import {CallTree} from '../prepare/computations/call-tree.js';
+import {TreeTimings} from '../prepare/computations/timings.js';
 
 export function makeDictMask(tree, test) {
-    const { dictionary } = tree;
-    const accept = typeof test === 'function' ? test : (entry) => entry === test;
+    const {dictionary} = tree;
+    const accept = typeof test === 'function' ? test : entry => entry === test;
     const mask = new Uint8Array(dictionary.length);
 
     for (let i = 0; i < mask.length; i++) {
@@ -16,8 +16,8 @@ export function makeDictMask(tree, test) {
 }
 
 export function makeSamplesMask(tree, test) {
-    const { dictionary, sampleIdToNode, nodes } = tree;
-    const accept = typeof test === 'function' ? test : (entry) => entry === test;
+    const {dictionary, sampleIdToNode, nodes} = tree;
+    const accept = typeof test === 'function' ? test : entry => entry === test;
     const mask = new Uint8Array(sampleIdToNode.length);
 
     for (let i = 0; i < mask.length; i++) {
@@ -33,14 +33,15 @@ export function makeSamplesMask(tree, test) {
 
 export const methods = {
     tree(value, getParentIndex, buildValue = node => node) {
-        const leafs = value.map(value => ({ parent: null, value, children: [] }));
-        const root = { value: null, children: [] };
+        const leafs = value.map(value => ({parent: null, value, children: []}));
+        const root = {value: null, children: []};
 
         for (const leaf of leafs) {
             const parentIndex = getParentIndex(leaf.value);
-            const parent = Number.isInteger(parentIndex) && parentIndex >= 0 && parentIndex < leafs.length
-                ? leafs[parentIndex]
-                : root;
+            const parent =
+                Number.isInteger(parentIndex) && parentIndex >= 0 && parentIndex < leafs.length
+                    ? leafs[parentIndex]
+                    : root;
 
             parent.children.push(leaf);
             leaf.parent = parent !== root ? parent : null;
@@ -63,9 +64,7 @@ export const methods = {
 
             switch (type) {
                 case 'nodes':
-                    iterator = typeof args[0] === 'function'
-                        ? tree.selectBy(...args)
-                        : tree.selectNodes(...args);
+                    iterator = typeof args[0] === 'function' ? tree.selectBy(...args) : tree.selectNodes(...args);
                     break;
                 case 'children':
                     iterator = tree.children(...args);
@@ -197,7 +196,7 @@ export const methods = {
     },
 
     selectBy(tree, test) {
-        const { nodes } = tree;
+        const {nodes} = tree;
         const mask = makeDictMask(tree, test);
         const result = [];
 
@@ -214,10 +213,18 @@ export const methods = {
         let map;
 
         switch (type) {
-            case 'call-frame': map = profile?.callFramesTreeTimestamps.entriesMap; break;
-            case 'module':     map = profile?.modulesTreeTimestamps.entriesMap; break;
-            case 'package':    map = profile?.packagesTreeTimestamps.entriesMap; break;
-            case 'category':   map = profile?.categoriesTreeTimestamps.entriesMap; break;
+            case 'call-frame':
+                map = profile?.callFramesTreeTimestamps.entriesMap;
+                break;
+            case 'module':
+                map = profile?.modulesTreeTimestamps.entriesMap;
+                break;
+            case 'package':
+                map = profile?.packagesTreeTimestamps.entriesMap;
+                break;
+            case 'category':
+                map = profile?.categoriesTreeTimestamps.entriesMap;
+                break;
         }
 
         if (map) {

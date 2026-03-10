@@ -26,23 +26,19 @@
 //   > node --prof --log-deopt --prof-sampling-interval=250 ...
 //
 
-import type { CallFrame, CallNode, V8LogProfile } from './v8-log-processed/types.js';
-import type { V8CpuProfile, V8CpuProfileCallFrameCodes, V8CpuProfileScript } from '../types.js';
+import type {CallFrame, CallNode, V8LogProfile} from './v8-log-processed/types.js';
+import type {V8CpuProfile, V8CpuProfileCallFrameCodes, V8CpuProfileScript} from '../types.js';
 import jora from 'jora'; // FIXME: temporary? to calc a median only
-import { processFunctions } from './v8-log-processed/functions.js';
-import { createCallFrames } from './v8-log-processed/call-frames.js';
-import { processCodes } from './v8-log-processed/codes.js';
-import { processCodePositionTables } from './v8-log-processed/positions.js';
-import { processTicks } from './v8-log-processed/ticks.js';
+import {processFunctions} from './v8-log-processed/functions.js';
+import {createCallFrames} from './v8-log-processed/call-frames.js';
+import {processCodes} from './v8-log-processed/codes.js';
+import {processCodePositionTables} from './v8-log-processed/positions.js';
+import {processTicks} from './v8-log-processed/ticks.js';
 
 export function isV8LogProfile(data: unknown): data is V8LogProfile {
     const maybe = data as Partial<V8LogProfile>;
 
-    return (
-        Array.isArray(maybe.code) &&
-        Array.isArray(maybe.functions) &&
-        Array.isArray(maybe.ticks)
-    );
+    return Array.isArray(maybe.code) && Array.isArray(maybe.functions) && Array.isArray(maybe.ticks);
 }
 
 function updateCallFramesUrl(callFrames: CallFrame[], scripts: (V8CpuProfileScript | null)[]) {
@@ -90,15 +86,15 @@ function collectUsedCallFrames(
 }
 
 export function convertV8LogIntoCpuProfile(v8log: V8LogProfile): V8CpuProfile {
-    const { functions, functionIndexMap, scripts } = processFunctions(v8log.functions, v8log.code, v8log.scripts);
-    const { callFrames, callFrameIndexByVmState, callFrameIndexByCode, callFrameIndexByV8logFunction } = createCallFrames(
+    const {functions, functionIndexMap, scripts} = processFunctions(v8log.functions, v8log.code, v8log.scripts);
+    const {callFrames, callFrameIndexByVmState, callFrameIndexByCode, callFrameIndexByV8logFunction} = createCallFrames(
         v8log.code,
         functions,
         functionIndexMap
     );
     const positionTableByCode = processCodePositionTables(v8log.code, callFrameIndexByV8logFunction);
     const callFrameCodes = processCodes(v8log.code, callFrameIndexByCode, positionTableByCode);
-    const { nodes, samples, timeDeltas, samplePositions, lastTimestamp } = processTicks(
+    const {nodes, samples, timeDeltas, samplePositions, lastTimestamp} = processTicks(
         v8log.ticks,
         callFrameIndexByVmState,
         callFrameIndexByCode,

@@ -1,4 +1,4 @@
-export default function({ textView }) {
+export default function ({textView}) {
     textView.define('call-frame-source', {
         view: 'source',
         context: '{ ..., currentProfile: #.data.currentProfile }',

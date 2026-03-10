@@ -1,5 +1,15 @@
-import { PackageType, PackageRegistry, WellKnownName, WellKnownType, PackageProvider, V8CallFrameCodeType, CpuProCallFrameCodes, ModuleType, CpuProCallFrameKind } from './types';
-import { packageRegistryEndpoints } from './utils';
+import {
+    PackageType,
+    PackageRegistry,
+    WellKnownName,
+    WellKnownType,
+    PackageProvider,
+    V8CallFrameCodeType,
+    CpuProCallFrameCodes,
+    ModuleType,
+    CpuProCallFrameKind
+} from './types';
+import {packageRegistryEndpoints} from './utils';
 
 export const TIMINGS = false;
 export const USE_WASM = true;
@@ -11,16 +21,16 @@ export const EMPTY_ARRAY = Object.freeze([]);
 export const maxRegExpLength = 48;
 export const callFrameKinds: Record<CpuProCallFrameKind, number> = {
     /* eslint-disable key-spacing */
-    'root':     0x0001,
+    root: 0x0001,
     'vm-state': 0x0002,
-    'script':   0x0004,
-    'function': 0x0008,
-    'regexp':   0x0010,
-    'cpp':      0x0020,
-    'lib':      0x0040,
-    'builtin':  0x0080,
-    'bytecode': 0x0100,
-    'ic':       0x0200
+    script: 0x0004,
+    function: 0x0008,
+    regexp: 0x0010,
+    cpp: 0x0020,
+    lib: 0x0040,
+    builtin: 0x0080,
+    bytecode: 0x0100,
+    ic: 0x0200
     /* eslint-enable key-spacing */
 };
 export const wellKnownCallFrameName = new Map<WellKnownName, WellKnownType>([
@@ -77,60 +87,70 @@ export const vmFunctionStateTiers: V8CallFrameCodeType[] = [
     'Turbofan'
 ] as const;
 export const vmFunctionStateTierHotness: Record<V8CallFrameCodeType, CpuProCallFrameCodes['hotness']> = {
-    'Unknown': 'cold',
-    'Ignition': 'cold',
-    'Sparkplug': 'warm',
-    'Maglev': 'hot',
-    'Turboprop': 'hot',
-    'Turbofan': 'hot'
+    Unknown: 'cold',
+    Ignition: 'cold',
+    Sparkplug: 'warm',
+    Maglev: 'hot',
+    Turboprop: 'hot',
+    Turbofan: 'hot'
 } as const;
 
 export const knownChromeExtensions = {
-    'fmkadmapgofadopljbjfkapdkoienihi': 'React Developer Tools',
-    'lmhkpmbekcpmknklioeibfkpmmfibljd': 'Redux DevTools',
-    'nhdogjmejiglipccpnnnanhbledajbpd': 'Vue.js devtools',
-    'ienfalfjdbdpebioblfackkekamfmbnh': 'Angular DevTools',
-    'jdkknkkbebbapilgoeccciglkfbmbnfm': 'Apollo Client Devtools',
-    'hcikjlholajopgbgfmmlbmifdfbkijdj': 'Rempl',
-    'pamhglogfolfbmlpnenhpeholpnlcclo': 'JsonDiscovery',
-    'jlmafbaeoofdegohdhinkhilhclaklkp': 'OctoLinker',
-    'dhdgffkkebhmkfjojejmpbldmpobfkfo': 'Tampermonkey'
+    fmkadmapgofadopljbjfkapdkoienihi: 'React Developer Tools',
+    lmhkpmbekcpmknklioeibfkpmmfibljd: 'Redux DevTools',
+    nhdogjmejiglipccpnnnanhbledajbpd: 'Vue.js devtools',
+    ienfalfjdbdpebioblfackkekamfmbnh: 'Angular DevTools',
+    jdkknkkbebbapilgoeccciglkfbmbnfm: 'Apollo Client Devtools',
+    hcikjlholajopgbgfmmlbmifdfbkijdj: 'Rempl',
+    pamhglogfolfbmlpnenhpeholpnlcclo: 'JsonDiscovery',
+    jlmafbaeoofdegohdhinkhilhclaklkp: 'OctoLinker',
+    dhdgffkkebhmkfjojejmpbldmpobfkfo: 'Tampermonkey'
 };
 
 export const knownRegistry: Record<string, PackageProvider> = {
-    'https://jsr.io': { cdn: 'jsr', endpoints: packageRegistryEndpoints(
-        { registry: 'jsr', pattern: '[atpkg][/version][path]' }
-    ) },
-    'https://npm.jsr.io': { cdn: 'jsr', endpoints: packageRegistryEndpoints('npm') },
-    'https://deno.land': { cdn: 'denoland', endpoints: packageRegistryEndpoints(
-        { registry: 'denoland', pattern: '(?<pkg>std)[version][path]' },
-        { registry: 'denoland', pattern: 'x/[specifier]' }
-    ) },
-    'https://esm.sh': { cdn: 'esmsh', endpoints: packageRegistryEndpoints(
-        { registry: 'github', pattern: '(v\\d+/)?gh/[pkg][version][path]' },
-        { registry: 'jsr', pattern: 'jsr/[specifier]' },
-        { registry: 'npm', pattern: '(v\\d+/)?[specifier]' }
-    ) },
-    'https://cdn.jsdelivr.net': { cdn: 'jsdelivr', endpoints: packageRegistryEndpoints(
-        { registry: 'npm', pattern: 'npm/[specifier]' },
-        { registry: 'github', pattern: 'gh/[pkg][version][path]' }
-    ) },
-    'https://unpkg.com': { cdn: 'unpkg', endpoints: packageRegistryEndpoints('npm') },
-    'https://esm.run': { cdn: 'jsdelivr', endpoints: packageRegistryEndpoints('npm') },
-    'https://ga.jspm.io': { cdn: 'jspm', endpoints: packageRegistryEndpoints(
-        { registry: 'npm', pattern: 'npm:[specifier]' }
-    ) },
-    'https://cdn.skypack.dev': { cdn: 'skypack', endpoints: packageRegistryEndpoints(
-        { registry: 'npm', pattern: '-/[pkg][version]-[^\\/\\-]+?/[^\\/]+?,mode=(?<path>.+)' },
-        'npm'
-    ) }
+    'https://jsr.io': {
+        cdn: 'jsr',
+        endpoints: packageRegistryEndpoints({registry: 'jsr', pattern: '[atpkg][/version][path]'})
+    },
+    'https://npm.jsr.io': {cdn: 'jsr', endpoints: packageRegistryEndpoints('npm')},
+    'https://deno.land': {
+        cdn: 'denoland',
+        endpoints: packageRegistryEndpoints(
+            {registry: 'denoland', pattern: '(?<pkg>std)[version][path]'},
+            {registry: 'denoland', pattern: 'x/[specifier]'}
+        )
+    },
+    'https://esm.sh': {
+        cdn: 'esmsh',
+        endpoints: packageRegistryEndpoints(
+            {registry: 'github', pattern: '(v\\d+/)?gh/[pkg][version][path]'},
+            {registry: 'jsr', pattern: 'jsr/[specifier]'},
+            {registry: 'npm', pattern: '(v\\d+/)?[specifier]'}
+        )
+    },
+    'https://cdn.jsdelivr.net': {
+        cdn: 'jsdelivr',
+        endpoints: packageRegistryEndpoints(
+            {registry: 'npm', pattern: 'npm/[specifier]'},
+            {registry: 'github', pattern: 'gh/[pkg][version][path]'}
+        )
+    },
+    'https://unpkg.com': {cdn: 'unpkg', endpoints: packageRegistryEndpoints('npm')},
+    'https://esm.run': {cdn: 'jsdelivr', endpoints: packageRegistryEndpoints('npm')},
+    'https://ga.jspm.io': {
+        cdn: 'jspm',
+        endpoints: packageRegistryEndpoints({registry: 'npm', pattern: 'npm:[specifier]'})
+    },
+    'https://cdn.skypack.dev': {
+        cdn: 'skypack',
+        endpoints: packageRegistryEndpoints(
+            {registry: 'npm', pattern: '-/[pkg][version]-[^\\/\\-]+?/[^\\/]+?,mode=(?<path>.+)'},
+            'npm'
+        )
+    }
 };
 
-export const allocTimespan = [
-    'alive',
-    'short-lived',
-    'long-lived'
-] as const;
+export const allocTimespan = ['alive', 'short-lived', 'long-lived'] as const;
 export const allocTypes = [
     'hidden',
     'array',
@@ -165,81 +185,84 @@ type AllocationType = (typeof allocTypes)[number];
 type AllocationSpace = (typeof allocSpaces)[number];
 
 // colors in order of apperiance in a list
-export const typeColor: Record<PackageType | PackageRegistry | V8CallFrameCodeType | AllocationType | AllocationTimespan | AllocationSpace, string> = {
+export const typeColor: Record<
+    PackageType | PackageRegistry | V8CallFrameCodeType | AllocationType | AllocationTimespan | AllocationSpace,
+    string
+> = {
     // FIXME: place part of alloc types here, because regexp alloc type clash with package type
     'object-shape': '#ffffffa0',
-    'object': '#fee29ca0',
-    'array': '#ffee61a0',
-    'string': '#78b362a0',
+    object: '#fee29ca0',
+    array: '#ffee61a0',
+    string: '#78b362a0',
     'concat-string': '#78b362a0',
     'sliced-string': '#78b362a0',
     // ----
 
-    'script': '#fee29ca0',
-    'npm': '#f98e94a0',
-    'github': '#666666a0',
-    'jsr': '#ffee61a0',
-    'denoland': '#ffffffa0',
-    'wasm': '#9481ffa0',
-    'regexp': '#8db2f8a0',
-    'electron': '#9feaf9a0',
-    'deno': '#ffffffa0', // before node, because uses node modules as well
-    'node': '#78b362a0',
-    'internals': '#fcb69aa0',
-    'program': '#edfdd1a0',
-    'devtools': '#90d7f3a0',
+    script: '#fee29ca0',
+    npm: '#f98e94a0',
+    github: '#666666a0',
+    jsr: '#ffee61a0',
+    denoland: '#ffffffa0',
+    wasm: '#9481ffa0',
+    regexp: '#8db2f8a0',
+    electron: '#9feaf9a0',
+    deno: '#ffffffa0', // before node, because uses node modules as well
+    node: '#78b362a0',
+    internals: '#fcb69aa0',
+    program: '#edfdd1a0',
+    devtools: '#90d7f3a0',
     'chrome-extension': '#7dfacda0',
     'webpack/runtime': '#888888a0',
-    'gc': '#f1b6fda0',
-    'compilation': '#fc9a9aa0',
-    'blocking': '#f2a376a0',
-    'root': '#444444a0',
-    'logging': '#c8c8c8a0',
-    'idle': '#888888a0',
-    'unknown': '#888888a0',
+    gc: '#f1b6fda0',
+    compilation: '#fc9a9aa0',
+    blocking: '#f2a376a0',
+    root: '#444444a0',
+    logging: '#c8c8c8a0',
+    idle: '#888888a0',
+    unknown: '#888888a0',
 
     // compiler tier
-    'Unknown': '#888888a0',
-    'Ignition': '#b9b9b9a0',
-    'Sparkplug': '#e3c685a0',
-    'Maglev': '#dba543a0',
-    'Turboprop': '#dba543a0',
-    'Turbofan': '#f78080a0',
+    Unknown: '#888888a0',
+    Ignition: '#b9b9b9a0',
+    Sparkplug: '#e3c685a0',
+    Maglev: '#dba543a0',
+    Turboprop: '#dba543a0',
+    Turbofan: '#f78080a0',
 
     // alloc types
     // 'regexp': '#8db2f8a0',
     'heap-number': '#65b4fda0',
-    'bigint': '#65b4fda0',
-    'closure': '#f2a376a0',
-    'code': '#fc9a9aa0',
-    'symbol': '#ffee61a0',
+    bigint: '#65b4fda0',
+    closure: '#f2a376a0',
+    code: '#fc9a9aa0',
+    symbol: '#ffee61a0',
     'wasm-object': '#9481ffa0',
-    'native': '#fcb69aa0',
-    'synthetic': '#fcb69aa0',
-    'hidden': '#888888a0',
+    native: '#fcb69aa0',
+    synthetic: '#fcb69aa0',
+    hidden: '#888888a0',
 
     // alloc timespan
     'short-lived': '#fee29ca0',
     'long-lived': '#f2a376a0',
-    'alive': '#78b362a0',
+    alive: '#78b362a0',
 
-    'new_space': '#fee29ca0',
-    'old_space': '#f2a376a0',
-    'code_space': '#fc9a9aa0',
-    'code_lo_space': '#fc9a9aa0',
-    'new_lo_space': '#fee29ca0',
-    'lo_space': '#f2a376a0',
-    'shared_space': '#fcb69aa0',
-    'shared_lo_space': '#fcb69aa0',
-    'read_only_space': '#fee29ca0'
+    new_space: '#fee29ca0',
+    old_space: '#f2a376a0',
+    code_space: '#fc9a9aa0',
+    code_lo_space: '#fc9a9aa0',
+    new_lo_space: '#fee29ca0',
+    lo_space: '#f2a376a0',
+    shared_space: '#fcb69aa0',
+    shared_lo_space: '#fcb69aa0',
+    read_only_space: '#fee29ca0'
 };
-export const typeColorComponents = Object.fromEntries(Object.entries(typeColor)
-    .map(([type, color]) =>[type, [
-        parseInt(color.slice(1, 3), 16),
-        parseInt(color.slice(3, 5), 16),
-        parseInt(color.slice(5, 7), 16)
-    ]])
+export const typeColorComponents = Object.fromEntries(
+    Object.entries(typeColor).map(([type, color]) => [
+        type,
+        [parseInt(color.slice(1, 3), 16), parseInt(color.slice(3, 5), 16), parseInt(color.slice(5, 7), 16)]
+    ])
 );
-export const typeOrder = Object.fromEntries(
-    Object.keys(typeColor).map((type, idx) => [type, idx + 1])
-) as Record<PackageType, number>;
+export const typeOrder = Object.fromEntries(Object.keys(typeColor).map((type, idx) => [type, idx + 1])) as Record<
+    PackageType,
+    number
+>;

@@ -10,7 +10,7 @@ export type V8LogProfile = {
         capacity: null | number;
         events: V8LogHeapEvent[];
     };
-}
+};
 
 export type V8LogCode = {
     name: string;
@@ -43,7 +43,7 @@ export type V8LogCode = {
     disassemble?: V8LogCodeDisassemble;
     deopt?: V8LogDeopt;
     ic?: V8LogICEntry[];
-}
+};
 
 export type V8LogCodeSource = {
     script: number;
@@ -52,7 +52,7 @@ export type V8LogCodeSource = {
     positions: string;
     inlined: string;
     fns: number[];
-}
+};
 
 export type V8LogCodeDisassemble = string;
 
@@ -63,7 +63,7 @@ export type V8LogDeopt = {
     posText: string;
     reason: string;
     bailoutType: string;
-}
+};
 
 export type V8LogICEntry = {
     tm: number;
@@ -75,32 +75,32 @@ export type V8LogICEntry = {
     key: string;
     modifier: string;
     slowReason: string;
-}
+};
 
 export type V8LogFunction = {
     name: string;
     codes: number[];
-}
+};
 
 export type V8LogTick = {
-    tm: number;  // timestamp
-    vm: number;  // vm state
+    tm: number; // timestamp
+    vm: number; // vm state
     s: number[]; // stack
-}
+};
 
 export type V8LogScripts = (V8LogScript | null)[];
 export type V8LogScript = {
     id: number;
     url: string;
     source: string;
-}
+};
 
 export type V8LogHeapEvent = {
     tm: number;
     event: 'new' | 'delete';
     address: string;
     size: number;
-}
+};
 
 // Output
 
@@ -112,14 +112,14 @@ export type CallFrame = {
     columnNumber: number;
     start: number;
     end: number;
-}
+};
 
 export type CallNode<TCallFrame = CallFrame> = {
     id: number;
     callFrame: TCallFrame;
     children: number[];
     parentScriptOffset: number;
-}
+};
 
 export type CodePositionTable = {
     fistCode: number;
@@ -128,4 +128,4 @@ export type CodePositionTable = {
     positions: number[];
     inlined: number[] | null;
     fns: number[] | null;
-}
+};

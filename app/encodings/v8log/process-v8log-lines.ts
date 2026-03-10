@@ -1,37 +1,76 @@
-import { argParsers, offsetOrEnd, readAllArgs, readAllArgsRaw } from './read-args-utils.js';
-import { detachSlicedString, parseAddress, parseCodeState, parseString, parseICState, isSpecialized } from './parse-utils.js';
-import { Code, CodeCompiled, CodeJavaScript, CodeSharedLib, Heap, HeapEvent, ICEntry, LogFunction, Meta, ParseResult, Script, SFI, Tick } from './types.js';
-import { CodeMap, CodeEntry } from './code-map.js';
+import {argParsers, offsetOrEnd, readAllArgs, readAllArgsRaw} from './read-args-utils.js';
+import {
+    detachSlicedString,
+    parseAddress,
+    parseCodeState,
+    parseString,
+    parseICState,
+    isSpecialized
+} from './parse-utils.js';
+import {
+    Code,
+    CodeCompiled,
+    CodeJavaScript,
+    CodeSharedLib,
+    Heap,
+    HeapEvent,
+    ICEntry,
+    LogFunction,
+    Meta,
+    ParseResult,
+    Script,
+    SFI,
+    Tick
+} from './types.js';
+import {CodeMap, CodeEntry} from './code-map.js';
 
 const LOG_WARNINGS = false;
 const CODE_EVENTS = false;
 const EMPTY_ARRAY = [];
-const icEntryParsers = argParsers(/* pc */ parseString, /* tm */ parseInt, /* line */ parseInt,
-    /* colum */ parseInt, /* old_state */ parseString, /* new_state */ parseString,
-    /* mapId */ parseString, /* key */ parseString, /* modifier */ parseString, /* slow_reason*/ parseString);
+const icEntryParsers = argParsers(
+    /* pc */ parseString,
+    /* tm */ parseInt,
+    /* line */ parseInt,
+    /* colum */ parseInt,
+    /* old_state */ parseString,
+    /* new_state */ parseString,
+    /* mapId */ parseString,
+    /* key */ parseString,
+    /* modifier */ parseString,
+    /* slow_reason*/ parseString
+);
 const parsers = {
-    'profiler': argParsers(parseString, parseInt),
+    profiler: argParsers(parseString, parseInt),
     'heap-capacity': argParsers(parseInt),
     'heap-available': argParsers(parseInt),
-    'new': argParsers(parseString, parseString, parseInt),
-    'delete': argParsers(parseString, parseString),
+    new: argParsers(parseString, parseString, parseInt),
+    delete: argParsers(parseString, parseString),
     'script-source': argParsers(parseInt, parseString, parseString),
     'shared-library': argParsers(parseString, parseAddress, parseAddress, parseAddress),
     'code-creation': argParsers(parseString, parseInt, parseInt, parseAddress, parseAddress, parseString),
     'code-move': argParsers(parseAddress, parseAddress),
-    'code-deopt': argParsers(parseInt, parseInt, parseAddress, parseInt, parseInt, parseString, parseString, parseString),
+    'code-deopt': argParsers(
+        parseInt,
+        parseInt,
+        parseAddress,
+        parseInt,
+        parseInt,
+        parseString,
+        parseString,
+        parseString
+    ),
     'sfi-move': argParsers(parseString, parseString),
     'code-delete': argParsers(parseAddress),
     'code-source-info': argParsers(parseAddress, parseInt, parseInt, parseInt, parseString, parseString, parseString),
     'code-disassemble': argParsers(parseAddress, parseString, parseString),
-    'tick': argParsers(parseAddress, parseInt, parseInt, parseAddress, parseInt),
-    'LoadIC': icEntryParsers,
-    'StoreIC': icEntryParsers,
-    'KeyedLoadIC': icEntryParsers,
-    'KeyedStoreIC': icEntryParsers,
-    'LoadGlobalIC': icEntryParsers,
-    'StoreGlobalIC': icEntryParsers,
-    'StoreInArrayLiteralIC': icEntryParsers
+    tick: argParsers(parseAddress, parseInt, parseInt, parseAddress, parseInt),
+    LoadIC: icEntryParsers,
+    StoreIC: icEntryParsers,
+    KeyedLoadIC: icEntryParsers,
+    KeyedStoreIC: icEntryParsers,
+    LoadGlobalIC: icEntryParsers,
+    StoreGlobalIC: icEntryParsers,
+    StoreInArrayLiteralIC: icEntryParsers
 } as const;
 
 function warn(...args: unknown[]) {
@@ -52,7 +91,7 @@ export async function processV8logEvents(lineIterator: AsyncIterableIterator<str
     const ticks: Tick[] = [];
     const knownMemoryChunks = new Map<string, number>();
     const heapEvents: HeapEvent[] = [];
-    const heap: Heap = { events: heapEvents };
+    const heap: Heap = {events: heapEvents};
     const ignoredOps = new Set<string>();
     const ignoredEntries: unknown[] = [];
     const unattributedICEntries: ICEntry[] = [];
@@ -77,14 +116,11 @@ export async function processV8logEvents(lineIterator: AsyncIterableIterator<str
 
         switch (op) {
             case 'tick': {
-                const [
-                    pc_,
-                    timestamp,
-                    isExternalCallback,
-                    tosOrExternalCallback_,
-                    vmState,
-                    ...stack
-                ] = readAllArgs(parsers[op], line, argsStart);
+                const [pc_, timestamp, isExternalCallback, tosOrExternalCallback_, vmState, ...stack] = readAllArgs(
+                    parsers[op],
+                    line,
+                    argsStart
+                );
                 let pc = pc_;
                 let tosOrExternalCallback = tosOrExternalCallback_;
 
@@ -157,11 +193,14 @@ export async function processV8logEvents(lineIterator: AsyncIterableIterator<str
                     if (sfi === undefined || sfi.name !== nameAndLocation) {
                         const sfiCodes: number[] = [];
 
-                        sfiByAddress.set(sfiAddress, sfi = {
-                            id: functions.length,
-                            name: nameAndLocation,
-                            codes: sfiCodes
-                        });
+                        sfiByAddress.set(
+                            sfiAddress,
+                            (sfi = {
+                                id: functions.length,
+                                name: nameAndLocation,
+                                codes: sfiCodes
+                            })
+                        );
                         functions.push({
                             name: nameAndLocation,
                             codes: sfiCodes
@@ -216,15 +255,11 @@ export async function processV8logEvents(lineIterator: AsyncIterableIterator<str
             }
 
             case 'code-source-info': {
-                const [
-                    address,
-                    scriptId,
-                    start,
-                    end,
-                    positions,
-                    inlinedPositions,
-                    inlinedFunctions = ''
-                ] = readAllArgs(parsers[op], line, argsStart);
+                const [address, scriptId, start, end, positions, inlinedPositions, inlinedFunctions = ''] = readAllArgs(
+                    parsers[op],
+                    line,
+                    argsStart
+                );
                 const codeEntry = codeMap.findByAddress(address);
 
                 if (codeEntry !== null) {
@@ -235,19 +270,19 @@ export async function processV8logEvents(lineIterator: AsyncIterableIterator<str
                             end,
                             positions,
                             inlined: inlinedPositions,
-                            fns: inlinedFunctions !== ''
-                                ? (inlinedFunctions.match(/[^S]+/g) || EMPTY_ARRAY)
-                                    .map((sfiAddress: string) => {
-                                        const sfi = sfiByAddress.get(sfiAddress);
+                            fns:
+                                inlinedFunctions !== ''
+                                    ? (inlinedFunctions.match(/[^S]+/g) || EMPTY_ARRAY).map((sfiAddress: string) => {
+                                          const sfi = sfiByAddress.get(sfiAddress);
 
-                                        if (sfi !== undefined) {
-                                            return sfi.id;
-                                        }
+                                          if (sfi !== undefined) {
+                                              return sfi.id;
+                                          }
 
-                                        warn('(code-source-info) No SFI found');
-                                        return -1;
-                                    })
-                                : EMPTY_ARRAY
+                                          warn('(code-source-info) No SFI found');
+                                          return -1;
+                                      })
+                                    : EMPTY_ARRAY
                         };
                     } else {
                         warn('(code-source-info) Not a JavaScript code');
@@ -366,7 +401,7 @@ export async function processV8logEvents(lineIterator: AsyncIterableIterator<str
                             codeEntry.code.ic = [icEntry];
                         }
                     } else {
-                        warn(`(${op}) Code is not JS kind`, { codeEntry, icEntry });
+                        warn(`(${op}) Code is not JS kind`, {codeEntry, icEntry});
                     }
                 } else {
                     unattributedICEntries.push(icEntry);
@@ -384,13 +419,13 @@ export async function processV8logEvents(lineIterator: AsyncIterableIterator<str
                 const [
                     tm,
                     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                    codeSize,     // ignore
+                    codeSize, // ignore
                     address,
                     inliningId,
                     scriptOffset,
-                    bailoutType,  // deopt kind
-                    posText,      // deopt location
-                    reason        // deopt reason
+                    bailoutType, // deopt kind
+                    posText, // deopt location
+                    reason // deopt reason
                 ] = readAllArgs(parsers[op], line, argsStart);
                 const codeEntry = codeMap.findByAddress(address);
 
@@ -573,9 +608,8 @@ export async function processV8logEvents(lineIterator: AsyncIterableIterator<str
 
             default:
                 ignoredOps.add(op);
-                ignoredEntries.push({ op, line });
+                ignoredEntries.push({op, line});
         }
-
     };
 
     for await (const line of lineIterator) {
@@ -587,7 +621,7 @@ export async function processV8logEvents(lineIterator: AsyncIterableIterator<str
         code: codes,
         functions,
         ticks,
-        scripts: Array.from({ length: maxScriptId + 1 }, (_, idx) => scriptById.get(idx) || null),
+        scripts: Array.from({length: maxScriptId + 1}, (_, idx) => scriptById.get(idx) || null),
         unattributedICEntries,
         heap,
 
@@ -612,7 +646,7 @@ export async function processV8logEvents(lineIterator: AsyncIterableIterator<str
 }
 
 export async function processV8logRaw(lineIterator: AsyncIterableIterator<string>) {
-    type Entry = { op: string; args: (number | string)[]; };
+    type Entry = {op: string; args: (number | string)[]};
     const entries: Entry[] = [];
 
     for await (const line of lineIterator) {
@@ -624,7 +658,7 @@ export async function processV8logRaw(lineIterator: AsyncIterableIterator<string
                 ? readAllArgs(parsers[op], line, argsStart)
                 : readAllArgsRaw(line, argsStart);
 
-            entries.push({ op, args });
+            entries.push({op, args});
         }
     }
 

@@ -1,9 +1,9 @@
-import { Dictionary } from './dictionary.js';
+import {Dictionary} from './dictionary.js';
 
 export type V8CpuProfileSet = {
     indexToView?: number;
     profiles: V8CpuProfile[];
-}
+};
 export type V8CpuProfile = {
     startTime: number;
     endTime: number;
@@ -37,13 +37,13 @@ export type V8CpuProfileCpuproExtensions = {
         capacity: null | number;
         events: V8HeapEvent[];
     };
-}
+};
 export type V8CpuProfileNode<TCallFrame = V8CpuProfileCallFrame> = {
     id: number;
     callFrame: TCallFrame;
     children?: number[];
     parentScriptOffset?: number;
-}
+};
 export type V8CpuProfileCallFrame = {
     scriptId: string | number;
     url: string | null;
@@ -52,16 +52,16 @@ export type V8CpuProfileCallFrame = {
     columnNumber: number;
     start?: number;
     end?: number;
-}
+};
 export type V8CpuProfileExecutionContext = {
     origin: string;
     name: string;
-}
+};
 export type V8CpuProfileScript = {
     id: number;
     url: string;
     source: string;
-}
+};
 export type V8CpuProfileFunction = {
     scriptId: number;
     name: string;
@@ -69,11 +69,11 @@ export type V8CpuProfileFunction = {
     end: number;
     line: number;
     column: number;
-}
+};
 export type V8CpuProfileCallFrameCodes = {
     callFrame: number;
-    codes: V8CpuProfileCallFrameCode[]
-}
+    codes: V8CpuProfileCallFrameCode[];
+};
 export type V8CpuProfileCallFrameCode = {
     tm: number;
     tier: V8CallFrameCodeType;
@@ -85,14 +85,14 @@ export type V8CpuProfileCallFrameCode = {
     disassemble: V8CpuProfileDisassemble | undefined;
     deopt: V8CpuProfileDeopt | undefined;
     ic: V8CpuProfileICEntry[] | undefined;
-}
+};
 export type V8CpuProfileDisassemble = {
     kind: string;
     compiler: V8CallFrameCodeType | `Unknown(${string})`;
     instructions: string | null;
-    sections: { header: string; content: string; }[];
+    sections: {header: string; content: string}[];
     raw: string;
-}
+};
 export type V8CpuProfileDeopt = {
     tm: number;
     inliningId: number;
@@ -100,7 +100,7 @@ export type V8CpuProfileDeopt = {
     posText: string;
     reason: string;
     bailoutType: string;
-}
+};
 export type V8CpuProfileICEntry = {
     tm: number;
     type: string;
@@ -112,30 +112,17 @@ export type V8CpuProfileICEntry = {
     key: string;
     modifier: string;
     slowReason: string;
-}
+};
 export type V8HeapEvent = {
     tm: number;
     event: 'new' | 'delete';
     address: string;
     size: number;
-}
+};
 
 export type RuntimeCode = // alphabetical order
-    | 'chromium'
-    | 'deno'
-    | 'edge'
-    | 'electron'
-    | 'nodejs'
-    | 'unknown'
-    ;
-export type V8CallFrameCodeType =
-    | 'Ignition'
-    | 'Sparkplug'
-    | 'Maglev'
-    | 'Turboprop'
-    | 'Turbofan'
-    | 'Unknown'
-    ;
+    'chromium' | 'deno' | 'edge' | 'electron' | 'nodejs' | 'unknown';
+export type V8CallFrameCodeType = 'Ignition' | 'Sparkplug' | 'Maglev' | 'Turboprop' | 'Turbofan' | 'Unknown';
 export type WellKnownName =
     | '(root)'
     | '(garbage collector)'
@@ -147,8 +134,7 @@ export type WellKnownName =
     | '(compiler)'
     | '(atomics wait)'
     | '(logging)'
-    | '(idle external)'
-    ;
+    | '(idle external)';
 export type WellKnownType = // alphabetical order
     | 'atomics-wait'
     | 'bytecode-compiler'
@@ -160,8 +146,7 @@ export type WellKnownType = // alphabetical order
     | 'no-samples'
     | 'parser'
     | 'program'
-    | 'root'
-    ;
+    | 'root';
 
 export type CpuProNode = CpuProCallFrame | CpuProModule | CpuProPackage | CpuProCategory | CpuProCallFramePosition;
 
@@ -173,20 +158,10 @@ export type GeneratedNodes = {
     callFrames: number[];
     nodeParentId: number[];
     parentScriptOffsets: number[];
-}
+};
 
 export type CpuProCallFrameKind = // alphabetical order
-    | 'builtin'
-    | 'bytecode'
-    | 'cpp'
-    | 'function'
-    | 'ic'
-    | 'lib'
-    | 'regexp'
-    | 'root'
-    | 'script'
-    | 'vm-state'
-    ;
+    'builtin' | 'bytecode' | 'cpp' | 'function' | 'ic' | 'lib' | 'regexp' | 'root' | 'script' | 'vm-state';
 export type CpuProCallFrame = {
     id: number;
     script: CpuProScript | null;
@@ -202,12 +177,12 @@ export type CpuProCallFrame = {
     module: CpuProModule;
     package: CpuProPackage;
     category: CpuProCategory;
-}
+};
 
 export type CpuProCallFramePosition = {
     callFrame: CpuProCallFrame;
     scriptOffset: number;
-}
+};
 
 export type ModuleType = // alphabetical order
     | 'blocking'
@@ -229,8 +204,7 @@ export type ModuleType = // alphabetical order
     | 'unknown'
     | 'v8'
     | 'wasm'
-    | 'webpack/runtime'
-    ;
+    | 'webpack/runtime';
 export type CpuProModule = {
     id: number; // starts with 1
     type: ModuleType;
@@ -240,7 +214,7 @@ export type CpuProModule = {
     category: CpuProCategory;
     package: CpuProPackage;
     packageRelPath: string | null;
-}
+};
 
 export type PackageType = // alphabetical order
     | 'blocking'
@@ -260,33 +234,19 @@ export type PackageType = // alphabetical order
     | 'script'
     | 'unknown'
     | 'wasm'
-    | 'webpack/runtime'
-    ;
+    | 'webpack/runtime';
 export type PackageRegistry = // alphabetical order
-    | 'denoland'
-    | 'github'
-    | 'jsr'
-    | 'npm'
-    ;
+    'denoland' | 'github' | 'jsr' | 'npm';
 export type CDN = // alphabetical order
-    | 'denoland'
-    | 'esmsh'
-    | 'github'
-    | 'jsdelivr'
-    | 'jspm'
-    | 'jsr'
-    | 'npm'
-    | 'skypack'
-    | 'unpkg'
-    ;
+    'denoland' | 'esmsh' | 'github' | 'jsdelivr' | 'jspm' | 'jsr' | 'npm' | 'skypack' | 'unpkg';
 export type PackageProviderEndpoint = {
     registry: PackageRegistry;
     pattern: RegExp;
-}
+};
 export type PackageProvider = {
     cdn: CDN;
     endpoints: PackageProviderEndpoint[];
-}
+};
 export type CpuProPackage = {
     id: number; // starts with 1
     type: PackageType;
@@ -297,12 +257,12 @@ export type CpuProPackage = {
     cdn: CDN | null;
     path: string | null;
     category: CpuProCategory;
-}
+};
 
 export type CpuProCategory = {
     id: number;
     name: string;
-}
+};
 
 export type CpuProScript = {
     id: number;
@@ -310,7 +270,7 @@ export type CpuProScript = {
     module: CpuProModule;
     source: string | null;
     callFrames: CpuProCallFrame[];
-}
+};
 export interface IProfileScriptsMap {
     get(scriptId: number | string): CpuProScript | undefined;
     has(scriptId: number | string): boolean;
@@ -325,16 +285,16 @@ export type CpuProCallFrameCodes = {
     topTier: V8CallFrameCodeType;
     hotness: 'cold' | 'warm' | 'hot';
     codes: CpuProCallFrameCode[];
-}
+};
 export type CpuProCallFrameCode = {
     tm: number;
     callFrame: CpuProCallFrame;
     callFrameCodes: CpuProCallFrameCodes;
     tier: string;
     duration: number;
-    segments: { tm: number; duration: number }[] | null;
+    segments: {tm: number; duration: number}[] | null;
     positions: string;
     inlined: string;
     fns: CpuProCallFrame[];
     disassemble?: V8CpuProfileDisassemble;
-}
+};

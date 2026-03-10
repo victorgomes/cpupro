@@ -1,6 +1,6 @@
-import type { CallFrame, NumericArray, V8LogCode } from './types.js';
-import type { V8CpuProfileFunction } from '../../types.js';
-import { VM_STATES } from './const.js';
+import type {CallFrame, NumericArray, V8LogCode} from './types.js';
+import type {V8CpuProfileFunction} from '../../types.js';
+import {VM_STATES} from './const.js';
 
 function findBalancePair(str: string, offset: number, pattern: string): number {
     const stack: string[] = [];
@@ -15,9 +15,15 @@ function findBalancePair(str: string, offset: number, pattern: string): number {
         }
 
         switch (str[i]) {
-            case '<': stack.push('>'); break;
-            case '(': stack.push(')'); break;
-            case '[': stack.push(']'); break;
+            case '<':
+                stack.push('>');
+                break;
+            case '(':
+                stack.push(')');
+                break;
+            case '[':
+                stack.push(']');
+                break;
         }
     }
 
@@ -44,9 +50,7 @@ function cleanupInternalName(name: string): string {
 
     // cut off a types in prefix, i.e. void FunctionName
     const wsIndex = name.lastIndexOf(' ');
-    name = wsIndex !== -1
-        ? name.slice(wsIndex + 1)
-        : name;
+    name = wsIndex !== -1 ? name.slice(wsIndex + 1) : name;
 
     return name;
 }
@@ -162,9 +166,10 @@ export function createVmStateCallFrames(callFrames: CallFrame[]) {
 
         if (name !== 'js') {
             // https://github.com/v8/v8/blob/2be84efd933f6e1e29b0c508a1035ed7d13d7127/src/profiler/symbolizer.cc#L34
-            callFrameIndexByVmState[i] = name == 'other' || name === 'external'
-                ? programCallFrameIndex
-                : callFrames.push(createCallFrame(`(${name})`)) - 1;
+            callFrameIndexByVmState[i] =
+                name == 'other' || name === 'external'
+                    ? programCallFrameIndex
+                    : callFrames.push(createCallFrame(`(${name})`)) - 1;
         }
     }
 
@@ -181,15 +186,9 @@ export function createFunctionCallFrames(
     for (let i = 0; i < functions.length; i++) {
         const fn = functions[i];
 
-        callFrameIndexByFunction[i] = callFrames.push(createCallFrame(
-            fn.name,
-            fn.scriptId,
-            fn.line,
-            fn.column,
-            fn.start,
-            fn.end
-        )) - 1;
-    };
+        callFrameIndexByFunction[i] =
+            callFrames.push(createCallFrame(fn.name, fn.scriptId, fn.line, fn.column, fn.start, fn.end)) - 1;
+    }
 
     if (functionIndexMap !== null) {
         return functionIndexMap.map((index: number) => callFrameIndexByFunction[index]);

@@ -1,14 +1,14 @@
 type EventMap = {
-    [key: string]: (...args: unknown[]) => void
+    [key: string]: (...args: unknown[]) => void;
 };
 type Listener<Callback> = {
-    callback: Callback | null,
-    next: Listener<Callback>
+    callback: Callback | null;
+    next: Listener<Callback>;
 };
 
 export class EventEmitter<Events extends EventMap> {
     listeners: {
-        [EventName in keyof Events]: Listener<Events[EventName]>
+        [EventName in keyof Events]: Listener<Events[EventName]>;
     };
 
     constructor() {

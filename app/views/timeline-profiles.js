@@ -1,20 +1,19 @@
 const profileTooltip = [
     'text:name',
-    { view: 'block', content: 'text:"Runtime: " + runtime.name' },
+    {view: 'block', content: 'text:"Runtime: " + runtime.name'},
     'html:"<hr>"',
-    { view: 'block', content: 'text-numeric:"Profile time: " + totalTime.ms()' },
-    { view: 'block', content: 'text-numeric:"Samples: " + sourceInfo.samples' },
-    { view: 'block', content: 'text-numeric:"Sampling interval: " + sourceInfo.samplesInterval' },
+    {view: 'block', content: 'text-numeric:"Profile time: " + totalTime.ms()'},
+    {view: 'block', content: 'text-numeric:"Samples: " + sourceInfo.samples'},
+    {view: 'block', content: 'text-numeric:"Sampling interval: " + sourceInfo.samplesInterval'},
     'html:"<hr>"',
-    { view: 'block', content: 'text-numeric:"Call tree nodes: " + sourceInfo.nodes' },
-    { view: 'block', content: 'text-numeric:"Call frames: " + callFrames.size()' }
+    {view: 'block', content: 'text-numeric:"Call tree nodes: " + sourceInfo.nodes'},
+    {view: 'block', content: 'text-numeric:"Call frames: " + callFrames.size()'}
 ];
 
-discovery.view.define('timeline-profiles', function(el, props, data, context) {
+discovery.view.define('timeline-profiles', function (el, props, data, context) {
     const profiles = props.profiles || (Array.isArray(data) ? data : []);
-    const min = props.startTime || props.startTime === 0
-        ? props.startTime
-        : discovery.query('startTime.min() or 0', profiles);
+    const min =
+        props.startTime || props.startTime === 0 ? props.startTime : discovery.query('startTime.min() or 0', profiles);
     const max = props.endTime || discovery.query('endTime.max() or 0', profiles);
     const range = max - min;
     const activeProfiles = profiles.filter(profile => !profile.disabled);

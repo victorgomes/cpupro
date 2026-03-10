@@ -1,4 +1,4 @@
-import { PackageProviderEndpoint, PackageRegistry, V8CpuProfileNode } from './types.js';
+import {PackageProviderEndpoint, PackageRegistry, V8CpuProfileNode} from './types.js';
 
 export function sum(array: Uint32Array | number[]) {
     let sum = 0;
@@ -75,7 +75,7 @@ export function decodeBase64(input: string) {
     let enc4 = 0;
 
     // decode
-    for (let i = 0, j = 0; i < inputSize;) {
+    for (let i = 0, j = 0; i < inputSize; ) {
         enc1 = base64map[input.charCodeAt(i++) & 0xff];
         enc2 = base64map[input.charCodeAt(i++) & 0xff];
         enc3 = base64map[input.charCodeAt(i++) & 0xff];
@@ -86,12 +86,13 @@ export function decodeBase64(input: string) {
         output[j++] = (enc3 << 6) | enc4;
     }
 
-    return output.subarray(0,
+    return output.subarray(
+        0,
         // output size:
         // (length / 4) * 3 +
-        ((inputSize >> 2) * 3) +
-        // (length % 4) * 6 / 8
-        (((inputSize % 4) * 6) >> 3)
+        (inputSize >> 2) * 3 +
+            // (length % 4) * 6 / 8
+            (((inputSize % 4) * 6) >> 3)
     );
 }
 
@@ -112,7 +113,7 @@ export function findMaxId(nodes: V8CpuProfileNode<unknown>[]) {
     return maxId;
 }
 
-export const createRegistryRx = (function() {
+export const createRegistryRx = (function () {
     const pkg = '(?<pkg>(?:[^/]+/)?[^/]+?)';
     const atpkg = '(?<pkg>(?:@[^/]+/)?[^/]+?)';
     const version = '(?:@(?<version>[^/]+))?';
@@ -128,24 +129,22 @@ export const createRegistryRx = (function() {
     const replacementsRx = new RegExp(`\\[(${Object.keys(replacements).join('|')})\\]`, 'g');
 
     return function createRegistryRx(pattern: string) {
-        return new RegExp(`^/${pattern.replace(
-            replacementsRx,
-            (_, name) => replacements[name]
-        )}$`, 'd');
+        return new RegExp(`^/${pattern.replace(replacementsRx, (_, name) => replacements[name])}$`, 'd');
     };
-}());
+})();
 
 export function packageRegistryEndpoints(
-    ...endpoints: Array<PackageRegistry | { registry: PackageRegistry, pattern?: string }>
+    ...endpoints: Array<PackageRegistry | {registry: PackageRegistry; pattern?: string}>
 ): PackageProviderEndpoint[] {
-    return endpoints.map(enpoint => (
+    return endpoints.map(enpoint =>
         typeof enpoint === 'string'
             ? {
-                registry: enpoint,
-                pattern: createRegistryRx('[specifier]')
-            } : {
-                registry: enpoint.registry,
-                pattern: createRegistryRx(enpoint.pattern || '[specifier]')
-            })
+                  registry: enpoint,
+                  pattern: createRegistryRx('[specifier]')
+              }
+            : {
+                  registry: enpoint.registry,
+                  pattern: createRegistryRx(enpoint.pattern || '[specifier]')
+              }
     );
 }

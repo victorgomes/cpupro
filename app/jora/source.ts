@@ -1,4 +1,4 @@
-import type { CpuProCallFrame } from '../prepare/types.js';
+import type {CpuProCallFrame} from '../prepare/types.js';
 
 export const methods = {
     hasSource: `
@@ -18,11 +18,15 @@ export const methods = {
         let line = 0;
         let column = 0;
 
-        if (source && typeof source !== 'string' && !callFrame &&
+        if (
+            source &&
+            typeof source !== 'string' &&
+            !callFrame &&
             typeof source.script?.source === 'string' &&
             Number.isFinite(source.start) &&
             Number.isFinite(source.line) &&
-            Number.isFinite(source.end)) {
+            Number.isFinite(source.end)
+        ) {
             callFrame = source;
             source = source.script.source;
         }
@@ -60,7 +64,7 @@ export const methods = {
             column = 0;
         }
 
-        return { line, column };
+        return {line, column};
     },
 
     sourceFragment: `

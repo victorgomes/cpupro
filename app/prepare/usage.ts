@@ -1,5 +1,5 @@
-import type { CpuProCallFrame, CpuProCategory, CpuProModule, CpuProPackage, CpuProScript } from './types.js';
-import type { Dictionary } from './dictionary.js';
+import type {CpuProCallFrame, CpuProCategory, CpuProModule, CpuProPackage, CpuProScript} from './types.js';
+import type {Dictionary} from './dictionary.js';
 
 export class Usage {
     callFrames: CpuProCallFrame[];
@@ -13,10 +13,7 @@ export class Usage {
     moduleToPackage: Uint32Array;
     packageToCategory: Uint32Array;
 
-    constructor(
-        dict: Dictionary,
-        callFrameByNodeIndex: Uint32Array
-    ) {
+    constructor(dict: Dictionary, callFrameByNodeIndex: Uint32Array) {
         const usedCallFrame = new Uint8Array(dict.callFrames.length);
 
         for (let i = 0; i < callFrameByNodeIndex.length; i++) {
@@ -25,7 +22,7 @@ export class Usage {
 
         for (let i = 0; i < usedCallFrame.length; i++) {
             if (usedCallFrame[i] === 0) {
-                const { kind } = dict.callFrames[i];
+                const {kind} = dict.callFrames[i];
                 usedCallFrame[i] = Number(kind === 'function' || kind === 'script' || kind === 'regexp');
             }
         }
@@ -42,10 +39,7 @@ function getUsed<T, S>(
     sourceDictionary: T[],
     usedDictionary: S[],
     fn: (callFrame: S) => T | null
-): [
-    dict: T[],
-    dictToSourceIndex: Uint32Array
-] {
+): [dict: T[], dictToSourceIndex: Uint32Array] {
     const used = new Set(usedDictionary.map(fn).filter(Boolean));
     const usedDictToSourceIndex = new Uint32Array(used.size);
     const usedDict: T[] = new Array(used.size);
@@ -60,8 +54,5 @@ function getUsed<T, S>(
         }
     }
 
-    return [
-        usedDict,
-        usedDictToSourceIndex
-    ];
+    return [usedDict, usedDictToSourceIndex];
 }

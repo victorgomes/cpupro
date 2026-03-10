@@ -1,4 +1,4 @@
-import { ArgParser } from './types.js';
+import {ArgParser} from './types.js';
 
 export function offsetOrEnd(str: string, buffer: string, start = 0, end = buffer.length) {
     const offset = buffer.indexOf(str, start);
@@ -29,7 +29,7 @@ export function readAllArgs<T extends ArgParser[]>(
     buffer: string,
     start: number,
     end?: number
-): [...{ [K in keyof T]: ReturnType<T[K]> }, ...string[]] {
+): [...{[K in keyof T]: ReturnType<T[K]>}, ...string[]] {
     const args = readAllArgsRaw(buffer, start, end);
     const parsedArgs: (string | number)[] = args; // to avoid TS warnings
 
@@ -37,7 +37,7 @@ export function readAllArgs<T extends ArgParser[]>(
         parsedArgs[i] = parsers[i](args[i]);
     }
 
-    return parsedArgs as [...{ [K in keyof T]: ReturnType<T[K]> }, ...string[]];
+    return parsedArgs as [...{[K in keyof T]: ReturnType<T[K]>}, ...string[]];
 }
 
 // Helper function to ensure tuple type is preserved

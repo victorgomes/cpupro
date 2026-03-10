@@ -104,7 +104,7 @@ export function calculateColor(hue: string, vector: number) {
 
             r = 50 + 70 + Math.round(120 * vector);
             g = 50 + 93 + Math.round(90 * (1 - vector));
-            b = 61 + Math.round(150 * (1000 * vector % 2 ? vector : (1 - vector)));
+            b = 61 + Math.round(150 * ((1000 * vector) % 2 ? vector : 1 - vector));
         }
     }
 

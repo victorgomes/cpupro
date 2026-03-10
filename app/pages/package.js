@@ -1,4 +1,4 @@
-import { callFramesCol, sessionExpandState, timingCols } from './common.js';
+import {callFramesCol, sessionExpandState, timingCols} from './common.js';
 
 const pageContent = [
     {
@@ -30,7 +30,7 @@ const pageContent = [
         className: 'trigger-outside',
         header: [
             'text:"Nested time distribution"',
-            { view: 'block', className: 'text-divider' },
+            {view: 'block', className: 'text-divider'},
             {
                 view: 'update-on-timings-change',
                 timings: '=#.currentProfile.packagesTimingsFiltered',
@@ -119,10 +119,13 @@ discovery.page.define('package', {
     context: '{ ...#, currentProfile }',
     data: 'currentProfile.packages[=>id = +#.id]',
     content: [
-        { when: 'no $', content: {
-            view: 'alert-warning',
-            content: 'md:"No package with id \\"{{#.id}}\\" is found\\n\\n[Back to index page](#)"'
-        } },
-        { content: pageContent }
+        {
+            when: 'no $',
+            content: {
+                view: 'alert-warning',
+                content: 'md:"No package with id \\"{{#.id}}\\" is found\\n\\n[Back to index page](#)"'
+            }
+        },
+        {content: pageContent}
     ]
 });

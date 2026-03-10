@@ -1,4 +1,4 @@
-import { RuntimeCode, V8CpuProfileExecutionContext, V8CpuProfileScript } from '../types.js';
+import {RuntimeCode, V8CpuProfileExecutionContext, V8CpuProfileScript} from '../types.js';
 
 type Context = {
     origin: string;
@@ -18,16 +18,16 @@ export type DevToolsEnchandedTraceEventsProfile = {
         fileDocumentType: string;
         userAgentVersion: string;
         type: string;
-    }
+    };
     executionContexts: Context[];
     scripts?: Script[];
     payload: {
         traceEvents: TraceEvent[];
-    }
+    };
 };
 
 export function isDevToolsEnhancedTraces(data: unknown): data is DevToolsEnchandedTraceEventsProfile {
-    const { meta } = data as Partial<DevToolsEnchandedTraceEventsProfile>;
+    const {meta} = data as Partial<DevToolsEnchandedTraceEventsProfile>;
 
     if (meta && meta.fileDocumentType === 'x-msedge-session-log') {
         if (meta.type === 'performance' || meta.type === 'memory-profiled-timeline') {
@@ -39,14 +39,15 @@ export function isDevToolsEnhancedTraces(data: unknown): data is DevToolsEnchand
 }
 
 export function extractFromDevToolsEnhancedTraces(data: DevToolsEnchandedTraceEventsProfile) {
-    const { meta, payload } = data;
+    const {meta, payload} = data;
     const scripts: V8CpuProfileScript[] = [];
     const executionContexts: V8CpuProfileExecutionContext[] = [];
-    const resolvedPayload = meta.type === 'performance'
-        ? { traceEvents: payload.traceEvents }
-        : meta.type === 'memory-profiled-timeline'
-            ? { allocationProfile: payload }
-            : {};
+    const resolvedPayload =
+        meta.type === 'performance'
+            ? {traceEvents: payload.traceEvents}
+            : meta.type === 'memory-profiled-timeline'
+              ? {allocationProfile: payload}
+              : {};
 
     for (const script of data.scripts || []) {
         if (script.sourceText) {

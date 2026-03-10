@@ -1,5 +1,5 @@
-import type { Dictionary } from '../dictionary.js';
-import type { CpuProModule, CpuProScript, IProfileScriptsMap, V8CpuProfileScript } from '../types.js';
+import type {Dictionary} from '../dictionary.js';
+import type {CpuProModule, CpuProScript, IProfileScriptsMap, V8CpuProfileScript} from '../types.js';
 
 export class ProfileScriptsMap implements IProfileScriptsMap {
     dict: Dictionary;
@@ -16,7 +16,7 @@ export class ProfileScriptsMap implements IProfileScriptsMap {
         this.#scriptByUrl = new Map();
 
         for (const script of dict.scripts) {
-            const { url } = script; // FIXME: use script.source
+            const {url} = script; // FIXME: use script.source
             let scriptByUrl = this.#scriptByUrl.get(url || '');
 
             if (scriptByUrl === undefined) {
@@ -35,7 +35,7 @@ export class ProfileScriptsMap implements IProfileScriptsMap {
             return;
         }
 
-        for (const { id, url, source } of scripts) {
+        for (const {id, url, source} of scripts) {
             this.set(id, this.resolveScript(id, url, source) as CpuProScript);
         }
     }
@@ -120,9 +120,11 @@ export class ProfileScriptsMap implements IProfileScriptsMap {
                 let numericScriptId = this.#scriptIdFromString.get(scriptId);
 
                 if (numericScriptId === undefined) {
-                    this.#scriptIdFromString.set(scriptId, numericScriptId = /^:\d+$/.test(scriptId)
-                        ? Number(scriptId.slice(1))
-                        : -this.#scriptIdFromString.size - 1
+                    this.#scriptIdFromString.set(
+                        scriptId,
+                        (numericScriptId = /^:\d+$/.test(scriptId)
+                            ? Number(scriptId.slice(1))
+                            : -this.#scriptIdFromString.size - 1)
                     );
                 }
 

@@ -1,8 +1,8 @@
 const metrics = [
-    { key: 'total', header: 'All lifespans' },
-    { key: 'alive', header: 'Alive' },
-    { key: 'long-lived', header: 'Long lived' },
-    { key: 'short-lived', header: 'Short lived' }
+    {key: 'total', header: 'All lifespans'},
+    {key: 'alive', header: 'Alive'},
+    {key: 'long-lived', header: 'Long lived'},
+    {key: 'short-lived', header: 'Short lived'}
 ];
 const metricView = {
     view: 'context',
@@ -16,7 +16,7 @@ const metricView = {
         }
     ]
 };
-const metricCells = metrics.map(({ key, header }) => ({
+const metricCells = metrics.map(({key, header}) => ({
     header,
     className: 'metric-cell lifespan-' + key,
     sorting: `$["${key}"].sum desc`,

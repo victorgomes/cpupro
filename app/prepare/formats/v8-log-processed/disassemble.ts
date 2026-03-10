@@ -1,5 +1,5 @@
-import type { V8LogCode } from './types.js';
-import type { V8CpuProfileDisassemble } from '../../types.js';
+import type {V8LogCode} from './types.js';
+import type {V8CpuProfileDisassemble} from '../../types.js';
 
 function normalizeCompiler(value: string): V8CpuProfileDisassemble['compiler'] {
     switch (value) {
@@ -21,13 +21,13 @@ function normalizeCompiler(value: string): V8CpuProfileDisassemble['compiler'] {
 }
 
 export function processDisassemble(code: V8LogCode): V8CpuProfileDisassemble | undefined {
-    const { disassemble } = code;
+    const {disassemble} = code;
 
     if (!disassemble) {
         return;
     }
 
-    const sections: { header: string; content: string; }[] = [];
+    const sections: {header: string; content: string}[] = [];
     let instructions: string | null = null;
     let compiler: V8CpuProfileDisassemble['compiler'] = 'Ignition';
     let kind = 'INTERPRETER';
@@ -38,7 +38,9 @@ export function processDisassemble(code: V8LogCode): V8CpuProfileDisassemble | u
 
         if (rawSections) {
             const prelude = rawSections[0];
-            const attrs: Record<string, string> = Object.fromEntries(prelude.split('\n').map(line => line.split(' = ')));
+            const attrs: Record<string, string> = Object.fromEntries(
+                prelude.split('\n').map(line => line.split(' = '))
+            );
 
             kind = attrs.kind || 'UNKNOWN';
             compiler = normalizeCompiler(attrs.compiler);

@@ -1,6 +1,6 @@
-import type { V8CpuProfileNode, V8CpuProfileCallFrame, IProfileScriptsMap, GeneratedNodes } from '../types';
-import type { Dictionary } from '../dictionary';
-import { findMaxId } from '../utils';
+import type {V8CpuProfileNode, V8CpuProfileCallFrame, IProfileScriptsMap, GeneratedNodes} from '../types';
+import type {Dictionary} from '../dictionary';
+import {findMaxId} from '../utils';
 
 export function mapNodes(
     dict: Dictionary,
@@ -14,10 +14,11 @@ export function mapNodes(
 
     // nodes
     for (let i = 0; i < nodes.length; i++) {
-        const { callFrame } = nodes[i];
-        const callFrameIndex = typeof callFrame === 'number'
-            ? callFrameByIndex[callFrame]
-            : dict.resolveCallFrameIndex(callFrame, scriptsMap);
+        const {callFrame} = nodes[i];
+        const callFrameIndex =
+            typeof callFrame === 'number'
+                ? callFrameByIndex[callFrame]
+                : dict.resolveCallFrameIndex(callFrame, scriptsMap);
 
         callFrameByNodeIndex[i] = callFrameIndex;
     }
@@ -58,7 +59,7 @@ export function createNodePositions(
 
     // nodes
     for (let i = 0; i < nodes.length; i++) {
-        const { parentScriptOffset } = nodes[i];
+        const {parentScriptOffset} = nodes[i];
 
         if (typeof parentScriptOffset === 'number') {
             nodePositions[i] = parentScriptOffset;
@@ -81,7 +82,7 @@ export function createNodeParent(
 
     // nodes
     for (let i = 0; i < nodes.length; i++) {
-        const { children } = nodes[i];
+        const {children} = nodes[i];
 
         if (Array.isArray(children) && children.length > 0) {
             for (const childId of children) {

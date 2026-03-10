@@ -2,25 +2,45 @@ const intersectionTable = {
     view: 'table',
     limit: false,
     cols: [
-        { header: 'Profiles', data: 'profiles' },
-        { header: 'Call frames', data: 'callFrames', footer: { data: 'callFrames' } },
-        { header: '%', data: 'callFramesPercent | percent()', align: 'right', footer: { align: 'right', content: 'text:"100%"' } },
-        { header: '∑ Avg samples', data: 'samples', align: 'right', footer: { align: 'right', data: 'samples.sum()' } },
-        { header: '%', data: 'samplesPercent | percent()', align: 'right', footer: { align: 'right', content: 'text:"100%"' } },
+        {header: 'Profiles', data: 'profiles'},
+        {header: 'Call frames', data: 'callFrames', footer: {data: 'callFrames'}},
+        {
+            header: '%',
+            data: 'callFramesPercent | percent()',
+            align: 'right',
+            footer: {align: 'right', content: 'text:"100%"'}
+        },
+        {header: '∑ Avg samples', data: 'samples', align: 'right', footer: {align: 'right', data: 'samples.sum()'}},
+        {
+            header: '%',
+            data: 'samplesPercent | percent()',
+            align: 'right',
+            footer: {align: 'right', content: 'text:"100%"'}
+        },
         {
             header: '∑ Avg self time',
             className: '=profiles = profilesTotal ? "green-line number" : "number"',
             content: 'text-numeric:selfTime | unit()',
-            footer: { className: 'number red-line', data: 'sum(=>selfTime)', content: 'text-numeric:unit()' }
+            footer: {className: 'number red-line', data: 'sum(=>selfTime)', content: 'text-numeric:unit()'}
         },
-        { header: '%', align: 'right', data: 'selfTimePercent | percent()', footer: { align: 'right', content: 'text:"100%"' } },
+        {
+            header: '%',
+            align: 'right',
+            data: 'selfTimePercent | percent()',
+            footer: {align: 'right', content: 'text:"100%"'}
+        },
         {
             header: '∑ Norm avg self time',
             className: '=profiles = profilesTotal ? "green-line number" : "number"',
             content: 'text-numeric:selfTime2 | unit()',
-            footer: { className: 'number orange-line', data: 'sum(=>selfTime2)', content: 'text-numeric:unit()' }
+            footer: {className: 'number orange-line', data: 'sum(=>selfTime2)', content: 'text-numeric:unit()'}
         },
-        { header: '%', data: 'selfTimePercent2 | percent()', align: 'right', footer: { align: 'right', content: 'text:"100%"' } }
+        {
+            header: '%',
+            data: 'selfTimePercent2 | percent()',
+            align: 'right',
+            footer: {align: 'right', content: 'text:"100%"'}
+        }
     ],
     data: `
         $records: records.[presence];
@@ -147,17 +167,15 @@ const pageContent = [
 
     {
         view: 'context',
-        modifiers: [
-
-        ],
+        modifiers: [],
         content: [
             {
                 view: 'context',
                 data(data) {
-                    const { profiles: allProfiles, shared } = data;
+                    const {profiles: allProfiles, shared} = data;
                     const profiles = allProfiles.filter(p => !p.disabled);
-                    const { _callFramesMap, _callFramesStable } = profiles[0];
-                    const { callFrames } = shared;
+                    const {_callFramesMap, _callFramesStable} = profiles[0];
+                    const {callFrames} = shared;
                     const records = [];
                     let avgTotalTime = 0;
                     let avgTotalTime2 = 0;
@@ -228,12 +246,13 @@ const pageContent = [
                         avgTotalTime2,
                         avgTotalTimeAll,
                         profiles,
-                        records: records.sort((a, b) =>
-                            b.presence - a.presence ||
-                            a.firstProfile - b.firstProfile ||
-                            b.firstSkip - a.firstSkip ||
-                            a.lastProfile - b.lastProfile ||
-                            b.totalTime - a.totalTime
+                        records: records.sort(
+                            (a, b) =>
+                                b.presence - a.presence ||
+                                a.firstProfile - b.firstProfile ||
+                                b.firstSkip - a.firstSkip ||
+                                a.lastProfile - b.lastProfile ||
+                                b.totalTime - a.totalTime
                         ),
                         cols: [
                             {
@@ -276,26 +295,28 @@ const pageContent = [
                                 data: 'entries |? stdev(=>selfTime | is number?) : 0',
                                 content: 'text:unit()'
                             },
-                            ..._callFramesStable.length ? [
-                                {
-                                    header: 'stable',
-                                    className: 'number metric new',
-                                    data: 'stable',
-                                    content: ['text: ? unit() : "–"']
-                                },
-                                {
-                                    header: 'avg - st',
-                                    className: 'number metric vs',
-                                    data: 'avg - stable',
-                                    content: ['text: ? unit() : "–"']
-                                },
-                                {
-                                    header: 'mid - st',
-                                    className: 'number metric vs',
-                                    data: 'mid - stable',
-                                    content: ['text: ? unit() : "–"']
-                                }
-                            ] : [],
+                            ...(_callFramesStable.length
+                                ? [
+                                      {
+                                          header: 'stable',
+                                          className: 'number metric new',
+                                          data: 'stable',
+                                          content: ['text: ? unit() : "–"']
+                                      },
+                                      {
+                                          header: 'avg - st',
+                                          className: 'number metric vs',
+                                          data: 'avg - stable',
+                                          content: ['text: ? unit() : "–"']
+                                      },
+                                      {
+                                          header: 'mid - st',
+                                          className: 'number metric vs',
+                                          data: 'mid - stable',
+                                          content: ['text: ? unit() : "–"']
+                                      }
+                                  ]
+                                : []),
                             {
                                 header: 'Count',
                                 className: 'metric',
@@ -389,10 +410,13 @@ discovery.page.define('profiles-matrix', {
     view: 'switch',
     context: '{ ...#, currentProfile }',
     content: [
-        { when: 'profiles.size() <= 1', content: {
-            view: 'alert-warning',
-            content: 'md:"..."'
-        } },
-        { content: pageContent }
+        {
+            when: 'profiles.size() <= 1',
+            content: {
+                view: 'alert-warning',
+                content: 'md:"..."'
+            }
+        },
+        {content: pageContent}
     ]
 });

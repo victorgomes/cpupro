@@ -63,7 +63,12 @@ export function dumpFirstNextTree(firstChild: Uint32Array, nextSibling: Uint32Ar
     console.log(result.join('\n'));
 }
 
-export function checkFirstNextTree(count: number, firstChild: Uint32Array, nextSibling: Uint32Array, dropped: number[]) {
+export function checkFirstNextTree(
+    count: number,
+    firstChild: Uint32Array,
+    nextSibling: Uint32Array,
+    dropped: number[]
+) {
     const traversed = traverseFirstNextTree(firstChild, nextSibling);
     const test = traversed.concat(dropped).sort((a, b) => a - b);
     const unique = new Set(test);

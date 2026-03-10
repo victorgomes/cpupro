@@ -1,5 +1,12 @@
-import type { CpuProCallFrame, CpuProCallFrameCode, CpuProCallFrameCodes, CpuProScript, V8CpuProfileCallFrameCodes, V8CallFrameCodeType } from '../types.js';
-import { vmFunctionStateTierHotness, vmFunctionStateTiers } from '../const.js';
+import type {
+    CpuProCallFrame,
+    CpuProCallFrameCode,
+    CpuProCallFrameCodes,
+    CpuProScript,
+    V8CpuProfileCallFrameCodes,
+    V8CallFrameCodeType
+} from '../types.js';
+import {vmFunctionStateTierHotness, vmFunctionStateTiers} from '../const.js';
 
 export function processCallFrameCodes(
     inputCallFrameCodes: V8CpuProfileCallFrameCodes[] = [],
@@ -9,23 +16,29 @@ export function processCallFrameCodes(
     endTime: number = startTime
 ) {
     const allCodes: CpuProCallFrameCode[] = [];
-    const codesByScript = new Map<CpuProScript, {
-        script: CpuProScript,
-        compilation: CpuProCallFrameCodes | null,
-        callFrameCodes: CpuProCallFrameCodes[]
-    }>();
-    const codesByCallFrame = Array.from(inputCallFrameCodes, ({ callFrame: callFrameIndex, codes }): CpuProCallFrameCodes => ({
-        callFrame: callFrames[callFrameByIndex[callFrameIndex]],
-        topTierWeight: -1,
-        topTier: 'Unknown',
-        hotness: 'cold',
-        codes: new Array(codes.length)
-    }));
+    const codesByScript = new Map<
+        CpuProScript,
+        {
+            script: CpuProScript;
+            compilation: CpuProCallFrameCodes | null;
+            callFrameCodes: CpuProCallFrameCodes[];
+        }
+    >();
+    const codesByCallFrame = Array.from(
+        inputCallFrameCodes,
+        ({callFrame: callFrameIndex, codes}): CpuProCallFrameCodes => ({
+            callFrame: callFrames[callFrameByIndex[callFrameIndex]],
+            topTierWeight: -1,
+            topTier: 'Unknown',
+            hotness: 'cold',
+            codes: new Array(codes.length)
+        })
+    );
 
     for (let i = 0; i < codesByCallFrame.length; i++) {
         const callFrameCodes = codesByCallFrame[i];
-        const { callFrame } = callFrameCodes;
-        const { codes } = inputCallFrameCodes[i];
+        const {callFrame} = callFrameCodes;
+        const {codes} = inputCallFrameCodes[i];
         let topTierWeight = -1;
         let topTier: V8CallFrameCodeType = 'Unknown';
         let currentCode: CpuProCallFrameCode | null = null;
@@ -47,11 +60,14 @@ export function processCallFrameCodes(
             let scriptCodes = codesByScript.get(script);
 
             if (scriptCodes === undefined) {
-                codesByScript.set(script, scriptCodes = {
+                codesByScript.set(
                     script,
-                    compilation: null,
-                    callFrameCodes: []
-                });
+                    (scriptCodes = {
+                        script,
+                        compilation: null,
+                        callFrameCodes: []
+                    })
+                );
             }
 
             if (callFrame.start === 0 && callFrame.end === script.source?.length) {
@@ -72,10 +88,10 @@ export function processCallFrameCodes(
             const duration = code.deopt
                 ? code.deopt.tm - code.tm
                 : i !== codes.length - 1
-                    ? codes[i + 1].tm - code.tm
-                    : endTime > startTime
-                        ? endTime - code.tm
-                        : 0;
+                  ? codes[i + 1].tm - code.tm
+                  : endTime > startTime
+                    ? endTime - code.tm
+                    : 0;
             const normCode: CpuProCallFrameCode = {
                 ...code,
                 tm: code.tm - startTime,
@@ -88,10 +104,10 @@ export function processCallFrameCodes(
 
             if (currentCode !== null && code.tm > lastTm) {
                 if (currentCode.segments === null) {
-                    currentCode.segments = [{ tm: currentCode.tm, duration: currentCode.duration }];
+                    currentCode.segments = [{tm: currentCode.tm, duration: currentCode.duration}];
                 }
 
-                currentCode.segments.push({ tm: lastTm, duration: code.tm - lastTm });
+                currentCode.segments.push({tm: lastTm, duration: code.tm - lastTm});
                 currentCode.duration += code.tm - lastTm;
             }
 

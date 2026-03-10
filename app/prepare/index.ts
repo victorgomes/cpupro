@@ -1,10 +1,22 @@
-import { convertParentIntoChildrenIfNeeded, isCPUProfile, normalizeCpuProfile, unrollHeadToNodesIfNeeded, unwrapSamplesIfNeeded } from './formats/cpuprofile.js';
-import { extractFromDevToolsEnhancedTraces, isDevToolsEnhancedTraces } from './formats/chromium-devtools-enhanced-traces.js';
-import { extractFromChromiumPerformanceProfile, isChromiumPerformanceProfile } from './formats/chromium-performance-profile.js';
-import { convertV8LogIntoCpuProfile, isV8LogProfile } from './formats/v8-log-processed.js';
-import type { V8CpuProfile, V8CpuProfileCpuproExtensions, V8CpuProfileSet } from './types.js';
-import { V8LogProfile } from './formats/v8-log-processed/types.js';
-import { FEATURE_MULTI_PROFILES } from './const.js';
+import {
+    convertParentIntoChildrenIfNeeded,
+    isCPUProfile,
+    normalizeCpuProfile,
+    unrollHeadToNodesIfNeeded,
+    unwrapSamplesIfNeeded
+} from './formats/cpuprofile.js';
+import {
+    extractFromDevToolsEnhancedTraces,
+    isDevToolsEnhancedTraces
+} from './formats/chromium-devtools-enhanced-traces.js';
+import {
+    extractFromChromiumPerformanceProfile,
+    isChromiumPerformanceProfile
+} from './formats/chromium-performance-profile.js';
+import {convertV8LogIntoCpuProfile, isV8LogProfile} from './formats/v8-log-processed.js';
+import type {V8CpuProfile, V8CpuProfileCpuproExtensions, V8CpuProfileSet} from './types.js';
+import {V8LogProfile} from './formats/v8-log-processed/types.js';
+import {FEATURE_MULTI_PROFILES} from './const.js';
 
 export const supportedFormats = [
     '* [V8 log](https://v8.dev/docs/profile) (.log)',
@@ -13,8 +25,7 @@ export const supportedFormats = [
     '* [Chromium Performance Profile](https://developer.chrome.com/docs/devtools/performance/reference#save) (.json)',
     '* [Edge Enhanced Performance Traces](https://learn.microsoft.com/en-us/microsoft-edge/devtools-guide-chromium/experimental-features/share-traces) (.devtools)'
 ];
-export const supportedFormatsText = supportedFormats
-    .map(line => line.replace(/\[(.+?)\]\(.*?\)/g, '$1'));
+export const supportedFormatsText = supportedFormats.map(line => line.replace(/\[(.+?)\]\(.*?\)/g, '$1'));
 
 // function isCPUProfileMerge(data) {
 //     return data && Array.isArray(data.nodes) && Array.isArray(data.profiles);
@@ -34,7 +45,7 @@ export const supportedFormatsText = supportedFormats
 type InputProfiles = {
     indexToView?: number;
     profiles: (V8LogProfile | V8CpuProfile)[];
-}
+};
 
 export function extractAndValidate(data: unknown, rejectData: (reason: string, view?: unknown) => void) {
     let extensions: V8CpuProfileCpuproExtensions = {};
@@ -43,7 +54,8 @@ export function extractAndValidate(data: unknown, rejectData: (reason: string, v
     data = data || {};
 
     if (isDevToolsEnhancedTraces(data)) {
-        const { traceEvents, allocationProfile, runtime, scripts, executionContexts } = extractFromDevToolsEnhancedTraces(data);
+        const {traceEvents, allocationProfile, runtime, scripts, executionContexts} =
+            extractFromDevToolsEnhancedTraces(data);
 
         data = traceEvents || allocationProfile;
         extensions = {
@@ -58,9 +70,7 @@ export function extractAndValidate(data: unknown, rejectData: (reason: string, v
         inputProfiles = extractFromChromiumPerformanceProfile(data);
     } else if (Array.isArray(data)) {
         // in case input is array of { profile } object
-        const profiles = data.map(entry =>
-            'profile' in entry && entry.profile ? entry.profile : entry
-        );
+        const profiles = data.map(entry => ('profile' in entry && entry.profile ? entry.profile : entry));
 
         if (isV8LogProfile(profiles[0]) || isCPUProfile(profiles[0])) {
             inputProfiles = {
@@ -92,10 +102,8 @@ export function extractAndValidate(data: unknown, rejectData: (reason: string, v
             result.profiles.push(profile);
         } else {
             rejectData('Bad format', {
-                view: 'md', source: [
-                    'CPUpro supports the following formats:',
-                    ...supportedFormats
-                ]
+                view: 'md',
+                source: ['CPUpro supports the following formats:', ...supportedFormats]
             });
 
             throw new Error('Bad format');

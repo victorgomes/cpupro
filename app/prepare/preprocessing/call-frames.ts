@@ -1,7 +1,7 @@
-import type { Dictionary } from '../dictionary.js';
-import type { GeneratedNodes, IProfileScriptsMap, V8CpuProfileCallFrame, V8CpuProfileNode } from '../types.js';
-import { ProfileScriptsMap } from './scripts.js';
-import { mapNodes as extractCallFramesFromNodes } from './nodes.js';
+import type {Dictionary} from '../dictionary.js';
+import type {GeneratedNodes, IProfileScriptsMap, V8CpuProfileCallFrame, V8CpuProfileNode} from '../types.js';
+import {ProfileScriptsMap} from './scripts.js';
+import {mapNodes as extractCallFramesFromNodes} from './nodes.js';
 
 export function extractCallFrames(
     dict: Dictionary,
@@ -14,13 +14,7 @@ export function extractCallFrames(
     const callFrameByIndex = processInputCallFrames(dict, scriptsMap, callFrames);
 
     // nodes
-    const callFrameByNodeIndex = extractCallFramesFromNodes(
-        dict,
-        nodes,
-        callFrameByIndex,
-        scriptsMap,
-        gcNodes
-    );
+    const callFrameByNodeIndex = extractCallFramesFromNodes(dict, nodes, callFrameByIndex, scriptsMap, gcNodes);
 
     return {
         callFrameByIndex,

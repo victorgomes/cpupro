@@ -27,16 +27,12 @@ export async function* consumeV8logStream(iterator: AsyncIterableIterator<Uint8A
 
     for await (const chunk of iterator) {
         const lines: string[] = [];
-        const chunkText = typeof chunk === 'string'
-            ? chunk
-            : textDecoder.decode(chunk, { stream: true });
+        const chunkText = typeof chunk === 'string' ? chunk : textDecoder.decode(chunk, {stream: true});
 
         lineStartOffset = 0;
 
         if (maybeCR && !slowNewlineSearch) {
-            slowNewlineSearch = typeof chunk === 'string'
-                ? chunk.includes('\r')
-                : chunk.includes(13);
+            slowNewlineSearch = typeof chunk === 'string' ? chunk.includes('\r') : chunk.includes(13);
         }
 
         do {
@@ -55,7 +51,9 @@ export async function* consumeV8logStream(iterator: AsyncIterableIterator<Uint8A
             } else if (tail !== '') {
                 const restOfLine = chunkText.slice(lineStartOffset, lineEndOffset);
                 if (tail.length + restOfLine.length > MAX_LINE_LENGTH) {
-                    lines.push(tail + restOfLine.slice(0, Math.max(0, MAX_LINE_LENGTH - tail.length)) + '...[TRUNCATED]');
+                    lines.push(
+                        tail + restOfLine.slice(0, Math.max(0, MAX_LINE_LENGTH - tail.length)) + '...[TRUNCATED]'
+                    );
                 } else {
                     lines.push(tail + restOfLine);
                 }
@@ -92,7 +90,9 @@ export async function* consumeV8logStream(iterator: AsyncIterableIterator<Uint8A
     }
 }
 
-export async function* consumeV8logStreamLineByLine(iterator: AsyncIterableIterator<Uint8Array> | AsyncIterableIterator<string>) {
+export async function* consumeV8logStreamLineByLine(
+    iterator: AsyncIterableIterator<Uint8Array> | AsyncIterableIterator<string>
+) {
     for await (const lines of consumeV8logStream(iterator)) {
         for (const line of lines) {
             yield line;

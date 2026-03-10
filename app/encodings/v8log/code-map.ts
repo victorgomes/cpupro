@@ -1,4 +1,4 @@
-import { Code } from './types.js';
+import {Code} from './types.js';
 
 const BUCKET_SIZE = 14; // number of bits
 const BUCKET_ADDRESS_BASE = 1 << BUCKET_SIZE;
@@ -27,7 +27,7 @@ function binarySearchCodeEntryIndex(address: number, entries: BucketCodeEntry[],
 }
 
 function setBucketCodeEntry(bucket: BucketCodeEntry[], bucketCodeEntry: BucketCodeEntry) {
-    const { start: address } = bucketCodeEntry;
+    const {start: address} = bucketCodeEntry;
 
     // fast path
     if (bucket.length === 0 || address > bucket[bucket.length - 1].end) {
@@ -54,7 +54,11 @@ function setBucketCodeEntry(bucket: BucketCodeEntry[], bucketCodeEntry: BucketCo
             }
         }
 
-        bucket.splice(firstInNewRangeEntryIndex, lastInNewRangeEntryIndex - firstInNewRangeEntryIndex + 1, bucketCodeEntry);
+        bucket.splice(
+            firstInNewRangeEntryIndex,
+            lastInNewRangeEntryIndex - firstInNewRangeEntryIndex + 1,
+            bucketCodeEntry
+        );
     } else {
         bucket.splice(firstInNewRangeEntryIndex, 0, bucketCodeEntry);
     }
@@ -108,7 +112,7 @@ export class CodeMap {
     }
 
     add(codeEntry: CodeEntry) {
-        let { start: address, size } = codeEntry;
+        let {start: address, size} = codeEntry;
 
         this.lastCodeEntry = codeEntry;
 
@@ -124,7 +128,7 @@ export class CodeMap {
                 let bucket = this.codeMemoryBuckets.get(bucketId);
 
                 if (bucket === undefined) {
-                    this.codeMemoryBuckets.set(bucketId, bucket = []);
+                    this.codeMemoryBuckets.set(bucketId, (bucket = []));
                 }
 
                 setBucketCodeEntry(bucket, bucketCodeEntry);
@@ -152,16 +156,10 @@ export class CodeMap {
 
         const index = binarySearchCodeEntryIndex(codeEntryBucketAddress, bucket, entryOrNext);
 
-        return index !== -1
-            ? bucket[index].codeEntry
-            : null;
+        return index !== -1 ? bucket[index].codeEntry : null;
     }
 
-    resolveStack(
-        pc: number,
-        func: number,
-        stack: (number | string)[]
-    ) {
+    resolveStack(pc: number, func: number, stack: (number | string)[]) {
         // "overflow" marker, means that a profiler skipped some samples
         // because of sample buffer overflow;
         // just ignore marker for now
@@ -195,7 +193,7 @@ export class CodeMap {
                 switch (frame.charCodeAt(0)) {
                     case 43: // +
                     case 45: // -
-                        pushStackEntry(pc += parseInt(frame));
+                        pushStackEntry((pc += parseInt(frame)));
                         break;
 
                     default:

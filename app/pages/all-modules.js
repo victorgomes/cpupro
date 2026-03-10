@@ -48,7 +48,8 @@ discovery.page.define('modules', [
                     limit: 50,
                     data: '.sort(selfTime desc, totalTime desc)',
                     cols: [
-                        { header: { className: 'timings', text: 'Self time' },
+                        {
+                            header: {className: 'timings', text: 'Self time'},
                             className: 'timings',
                             colSpan: '=totalTime ? 1 : 3',
                             sorting: 'selfTime desc, totalTime desc',
@@ -56,35 +57,40 @@ discovery.page.define('modules', [
                             content: {
                                 view: 'switch',
                                 content: [
-                                    { when: 'totalTime', content: 'duration:{ time: selfTime, total: #.data.totalTime }' },
-                                    { content: 'no-samples' }
+                                    {
+                                        when: 'totalTime',
+                                        content: 'duration:{ time: selfTime, total: #.data.totalTime }'
+                                    },
+                                    {content: 'no-samples'}
                                 ]
                             }
                         },
-                        { header: { className: 'timings', text: 'Nested time' },
+                        {
+                            header: {className: 'timings', text: 'Nested time'},
                             className: 'timings',
                             when: 'totalTime',
                             sorting: 'nestedTime desc, totalTime desc',
                             contentWhen: 'nestedTime',
                             content: 'duration:{ time: nestedTime, total: #.data.totalTime }'
                         },
-                        { header: { className: 'timings', text: 'Total time' },
+                        {
+                            header: {className: 'timings', text: 'Total time'},
                             className: 'timings',
                             when: 'totalTime',
                             sorting: 'totalTime desc, selfTime desc',
                             content: 'duration:{ time: totalTime, total: #.data.totalTime }'
                         },
-                        { header: { className: 'category', text: 'Category' },
+                        {
+                            header: {className: 'category', text: 'Category'},
                             sorting: 'categoryName ascN',
                             data: 'entry.category',
                             align: 'right',
-                            content: 'badge{ className: "category-badge", text: name, href: marker().href, color: name.color() }'
+                            content:
+                                'badge{ className: "category-badge", text: name, href: marker().href, color: name.color() }'
                         },
-                        { header: 'Package',
-                            sorting: 'packageName ascN',
-                            content: 'package-badge:entry.package'
-                        },
-                        { header: 'Module',
+                        {header: 'Package', sorting: 'packageName ascN', content: 'package-badge:entry.package'},
+                        {
+                            header: 'Module',
                             sorting: 'name ascN',
                             content: {
                                 view: 'badge',
@@ -99,8 +105,14 @@ discovery.page.define('modules', [
                     view: 'block',
                     className: 'app-page-summary',
                     content: [
-                        { view: 'block', content: ['text:"Modules:"', 'text-numeric:size()'] },
-                        { view: 'block', content: ['text:"Total time:"', 'duration:{ time: sum(=>selfTime), total: #.data.totalTime }'] }
+                        {view: 'block', content: ['text:"Modules:"', 'text-numeric:size()']},
+                        {
+                            view: 'block',
+                            content: [
+                                'text:"Total time:"',
+                                'duration:{ time: sum(=>selfTime), total: #.data.totalTime }'
+                            ]
+                        }
                     ]
                 }
             ]

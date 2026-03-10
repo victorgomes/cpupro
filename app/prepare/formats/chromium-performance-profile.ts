@@ -1,9 +1,9 @@
 // See: https://github.com/v8/v8/blob/master/src/inspector/js_protocol.json
 
-import type { V8CpuProfile, V8CpuProfileSet } from '../types.js';
+import type {V8CpuProfile, V8CpuProfileSet} from '../types.js';
 
 export type ChromiumTraceEventsProfile = {
-    traceEvents: ChromiumTraceEvent[]
+    traceEvents: ChromiumTraceEvent[];
 } & {
     [key: string]: unknown;
 };
@@ -28,7 +28,7 @@ interface ChromiumTraceEvent {
     tdur: number;
     tts: number;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    args: { [key: string]: any };
+    args: {[key: string]: any};
     id?: string;
 }
 
@@ -72,12 +72,13 @@ export function extractFromChromiumPerformanceProfile(
     // Filter only necessary events and sort them since the events do not have
     // to be in timestamp-sorted order
     events = events
-        .filter(e =>
-            e.name === 'CpuProfile' ||
-            e.name === 'Profile' ||
-            e.name === 'ProfileChunk' ||
-            e.name === 'process_name' ||
-            e.name === 'thread_name'
+        .filter(
+            e =>
+                e.name === 'CpuProfile' ||
+                e.name === 'Profile' ||
+                e.name === 'ProfileChunk' ||
+                e.name === 'process_name' ||
+                e.name === 'thread_name'
         )
         .sort((a, b) => a.ts - b.ts);
 
@@ -103,7 +104,7 @@ export function extractFromChromiumPerformanceProfile(
                 trace_ids: {},
                 lines: [],
                 columns: [],
-                ...event.args.data as Partial<V8CpuProfile>
+                ...(event.args.data as Partial<V8CpuProfile>)
             };
             // profile.threadId = event.tid;
 
@@ -131,7 +132,7 @@ export function extractFromChromiumPerformanceProfile(
             for (const chunkKey of Object.keys(chunk) as (keyof ChromiumTraceProfileData)[]) {
                 switch (chunkKey) {
                     case 'cpuProfile': {
-                        const { nodes, samples, trace_ids: traceIds } = chunk.cpuProfile;
+                        const {nodes, samples, trace_ids: traceIds} = chunk.cpuProfile;
 
                         if (Array.isArray(nodes)) {
                             (cpuProfile.nodes as unknown[]).push(...nodes);
@@ -188,7 +189,7 @@ export function extractFromChromiumPerformanceProfile(
 
     if (indexToView === -1) {
         indexToView = profiles.reduce(
-            (res, profile, idx, array) => array[res].nodes.length < profile.nodes.length ? idx : res,
+            (res, profile, idx, array) => (array[res].nodes.length < profile.nodes.length ? idx : res),
             0
         );
     }

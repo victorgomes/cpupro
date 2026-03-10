@@ -1,4 +1,4 @@
-import { sessionExpandState, timingCols } from './common.js';
+import {sessionExpandState, timingCols} from './common.js';
 
 const pageContent = [
     {
@@ -33,11 +33,17 @@ const pageContent = [
         onToggle: '==>#.currentScript.hasSource() and "setSessionSetting".callAction("cpupro-module-source", $)',
         header: [
             'text:"Source"',
-            { view: 'block', className: 'text-divider' },
-            { view: 'switch', content: [
-                { when: 'script.hasSource()', content: 'html:`<span style="color: #888">${script.source.size().bytes(true)}</html>`' },
-                { content: 'html:`<span style="color: #888">(unavailable)</span>`' }
-            ] }
+            {view: 'block', className: 'text-divider'},
+            {
+                view: 'switch',
+                content: [
+                    {
+                        when: 'script.hasSource()',
+                        content: 'html:`<span style="color: #888">${script.source.size().bytes(true)}</html>`'
+                    },
+                    {content: 'html:`<span style="color: #888">(unavailable)</span>`'}
+                ]
+            }
         ],
         content: 'script-source:script'
     },
@@ -48,7 +54,7 @@ const pageContent = [
         className: 'trigger-outside',
         header: [
             'text:"Nested time distribution"',
-            { view: 'block', className: 'text-divider' },
+            {view: 'block', className: 'text-divider'},
             {
                 view: 'update-on-timings-change',
                 timings: '=#.currentProfile.modulesTimingsFiltered',
@@ -116,10 +122,9 @@ const pageContent = [
                             contentWhen: 'hotness = "hot" or hotness = "warm"',
                             content: 'code-hotness-icon:topTier'
                         },
-                        { header: 'Kind',
-                            content: 'call-frame-kind-badge:left.entry.kind'
-                        },
-                        { header: 'Call frame',
+                        {header: 'Kind', content: 'call-frame-kind-badge:left.entry.kind'},
+                        {
+                            header: 'Call frame',
                             className: 'subject-name',
                             sorting: 'name ascN',
                             content: {
@@ -128,7 +133,8 @@ const pageContent = [
                                 content: 'text-match'
                             }
                         },
-                        { header: 'Loc',
+                        {
+                            header: 'Loc',
                             sorting: 'loc ascN',
                             data: 'entry',
                             content: ['module-badge', 'call-frame-loc-badge']
@@ -153,10 +159,13 @@ discovery.page.define('module', {
     context: '{ ...#, currentProfile }',
     data: 'currentProfile.modules[=>id = +#.id]',
     content: [
-        { when: 'no $', content: {
-            view: 'alert-warning',
-            content: 'md:"No module with id \\"{{#.id}}\\" is found\\n\\n[Back to index page](#)"'
-        } },
-        { content: pageContent }
+        {
+            when: 'no $',
+            content: {
+                view: 'alert-warning',
+                content: 'md:"No module with id \\"{{#.id}}\\" is found\\n\\n[Back to index page](#)"'
+            }
+        },
+        {content: pageContent}
     ]
 });

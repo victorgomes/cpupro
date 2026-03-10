@@ -1,4 +1,4 @@
-export default function(host, render) {
+export default function (host, render) {
     let hideTimer;
     let renderedFrame = null;
     let popup = new host.view.Popup({
@@ -15,7 +15,7 @@ export default function(host, render) {
             }
 
             clearTimeout(hideTimer);
-            popup.show(null, renderedFrame !== frame ? (el) => render(el, frame) : undefined);
+            popup.show(null, renderedFrame !== frame ? el => render(el, frame) : undefined);
             renderedFrame = frame;
         },
 

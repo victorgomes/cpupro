@@ -1,4 +1,4 @@
-import { CpuProModule } from '../types.js';
+import {CpuProModule} from '../types.js';
 
 function moduleDisplayName(module: CpuProModule) {
     if (module.name) {
@@ -22,12 +22,9 @@ function moduleDisplayName(module: CpuProModule) {
             module.name = module.path;
             break;
     }
-
 }
 
-export function processDisplayNames(
-    modules: CpuProModule[]
-) {
+export function processDisplayNames(modules: CpuProModule[]) {
     for (const module of modules) {
         moduleDisplayName(module);
     }

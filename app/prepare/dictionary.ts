@@ -22,7 +22,7 @@ import {
     WellKnownName,
     WellKnownType
 } from './types.js';
-import { scriptFromScriptId } from './preprocessing/scripts.js';
+import {scriptFromScriptId} from './preprocessing/scripts.js';
 
 const callFrameKindPrefixes: [prefix: string, kind: CpuProCallFrameKind][] = [
     ['(builtin) ', 'builtin'],
@@ -39,7 +39,7 @@ type RegistryPackage = {
     version: string | null;
     registry: PackageRegistry | null;
     cdn: CDN | null;
-}
+};
 
 type CallFrameMap = Map<
     CpuProScript | null, // script
@@ -56,7 +56,7 @@ type CallFrameMap = Map<
 >;
 
 export class Dictionary {
-    callFrames: CpuProCallFrame[] & { wellKnownIndex: Record<WellKnownType, number> };
+    callFrames: CpuProCallFrame[] & {wellKnownIndex: Record<WellKnownType, number>};
     scripts: CpuProScript[];
     modules: CpuProModule[];
     packages: CpuProPackage[];
@@ -72,7 +72,7 @@ export class Dictionary {
     #packageNameByOriginMap: Map<string, string>;
 
     constructor() {
-        this.callFrames = Object.assign([], { wellKnownIndex: Object.create(null) });
+        this.callFrames = Object.assign([], {wellKnownIndex: Object.create(null)});
         this.scripts = [];
         this.modules = [];
         this.packages = [];
@@ -84,9 +84,7 @@ export class Dictionary {
 
         this.#callFramesByScript = new Map();
         this.#anonymousModuleByScriptId = new Map();
-        this.#packageNameByOriginMap = new Map([
-            ...Object.entries(knownChromeExtensions)
-        ]);
+        this.#packageNameByOriginMap = new Map([...Object.entries(knownChromeExtensions)]);
 
         // fulfill the category by a known list to preserve an order
         for (const packageType of categories) {
@@ -95,13 +93,16 @@ export class Dictionary {
 
         // fulfill the well known call frames map for fast access
         for (const [name, id] of wellKnownCallFrameName) {
-            this.callFrames.wellKnownIndex[id] = this.resolveCallFrameIndex({
-                scriptId: 0,
-                url: '',
-                functionName: name,
-                lineNumber: -1,
-                columnNumber: -1
-            }, null as unknown as IProfileScriptsMap);
+            this.callFrames.wellKnownIndex[id] = this.resolveCallFrameIndex(
+                {
+                    scriptId: 0,
+                    url: '',
+                    functionName: name,
+                    lineNumber: -1,
+                    columnNumber: -1
+                },
+                null as unknown as IProfileScriptsMap
+            );
         }
     }
 
@@ -124,14 +125,13 @@ export class Dictionary {
         if (existingPackageName === undefined) {
             this.#packageNameByOriginMap.set(origin, packageName);
         } else if (existingPackageName !== packageName) {
-            console.warn(`Package name for origin "${origin}" already set "${existingPackageName}", new name "${packageName}" ignored`);
+            console.warn(
+                `Package name for origin "${origin}" already set "${existingPackageName}", new name "${packageName}" ignored`
+            );
         }
     }
 
-    resolveCallFrameIndex(
-        inputCallFrame: V8CpuProfileCallFrame,
-        scriptsMap: IProfileScriptsMap
-    ) {
+    resolveCallFrameIndex(inputCallFrame: V8CpuProfileCallFrame, scriptsMap: IProfileScriptsMap) {
         const functionName = inputCallFrame.functionName || '';
         const url = inputCallFrame.url || null;
         const script = scriptFromScriptId(inputCallFrame.scriptId, url, scriptsMap);
@@ -141,17 +141,17 @@ export class Dictionary {
         // resolve a callFrame through a chain of maps
         let byFunctionNameMap = this.#callFramesByScript.get(script);
         if (byFunctionNameMap === undefined) {
-            this.#callFramesByScript.set(script, byFunctionNameMap = new Map());
+            this.#callFramesByScript.set(script, (byFunctionNameMap = new Map()));
         }
 
         let byLineNumberMap = byFunctionNameMap.get(functionName);
         if (byLineNumberMap === undefined) {
-            byFunctionNameMap.set(functionName, byLineNumberMap = new Map());
+            byFunctionNameMap.set(functionName, (byLineNumberMap = new Map()));
         }
 
         let resultMap = byLineNumberMap.get(lineNumber);
         if (resultMap === undefined) {
-            byLineNumberMap.set(lineNumber, resultMap = new Map());
+            byLineNumberMap.set(lineNumber, (resultMap = new Map()));
         }
 
         let callFrameIndex = resultMap.get(columnNumber);
@@ -159,7 +159,7 @@ export class Dictionary {
             const start = normalizeLoc(inputCallFrame.start);
             const end = normalizeLoc(inputCallFrame.end);
             const module = this.resolveModule(script, functionName);
-            const { name, kind, regexp } = this.#resolveFunctionName(functionName, lineNumber, columnNumber);
+            const {name, kind, regexp} = this.#resolveFunctionName(functionName, lineNumber, columnNumber);
             const callFrame: CpuProCallFrame = {
                 id: this.callFrames.length + 1,
                 script,
@@ -185,7 +185,10 @@ export class Dictionary {
 
         return callFrameIndex;
     }
-    resolveCallFrame(inputCallFrame: V8CpuProfileCallFrame & { start?: number, end?: number }, scriptsMap: IProfileScriptsMap) {
+    resolveCallFrame(
+        inputCallFrame: V8CpuProfileCallFrame & {start?: number; end?: number},
+        scriptsMap: IProfileScriptsMap
+    ) {
         return this.callFrames[this.resolveCallFrameIndex(inputCallFrame, scriptsMap)];
     }
 
@@ -199,9 +202,7 @@ export class Dictionary {
     }
 
     resolveCategory(packageType: PackageType): CpuProCategory {
-        const name = packageType === 'webpack/runtime'
-            ? 'script'
-            : packageType;
+        const name = packageType === 'webpack/runtime' ? 'script' : packageType;
         let category = this.#categoriesMap.get(name);
 
         if (category === undefined) {
@@ -217,10 +218,7 @@ export class Dictionary {
         return category;
     }
 
-    resolvePackage(
-        moduleType: ModuleType,
-        modulePath: string | null
-    ): CpuProPackage {
+    resolvePackage(moduleType: ModuleType, modulePath: string | null): CpuProPackage {
         const canonicalRef = `${moduleType}/${modulePath}`;
         let pkg = this.#packagesMap.get(canonicalRef);
 
@@ -257,7 +255,7 @@ export class Dictionary {
                     type = 'script';
 
                     if (/^https?:/.test(modulePath)) {
-                        const { origin, host } = new URL(modulePath);
+                        const {origin, host} = new URL(modulePath);
 
                         ref = origin;
                         name = this.#packageNameByOriginMap.get(host) || host;
@@ -340,15 +338,13 @@ export class Dictionary {
                 ref = '(wasm)';
                 type = 'wasm';
                 name = '(wasm)';
-                path = modulePath.startsWith('wasm://wasm/')
-                    ? 'wasm://wasm/'
-                    : null;
+                path = modulePath.startsWith('wasm://wasm/') ? 'wasm://wasm/' : null;
 
                 break;
             }
 
             case 'chrome-extension': {
-                const { origin, host } = new URL(modulePath);
+                const {origin, host} = new URL(modulePath);
 
                 ref = origin;
                 type = 'chrome-extension';
@@ -395,8 +391,13 @@ export class Dictionary {
         return pkg;
     }
 
-    #resolveModule(type: ModuleType, name: string | null, path: string | null = null, script: CpuProScript | null = null) {
-        const moduleKey = script ?? name as string;
+    #resolveModule(
+        type: ModuleType,
+        name: string | null,
+        path: string | null = null,
+        script: CpuProScript | null = null
+    ) {
+        const moduleKey = script ?? (name as string);
         let module = this.#modulesMap.get(moduleKey);
 
         if (module === undefined) {
@@ -441,9 +442,7 @@ export class Dictionary {
         return this.#resolveModule(type, name);
     }
 
-    resolveModuleByScript(
-        script: CpuProScript
-    ) {
+    resolveModuleByScript(script: CpuProScript) {
         let url = script.url;
         let type: ModuleType = 'unknown';
         let name: string | null = null;
@@ -461,7 +460,7 @@ export class Dictionary {
             if (anonymousName === undefined) {
                 this.#anonymousModuleByScriptId.set(
                     script,
-                    anonymousName = `(anonymous module #${this.#anonymousModuleByScriptId.size + 1})`
+                    (anonymousName = `(anonymous module #${this.#anonymousModuleByScriptId.size + 1})`)
                 );
             }
 
@@ -533,20 +532,14 @@ export class Dictionary {
     }
 
     // TODO: make a function once drop this.#anonymousFunctionNameIndex as a dependency
-    #resolveFunctionName(
-        functionName: string,
-        lineNumber: number,
-        columnNumber: number
-    ) {
+    #resolveFunctionName(functionName: string, lineNumber: number, columnNumber: number) {
         let regexp: string | null = null;
         let kind: CpuProCallFrameKind | null = null;
         let name = functionName;
 
         if (functionName.startsWith('RegExp: ')) {
             regexp = functionName.slice('RegExp: '.length);
-            name = regexp.length <= maxRegExpLength
-                ? regexp
-                : `${regexp.slice(0, maxRegExpLength - 1)}…`;
+            name = regexp.length <= maxRegExpLength ? regexp : `${regexp.slice(0, maxRegExpLength - 1)}…`;
         } else {
             for (const [prefix, prefixKind] of callFrameKindPrefixes) {
                 if (functionName.startsWith(prefix)) {
@@ -557,13 +550,14 @@ export class Dictionary {
             }
 
             if (!kind && !name) {
-                name = lineNumber === 0 && columnNumber === 0
-                    ? '(script)'
-                    : `(anonymous function #${this.#anonymousFunctionNameIndex++})`;
+                name =
+                    lineNumber === 0 && columnNumber === 0
+                        ? '(script)'
+                        : `(anonymous function #${this.#anonymousFunctionNameIndex++})`;
             }
         }
 
-        return { name, kind, regexp };
+        return {name, kind, regexp};
     }
 }
 
@@ -593,7 +587,9 @@ function resolveRegistryPackage(modulePath: string): RegistryPackage | null {
                 return {
                     type: 'script',
                     name: packageName,
-                    path: moduleUrl.origin + (pathOffset !== undefined ? registryPath.slice(0, pathOffset) : registryPath),
+                    path:
+                        moduleUrl.origin +
+                        (pathOffset !== undefined ? registryPath.slice(0, pathOffset) : registryPath),
                     version,
                     registry: endpoint.registry,
                     cdn: registry.cdn
@@ -627,9 +623,7 @@ function resolveRegistryPackage(modulePath: string): RegistryPackage | null {
 }
 
 function locFromLineColumn(line: number, column: number) {
-    return line !== -1 && column !== -1
-        ? `:${line}:${column}`
-        : null;
+    return line !== -1 && column !== -1 ? `:${line}:${column}` : null;
 }
 
 function normalizeLoc(value: unknown) {

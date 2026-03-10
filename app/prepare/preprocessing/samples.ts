@@ -1,5 +1,5 @@
-import { TIMINGS } from '../const.js';
-import { CallTree } from '../computations/call-tree.js';
+import {TIMINGS} from '../const.js';
+import {CallTree} from '../computations/call-tree.js';
 import {
     createTreeCompute,
     DictionaryTimings,
@@ -16,7 +16,7 @@ import {
     CpuProCallFrame,
     CpuProCallFramePosition
 } from '../types.js';
-import { convertToUint32Array } from '../utils.js';
+import {convertToUint32Array} from '../utils.js';
 
 type SamplesResult = {
     recomputeTimings(): void;
@@ -87,17 +87,17 @@ export function mergeSamples(samples: Uint32Array, timeDeltas: Uint32Array, samp
 
     return k !== samples.length
         ? {
-            samples: samples.slice(0, k),
-            sampleCounts: sampleCounts.slice(0, k),
-            samplePositions: samplePositions !== null ? samplePositions.slice(0, k) : samplePositions,
-            timeDeltas: timeDeltas.slice(0, k)
-        }
+              samples: samples.slice(0, k),
+              sampleCounts: sampleCounts.slice(0, k),
+              samplePositions: samplePositions !== null ? samplePositions.slice(0, k) : samplePositions,
+              timeDeltas: timeDeltas.slice(0, k)
+          }
         : {
-            samples,
-            sampleCounts,
-            samplePositions,
-            timeDeltas
-        };
+              samples,
+              sampleCounts,
+              samplePositions,
+              timeDeltas
+          };
 }
 
 // FIXME: sampleIdMap can contain -1 for missed IDs; normally, this shouldn't happen,
@@ -150,8 +150,8 @@ export function computeTimings(
     // create timings
     const computeTimingsStart = Date.now();
     const kinds = callFramePositionsTree
-        ? ['callFramePositions', 'callFrames', 'modules', 'packages', 'categories'] as const
-        : ['callFrames', 'modules', 'packages', 'categories'] as const;
+        ? (['callFramePositions', 'callFrames', 'modules', 'packages', 'categories'] as const)
+        : (['callFrames', 'modules', 'packages', 'categories'] as const);
     const {
         recomputeTimings,
         samplesTimings,
@@ -161,13 +161,13 @@ export function computeTimings(
         treeTimingsFiltered,
         dictionaryTimings,
         dictionaryTimingsFiltered
-    } = createTreeCompute(samples, timeDeltas, [
-        callFramePositionsTree,
-        callFramesTree,
-        modulesTree,
-        packagesTree,
-        categoriesTree
-    ].filter(tree => tree !== null));
+    } = createTreeCompute(
+        samples,
+        timeDeltas,
+        [callFramePositionsTree, callFramesTree, modulesTree, packagesTree, categoriesTree].filter(
+            tree => tree !== null
+        )
+    );
 
     const result = {
         recomputeTimings,
@@ -181,11 +181,11 @@ export function computeTimings(
         callFramePositionsTreeTimestamps: null
     };
 
-    dictionaryTimings.forEach((timings, i) => result[`${kinds[i]}Timings`] = timings);
-    treeTimings.forEach((timings, i) => result[`${kinds[i]}TreeTimings`] = timings);
-    dictionaryTimingsFiltered.forEach((timings, i) => result[`${kinds[i]}TimingsFiltered`] = timings);
-    treeTimingsFiltered.forEach((timings, i) => result[`${kinds[i]}TreeTimingsFiltered`] = timings);
-    treeTimestamps.forEach((timings, i) => result[`${kinds[i]}TreeTimestamps`] = timings);
+    dictionaryTimings.forEach((timings, i) => (result[`${kinds[i]}Timings`] = timings));
+    treeTimings.forEach((timings, i) => (result[`${kinds[i]}TreeTimings`] = timings));
+    dictionaryTimingsFiltered.forEach((timings, i) => (result[`${kinds[i]}TimingsFiltered`] = timings));
+    treeTimingsFiltered.forEach((timings, i) => (result[`${kinds[i]}TreeTimingsFiltered`] = timings));
+    treeTimestamps.forEach((timings, i) => (result[`${kinds[i]}TreeTimestamps`] = timings));
 
     TIMINGS && console.log('Compute timings:', Date.now() - computeTimingsStart);
 

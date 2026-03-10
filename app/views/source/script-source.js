@@ -1,12 +1,14 @@
-import { unavailableSourceView } from './common.js';
+import {unavailableSourceView} from './common.js';
 
 discovery.view.define('script-source', {
     view: 'switch',
     content: [
-        { when: 'hasSource()', content: {
-            view: 'source',
-            className: 'cpupro-source',
-            data: `{
+        {
+            when: 'hasSource()',
+            content: {
+                view: 'source',
+                className: 'cpupro-source',
+                data: `{
                 $callFrames;
                 $callFrameCodes: #.currentProfile.codesByScript[=> script = @].callFrameCodes or callFrames.({
                     callFrame: $,
@@ -51,18 +53,19 @@ discovery.view.define('script-source', {
                     tooltip: $tooltipView
                 })
             }`,
-            postRender(el) {
-                const contentEl = el.querySelector('.view-source__content');
+                postRender(el) {
+                    const contentEl = el.querySelector('.view-source__content');
 
-                contentEl.addEventListener('click', (event) => {
-                    const pseudoLinkEl = event.target.closest('.view-source .spotlight[data-href]');
+                    contentEl.addEventListener('click', event => {
+                        const pseudoLinkEl = event.target.closest('.view-source .spotlight[data-href]');
 
-                    if (pseudoLinkEl && contentEl.contains(pseudoLinkEl)) {
-                        discovery.setPageHash(pseudoLinkEl.dataset.href);
-                    }
-                });
+                        if (pseudoLinkEl && contentEl.contains(pseudoLinkEl)) {
+                            discovery.setPageHash(pseudoLinkEl.dataset.href);
+                        }
+                    });
+                }
             }
-        } },
-        { content: unavailableSourceView }
+        },
+        {content: unavailableSourceView}
     ]
 });

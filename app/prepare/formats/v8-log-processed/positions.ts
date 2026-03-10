@@ -1,5 +1,5 @@
-import { functionTier } from './codes.js';
-import type { CodePositionTable, NumericArray, V8LogCode } from './types.js';
+import {functionTier} from './codes.js';
+import type {CodePositionTable, NumericArray, V8LogCode} from './types.js';
 
 // Parse "positions" and "inlined" of code.source:
 // - "positions" is a sequence of entries with pattern /C\d+O\d+(I\d+)?/, e.g. "C0O1C20O30I0..."
@@ -98,12 +98,8 @@ export function processCodePositionTables(
         const pcOnNextInstruction = functionTier(code.kind) !== 'Ignition';
         const positions = parsePositions(sourcePositions);
         const lastCode = positions[positions.length - 3];
-        const inlined = source.inlined
-            ? parsePositions(source.inlined)
-            : null;
-        const fns = inlined !== null && Array.isArray(source.fns) && source.fns.length > 0
-            ? source.fns.slice()
-            : [];
+        const inlined = source.inlined ? parsePositions(source.inlined) : null;
+        const fns = inlined !== null && Array.isArray(source.fns) && source.fns.length > 0 ? source.fns.slice() : [];
 
         if (inlined !== null) {
             // Validate and remap function ID list
@@ -116,7 +112,7 @@ export function processCodePositionTables(
                 // However, this does not always resolve the issue, so for now we output warnings and ignore
                 // positions for such codes to collect more cases.
                 if (functionId === null || functionId < 0) {
-                    console.error('Broken positions', code, { positions, inlined, fns: source.fns });
+                    console.error('Broken positions', code, {positions, inlined, fns: source.fns});
                     return null;
                 }
 
@@ -132,7 +128,7 @@ export function processCodePositionTables(
                 const functionId = fns[inlined[i]] ?? null;
 
                 if (functionId === null || functionId < 0) {
-                    console.error('Broken positions', code, { positions, inlined });
+                    console.error('Broken positions', code, {positions, inlined});
                     return null;
                 }
 

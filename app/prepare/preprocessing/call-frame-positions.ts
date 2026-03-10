@@ -1,5 +1,5 @@
-import type { CpuProCallFrame, CpuProCallFramePosition } from '../types.js';
-import { createTreeSourceFromParent } from '../computations/build-trees.js';
+import type {CpuProCallFrame, CpuProCallFramePosition} from '../types.js';
+import {createTreeSourceFromParent} from '../computations/build-trees.js';
 
 function positionRef(callFrameIndex: number, scriptOffset: number) {
     return scriptOffset * 0x0100_0000 + callFrameIndex;
@@ -19,7 +19,7 @@ export function processCallFramePositions(
     samplePositions: Int32Array | null
 ) {
     if (samplePositions === null) {
-        return { positionsTreeSource: null };
+        return {positionsTreeSource: null};
     }
 
     const positionsMap = new Map<number, number>();
@@ -37,10 +37,14 @@ export function processCallFramePositions(
         let positionIndex = positionsMap.get(ref);
 
         if (positionIndex === undefined) {
-            positionsMap.set(ref, positionIndex = positions.push({
-                callFrame: callFrames[callFrameIndex],
-                scriptOffset
-            }) - 1);
+            positionsMap.set(
+                ref,
+                (positionIndex =
+                    positions.push({
+                        callFrame: callFrames[callFrameIndex],
+                        scriptOffset
+                    }) - 1)
+            );
         }
 
         nodesPosition[i] = positionIndex;
@@ -56,10 +60,14 @@ export function processCallFramePositions(
             let positionIndex = positionsMap.get(ref);
 
             if (positionIndex === undefined) {
-                positionsMap.set(ref, positionIndex = positions.push({
-                    callFrame: callFrames[callFrameIndex],
-                    scriptOffset
-                }) - 1);
+                positionsMap.set(
+                    ref,
+                    (positionIndex =
+                        positions.push({
+                            callFrame: callFrames[callFrameIndex],
+                            scriptOffset
+                        }) - 1)
+                );
             }
 
             const nodeRef = positionNodeRef(nodeIndex, scriptOffset);
@@ -86,12 +94,7 @@ export function processCallFramePositions(
     positionParent.set(samplesPositionParent, nodesPosition.length);
 
     const sourceIdToNode = new Int32Array(positionNodeMap.values());
-    const positionsTreeSource = createTreeSourceFromParent(
-        positionParent,
-        sourceIdToNode,
-        positionNodes,
-        positions
-    );
+    const positionsTreeSource = createTreeSourceFromParent(positionParent, sourceIdToNode, positionNodes, positions);
 
     return {
         samplePositions,

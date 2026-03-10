@@ -1,4 +1,4 @@
-import { fixDetailsScroll } from './common.js';
+import {fixDetailsScroll} from './common.js';
 
 const experimentalFeatures = false;
 const table = {
@@ -10,7 +10,8 @@ const table = {
         fixDetailsScroll(el);
     },
     cols: [
-        { header: { className: 'timings', text: 'Self time' },
+        {
+            header: {className: 'timings', text: 'Self time'},
             className: 'timings',
             sorting: 'selfTime desc, totalTime desc',
             colSpan: '=totalTime ? 1 : 3',
@@ -18,19 +19,21 @@ const table = {
             content: {
                 view: 'switch',
                 content: [
-                    { when: 'totalTime', content: 'duration:{ time: selfTime, total: #.data.totalTime }' },
-                    { content: 'no-samples' }
+                    {when: 'totalTime', content: 'duration:{ time: selfTime, total: #.data.totalTime }'},
+                    {content: 'no-samples'}
                 ]
             }
         },
-        { header: { className: 'timings', text: 'Nested time' },
+        {
+            header: {className: 'timings', text: 'Nested time'},
             className: 'timings',
             sorting: 'nestedTime desc, totalTime desc',
             when: 'totalTime',
             contentWhen: 'nestedTime',
             content: 'duration:{ time: nestedTime, total: #.data.totalTime }'
         },
-        { header: { className: 'timings', text: 'Total time' },
+        {
+            header: {className: 'timings', text: 'Total time'},
             className: 'timings',
             sorting: 'totalTime desc, selfTime desc',
             when: 'totalTime',
@@ -38,7 +41,9 @@ const table = {
         },
 
         // hotness
-        { header: '', colWhen: '$[=>right]',
+        {
+            header: '',
+            colWhen: '$[=>right]',
             sorting: 'right.hotness | $ = "hot" ? 3 : $ = "warm" ? 2 : $ = "cold" ? 1 : 0 desc',
             data: 'right',
             contentWhen: 'hotness = "hot" or hotness = "warm"',
@@ -46,10 +51,9 @@ const table = {
         },
 
         // call frame identity
-        { header: 'Kind',
-            content: 'call-frame-kind-badge:entry.kind'
-        },
-        { header: 'Call frame',
+        {header: 'Kind', content: 'call-frame-kind-badge:entry.kind'},
+        {
+            header: 'Call frame',
             sorting: 'name ascN',
             content: {
                 view: 'badge',
@@ -59,18 +63,23 @@ const table = {
         },
 
         // source and codes
-        { header: 'Source', colWhen: '$[=>entry.hasSource()]',
+        {
+            header: 'Source',
+            colWhen: '$[=>entry.hasSource()]',
             sorting: '(entry | regexp ? regexp.size() : start >= 0 ? end - start : -1) desc',
             data: 'entry',
             align: 'right',
-            content: 'text-with-unit{ value: regexp ? regexp.size() : end - start |? $ > 999 ? kb() : $ + "b" : "", unit: true }',
+            content:
+                'text-with-unit{ value: regexp ? regexp.size() : end - start |? $ > 999 ? kb() : $ + "b" : "", unit: true }',
             detailsWhen: 'hasSource()',
             details: {
                 view: 'call-frame-source'
                 // context: '{ ...#, nonFilteredTimings: true }'
             }
         },
-        { header: 'Codes', colWhen: '$[=>right.codes]',
+        {
+            header: 'Codes',
+            colWhen: '$[=>right.codes]',
             sorting: '(right | topTierWeight * 1000 + codes.size()) desc',
             data: 'right',
             content: {
@@ -93,24 +102,26 @@ const table = {
                 }
             }
         },
-        { header: 'Deopt', colWhen: '$[=>right.codes.deopt]',
+        {
+            header: 'Deopt',
+            colWhen: '$[=>right.codes.deopt]',
             sorting: 'right.codes.deopt.size() desc',
             data: 'right.codes.deopt.size()',
             contentWhen: '$'
         },
 
         // secondary
-        { header: 'Module',
+        {
+            header: 'Module',
             sorting: 'moduleName ascN, loc ascN',
             data: 'entry',
-            content: [
-                'module-badge:module',
-                'call-frame-loc-badge'
-            ]
+            content: ['module-badge:module', 'call-frame-loc-badge']
         },
 
         // source & tiers
-        { header: 'Tiers', colWhen: experimentalFeatures && '$[=>right]',
+        {
+            header: 'Tiers',
+            colWhen: experimentalFeatures && '$[=>right]',
             sorting: 'right.codes.size() desc',
             data: 'right',
             content: {
@@ -126,8 +137,8 @@ const summary = {
     view: 'block',
     className: 'app-page-summary',
     content: [
-        { view: 'block', content: ['text:"Call frames:"', 'text-numeric:size()'] },
-        { view: 'block', content: ['text:"Total time:"', 'duration:{ time: sum(=>selfTime), total: #.data.totalTime }'] }
+        {view: 'block', content: ['text:"Call frames:"', 'text-numeric:size()']},
+        {view: 'block', content: ['text:"Total time:"', 'duration:{ time: sum(=>selfTime), total: #.data.totalTime }']}
     ]
 };
 
@@ -182,10 +193,7 @@ discovery.page.define('call-frames', [
                         nestedTime: left.nestedTime,
                         totalTime: left.totalTime
                     })`,
-                    content: [
-                        table,
-                        summary
-                    ]
+                    content: [table, summary]
                 }
             }
         }

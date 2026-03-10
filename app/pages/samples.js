@@ -17,8 +17,7 @@ discovery.page.define('samples', {
         sampleXBins: $xbins.bins,
         sampleXBinsMax: $xbins.max
     }`,
-    modifiers: [
-    ],
+    modifiers: [],
     content: [
         {
             view: 'block',
@@ -79,9 +78,7 @@ discovery.page.define('samples', {
                 // },
                 {
                     view: 'block',
-                    content: [
-                        'text:"Discrete"'
-                    ]
+                    content: ['text:"Discrete"']
                 },
                 {
                     view: 'timeline-segments-bin',
@@ -107,8 +104,11 @@ discovery.page.define('samples', {
                             view: 'switch',
                             data: '',
                             content: [
-                                { when: '#.timeStart != #.timeEnd - 1', content: 'text:`Range: ${#.timeStart}..${#.timeEnd - 1}`' },
-                                { content: 'text:`Value: ${#.timeStart}`' }
+                                {
+                                    when: '#.timeStart != #.timeEnd - 1',
+                                    content: 'text:`Range: ${#.timeStart}..${#.timeEnd - 1}`'
+                                },
+                                {content: 'text:`Value: ${#.timeStart}`'}
                             ]
                         },
                         'html:"<br>"',

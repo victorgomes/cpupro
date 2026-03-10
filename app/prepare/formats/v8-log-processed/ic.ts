@@ -1,7 +1,7 @@
-import type { V8CpuProfileICEntry } from '../../types.js';
-import type { CodePositionTable, V8LogCode } from './types.js';
-import { FEATURE_INLINE_CACHE } from '../../const.js';
-import { findPositionsCodeIndex } from './positions.js';
+import type {V8CpuProfileICEntry} from '../../types.js';
+import type {CodePositionTable, V8LogCode} from './types.js';
+import {FEATURE_INLINE_CACHE} from '../../const.js';
+import {findPositionsCodeIndex} from './positions.js';
 
 export function processCodeIcArray(
     code: V8LogCode,

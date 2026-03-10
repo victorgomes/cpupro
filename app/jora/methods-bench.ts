@@ -1,8 +1,10 @@
-const safeRequestIdleCallback = typeof requestIdleCallback === 'function'
-    ? requestIdleCallback
-    : (fn: () => void) => setTimeout(fn, 100);
+const safeRequestIdleCallback =
+    typeof requestIdleCallback === 'function' ? requestIdleCallback : (fn: () => void) => setTimeout(fn, 100);
 
-export function trackExecutionTime<T extends Record<string,(...args: unknown[]) => unknown>>(methods: T, trackMethodNames: (keyof T & string)[]) {
+export function trackExecutionTime<T extends Record<string, (...args: unknown[]) => unknown>>(
+    methods: T,
+    trackMethodNames: (keyof T & string)[]
+) {
     let scheduleTimingsLoggingBuffer: [label: string, ...unknown[]][][] = [[]];
     let scheduleTimingsLoggingFrameTimer: number | null = null;
     let scheduleTimingsLoggingTimer: ReturnType<typeof safeRequestIdleCallback> | null = null;
@@ -15,13 +17,15 @@ export function trackExecutionTime<T extends Record<string,(...args: unknown[]) 
             continue;
         }
 
-        methods[methodName] = function(...args) {
+        methods[methodName] = function (...args) {
             const startTime = performance.now();
 
             try {
                 return fn.apply(this, args);
             } finally {
-                scheduleTimingsLoggingBuffer.at(-1)?.push([`${methodName}() — ${performance.now() - startTime}ms`, args]);
+                scheduleTimingsLoggingBuffer
+                    .at(-1)
+                    ?.push([`${methodName}() — ${performance.now() - startTime}ms`, args]);
 
                 if (scheduleTimingsLoggingFrameTimer === null) {
                     scheduleTimingsLoggingFrameTimer = requestAnimationFrame(() => {

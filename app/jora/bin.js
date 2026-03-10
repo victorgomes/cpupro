@@ -1,6 +1,6 @@
-import { typeColor, vmFunctionStateTiers } from '../prepare/const.js';
-import { sum } from '../prepare/utils.js';
-import { makeSamplesMask } from './call-tree.js';
+import {typeColor, vmFunctionStateTiers} from '../prepare/const.js';
+import {sum} from '../prepare/utils.js';
+import {makeSamplesMask} from './call-tree.js';
 
 function makeSampleBins(n, mask, samples, timeDeltas, totalTime) {
     const bins = new Float64Array(n);
@@ -45,14 +45,14 @@ function makeSampleBins(n, mask, samples, timeDeltas, totalTime) {
 
 export const methods = {
     binCallsFromMask(mask, n = 500, profile = this.context.currentProfile) {
-        const { samples, timeDeltas, totalTime } = profile;
+        const {samples, timeDeltas, totalTime} = profile;
         const bins = makeSampleBins(n, mask, samples, timeDeltas, totalTime);
 
         return Array.from(bins);
     },
 
     binCalls(tree, test, n = 500, profile = this.context.currentProfile) {
-        const { samples, timeDeltas, totalTime } = profile;
+        const {samples, timeDeltas, totalTime} = profile;
         const mask = makeSamplesMask(tree, test);
         const bins = makeSampleBins(n, mask, samples, timeDeltas, totalTime);
 
@@ -67,14 +67,14 @@ export const methods = {
     },
 
     binHeapEvents(heapEvents, eventFilter = 'new', n = 500, profile = this.context.currentProfile) {
-        const { totalTime } = profile;
+        const {totalTime} = profile;
         const bins = new Float64Array(n);
         const step = totalTime / n;
         let end = step;
         let binIdx = 0;
 
         for (let i = 0; i < heapEvents.length; i++) {
-            const { tm, event, size } = heapEvents[i];
+            const {tm, event, size} = heapEvents[i];
 
             if (tm === 0 || event !== eventFilter) {
                 continue;
@@ -92,7 +92,7 @@ export const methods = {
     },
 
     binHeapTotal(heapEvents, n = 500, initial = 0, profile = this.context.currentProfile) {
-        const { totalTime } = profile;
+        const {totalTime} = profile;
         const bins = new Float64Array(n);
         const step = totalTime / n;
         let end = step;
@@ -101,7 +101,7 @@ export const methods = {
         let currentMax = currentSize;
 
         for (let i = 0; i < heapEvents.length; i++) {
-            const { tm, event, size } = heapEvents[i];
+            const {tm, event, size} = heapEvents[i];
 
             if (tm === 0) {
                 continue;
@@ -127,9 +127,15 @@ export const methods = {
         return bins;
     },
 
-    binAllocations(allocations, attribute, attributeNames, n = 500, profile = this.context.currentProfile || this.context.data.currentProfile) {
-        const { totalTime: total } = profile;
-        const vectors = Array.from({ length: attributeNames.length }, () => new Uint32Array(n));
+    binAllocations(
+        allocations,
+        attribute,
+        attributeNames,
+        n = 500,
+        profile = this.context.currentProfile || this.context.data.currentProfile
+    ) {
+        const {totalTime: total} = profile;
+        const vectors = Array.from({length: attributeNames.length}, () => new Uint32Array(n));
         const step = total / n;
         let buffer = 0;
         let binIndex = 0;
@@ -165,14 +171,14 @@ export const methods = {
     },
 
     binScriptFunctionCodes(functionCodes, n = 500, profile = this.context.currentProfile) {
-        const { totalTime } = profile;
+        const {totalTime} = profile;
         const bins = new Uint32Array(n);
         const step = totalTime / n;
         let end = step;
         let binIdx = 0;
 
         for (let i = 0; i < functionCodes.length; i++) {
-            const { tm } = functionCodes[i];
+            const {tm} = functionCodes[i];
 
             while (tm > end) {
                 binIdx++;
@@ -190,7 +196,7 @@ export const methods = {
     },
 
     binScriptFunctionCodesTotal(functionCodes, n = 500, profile = this.context.currentProfile) {
-        const { totalTime } = profile;
+        const {totalTime} = profile;
         const step = totalTime / n;
         const binByTier = new Map();
         const fnTier = new Map();
@@ -203,7 +209,7 @@ export const methods = {
         }
 
         for (let i = 0; i < functionCodes.length; i++) {
-            const { tm, tier, callFrameCodes } = functionCodes[i];
+            const {tm, tier, callFrameCodes} = functionCodes[i];
 
             while (tm > end) {
                 binIdx++;
@@ -235,6 +241,6 @@ export const methods = {
             }
         }
 
-        return { byTier: [...binByTier.entries()], fnCount: fnCount };
+        return {byTier: [...binByTier.entries()], fnCount: fnCount};
     }
 };
