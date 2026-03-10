@@ -131,7 +131,7 @@ export function processTicks(
     }
 
     return {
-        firstTimestamp: sortedTicks[0].tm,
+        firstTimestamp: sortedTicks.length > 0 ? sortedTicks[0].tm : 0,
         lastTimestamp: lastTm,
         nodes,
         samples,

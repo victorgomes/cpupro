@@ -22,6 +22,8 @@ export async function* consumeV8logStream(iterator: AsyncIterableIterator<Uint8A
     // removed in the future as redundant. Let’s see.
     let slowNewlineSearch = false;
     let maybeCR = true;
+    let skipUntilNewline = false;
+    const MAX_LINE_LENGTH = 16 * 1024 * 1024; // 16 MB max line length to avoid RangeError JS string limits
 
     for await (const chunk of iterator) {
         const lines: string[] = [];
@@ -46,18 +48,40 @@ export async function* consumeV8logStream(iterator: AsyncIterableIterator<Uint8A
                 break;
             }
 
-            if (tail !== '') {
-                lines.push(tail + chunkText.slice(lineStartOffset, lineEndOffset));
+            if (skipUntilNewline) {
+                lines.push(tail);
+                tail = '';
+                skipUntilNewline = false;
+            } else if (tail !== '') {
+                const restOfLine = chunkText.slice(lineStartOffset, lineEndOffset);
+                if (tail.length + restOfLine.length > MAX_LINE_LENGTH) {
+                    lines.push(tail + restOfLine.slice(0, Math.max(0, MAX_LINE_LENGTH - tail.length)) + '...[TRUNCATED]');
+                } else {
+                    lines.push(tail + restOfLine);
+                }
                 tail = '';
             } else if (lineStartOffset < lineEndOffset) {
-                lines.push(chunkText.slice(lineStartOffset, lineEndOffset));
+                const slice = chunkText.slice(lineStartOffset, lineEndOffset);
+                if (slice.length > MAX_LINE_LENGTH) {
+                    lines.push(slice.slice(0, MAX_LINE_LENGTH) + '...[TRUNCATED]');
+                } else {
+                    lines.push(slice);
+                }
             }
 
             lineStartOffset = lineEndOffset + 1;
             maybeCR = false;
         } while (true);
 
-        tail += chunkText.slice(lineStartOffset);
+        const partialLine = chunkText.slice(lineStartOffset);
+        if (!skipUntilNewline) {
+            if (tail.length + partialLine.length > MAX_LINE_LENGTH) {
+                tail += partialLine.slice(0, Math.max(0, MAX_LINE_LENGTH - tail.length)) + '...[TRUNCATED]';
+                skipUntilNewline = true;
+            } else {
+                tail += partialLine;
+            }
+        }
         yield lines;
     }
 
